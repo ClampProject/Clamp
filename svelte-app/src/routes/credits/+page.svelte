@@ -16,6 +16,16 @@
         You can find the license
         <a href="https://creativecommons.org/licenses/by/4.0/">here</a>.
     </p>
+    <br />
+    <p>
+        Most (if not all) sound effects are provided by
+        <a href="https://freesound.org/"> freesound.org</a> under a Public Domain
+        license.
+    </p>
+    <p>
+        You can find the license
+        <a href="https://creativecommons.org/licenses/zero/1.0/">here</a>.
+    </p>
 </div>
 
 <style>

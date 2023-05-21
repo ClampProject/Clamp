@@ -1,3 +1,21 @@
 <xml>
-    <block type="controls_if"></block>
+    <category name="Movement" colour="#0bf">
+        <label text="Movement" />
+        <block type="movement_gotoxy" >
+            <value name="X">
+                <shadow type="generic_number">
+                    <field name="NUMBER">0</field>
+                </shadow>
+            </value>
+            <value name="Y">
+                <shadow type="generic_number">
+                    <field name="NUMBER">0</field>
+                </shadow>
+            </value>
+        </block>
+    </category>
+    <category name="Appearance" colour="#f3a">
+    </category>
+    <category name="Actions" colour="#fa4">
+    </category>
 </xml>
