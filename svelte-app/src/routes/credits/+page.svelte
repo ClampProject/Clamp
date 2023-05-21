@@ -9,8 +9,8 @@
         <a
             href="https://www.iconarchive.com/show/silk-icons-by-famfamfam.5.html"
         >
-            IconArchive
-        </a>.
+            IconArchive</a
+        >.
     </p>
     <p>
         You can find the license

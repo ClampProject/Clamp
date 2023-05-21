@@ -3,8 +3,36 @@
     import NavigationBar from "$lib/NavigationBar/NavigationBar.svelte";
     import NavigationMargin from "$lib/NavigationBar/NavigationMargin.svelte";
     import NavigationOption from "$lib/NavigationBar/NavigationOption.svelte";
+    // Toolbox
+    import Toolbox from "$lib/Toolbox/Toolbox.xml?raw";
 
-    import BlocklyComponent from "$lib/BlocklyComponent/Blockly.svelte";
+    import Blockly from "blockly/core";
+    import DarkTheme from "@blockly/theme-dark";
+
+    import En from "blockly/msg/en";
+    import "blockly/blocks";
+    import "blockly/javascript";
+
+    import BlocklyComponent from "svelte-blockly";
+
+    const en = {
+        rtl: false,
+        msg: {
+            ...En,
+        },
+    };
+
+    const config = {
+        toolbox: Toolbox,
+        collapse: true,
+        comments: true,
+        scrollbars: true,
+        disable: false,
+        theme: DarkTheme,
+    };
+
+    let workspace;
+    let code = "";
 </script>
 
 <NavigationBar>
@@ -22,7 +50,9 @@
 </NavigationBar>
 <div class="main">
     <NavigationMargin />
-    <BlocklyComponent />
+    <div class="blocklyWrapper">
+        <BlocklyComponent {config} locale={en} bind:workspace />
+    </div>
 </div>
 
 <style>
@@ -30,5 +60,12 @@
         position: absolute;
         left: 0px;
         top: 0px;
+        width: 100%;
+        height: 100%;
+    }
+
+    .blocklyWrapper {
+        width: 60%;
+        height: calc(100% - 3.25rem - 8px);
     }
 </style>
