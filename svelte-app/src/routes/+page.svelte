@@ -61,6 +61,8 @@
     let compiler;
     let lastGeneratedCode = "";
 
+    const tabs = {};
+
     function playSound(name) {
         const audio = new Audio(`/sounds/${name}.mp3`);
         audio.play();
@@ -78,6 +80,23 @@
         Engine.update(code);
         lastGeneratedCode = code;
     }
+    function switchTab(selectedTab) {
+        playSound("tabswitch");
+        Object.getOwnPropertyNames(tabs).forEach((tabName) => {
+            const tab = tabs[tabName];
+            tab.dataset.active = false;
+            if (tabName === selectedTab) {
+                tab.dataset.active = true;
+            }
+        });
+    }
+
+    function runButtonClicked() {
+        Engine.emit("RUN_BUTTON");
+    }
+    function stopButtonClicked() {
+        Engine.emit("STOP_BUTTON");
+    }
 </script>
 
 <NavigationBar>
@@ -88,7 +107,7 @@
             width="16"
             style="margin-left:6px;margin-right:6px;"
         />
-        <span style="margin-right:6px;"> Update </span>
+        <span style="margin-right:6px;">Update</span>
     </NavigationOption>
     <a
         href="/credits"
@@ -104,15 +123,28 @@
         <div class="left">
             <div class="aboveBlockly">
                 <div class="tabs">
-                    <button class="tab" data-active="true">
+                    <button
+                        on:click={() => switchTab("blocks")}
+                        bind:this={tabs.blocks}
+                        class="tab"
+                        data-active="true"
+                    >
                         <img alt="" src="/images/gui-icons/brick-icon.png" />
                         Blocks
                     </button>
-                    <button class="tab">
+                    <button
+                        on:click={() => switchTab("images")}
+                        bind:this={tabs.images}
+                        class="tab"
+                    >
                         <img alt="" src="/images/gui-icons/picture-icon.png" />
                         Images
                     </button>
-                    <button class="tab">
+                    <button
+                        on:click={() => switchTab("sounds")}
+                        bind:this={tabs.sounds}
+                        class="tab"
+                    >
                         <img alt="" src="/images/gui-icons/sound-icon.png" />
                         Sounds
                     </button>
@@ -130,12 +162,23 @@
             </div>
         </div>
         <div class="right">
+            <div class="abovePlayer">
+                <button on:click={runButtonClicked} class="bar-button">
+                    <img alt="Run" src="/images/gui-icons/run-icon.png" />
+                </button>
+                <button on:click={stopButtonClicked} class="bar-button">
+                    <img alt="Stop" src="/images/gui-icons/cancel-icon.png" />
+                </button>
+            </div>
             <KaboomPlayer />
-            <textarea
+            <div class="belowPlayer">
+                <p>Properties</p>
+            </div>
+            <!-- <textarea
                 value={lastGeneratedCode}
                 disabled="true"
                 style="width:100%;height:100%;border:0;padding:0;color:white;background:black;font-family:monospace"
-            />
+            /> -->
         </div>
     </div>
 </div>
@@ -194,6 +237,8 @@
         border-bottom: 0px;
         background: transparent;
         color: white;
+
+        cursor: pointer;
     }
     .tab:focus,
     .tab:hover {
@@ -228,5 +273,36 @@
         display: flex;
         flex-direction: row;
         align-items: center;
+    }
+
+    .abovePlayer {
+        width: 100%;
+        height: 2.5rem;
+    }
+    .belowPlayer {
+        width: 100%;
+        height: calc(100% - 360px - 2.5rem);
+    }
+
+    .bar-button {
+        width: 2.5rem;
+        height: 2.5rem;
+
+        border: 0;
+        border-radius: 12px;
+        background: transparent;
+        color: white;
+
+        cursor: pointer;
+    }
+    .bar-button:focus,
+    .bar-button:hover {
+        background: rgba(140, 61, 214, 0.25);
+    }
+    .bar-button:active {
+        background: rgba(140, 61, 214, 0.6);
+    }
+    .bar-button > img {
+        width: 80%;
     }
 </style>
