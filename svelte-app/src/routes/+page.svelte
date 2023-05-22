@@ -14,11 +14,11 @@
     import DarkTheme from "@blockly/theme-dark";
     // this gives event blocks a little bump at the top
     DarkTheme.startHats = true;
-    DarkTheme.setFontStyle({
+    DarkTheme.fontStyle = {
         family: '"Comic Sans MS", Arial, Helvetica, sans-serif',
         weight: "600",
         size: 12,
-    });
+    };
 
     import En from "blockly/msg/en";
     import "blockly/blocks";
