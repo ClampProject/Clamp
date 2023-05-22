@@ -1,4 +1,4 @@
-import { javascriptGenerator } from 'blockly/javascript';
+import javascriptGenerator from '../javascriptGenerator';
 import registerBlock from '../register';
 
 const categoryPrefix = 'actions_';

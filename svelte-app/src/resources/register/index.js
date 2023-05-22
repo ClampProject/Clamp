@@ -1,5 +1,5 @@
 import Blockly from 'blockly/core';
-import { javascriptGenerator } from 'blockly/javascript';
+import javascriptGenerator from '../javascriptGenerator';
 
 export default (blockName, jsonData, compileFunction) => {
     // json data needs type to be the block name

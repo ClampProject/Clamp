@@ -1,4 +1,4 @@
-import { javascriptGenerator } from "blockly/javascript";
+import javascriptGenerator from '../javascriptGenerator';
 
 class Compiler {
     constructor(workspace) {
