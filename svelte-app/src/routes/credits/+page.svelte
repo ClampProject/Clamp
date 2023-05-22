@@ -13,16 +13,36 @@
         >.
     </p>
     <p>
-        <img
-            alt="blank-green-icon"
-            src="/images/gui-icons/blank-green-icon.png"
-        />
-        <code>blank-green-icon</code>
-        and
         <img alt="run-icon" src="/images/gui-icons/run-icon.png" />
         <code>run-icon</code>
-        were custom icons created by JeremyGamer13 based on the style of the others.
+        is a custom icon created by JeremyGamer13 based on the style of the others.
     </p>
+    <details>
+        <summary>Modified icons</summary>
+        <p>
+            <img
+                alt="blank-green-icon"
+                src="/images/gui-icons/blank-green-icon.png"
+            />
+            <code>blank-green-icon</code>
+            was edited by JeremyGamer13. The original is
+            <img alt="accept-icon" src="/images/gui-icons/accept-icon.png" />
+            <code>accept-icon</code>.
+        </p>
+        <p>
+            <img
+                alt="fullscreen-icon"
+                src="/images/gui-icons/fullscreen-icon.png"
+            />
+            <code>fullscreen-icon</code>
+            was edited by JeremyGamer13. The original is
+            <img
+                alt="arrow-out-icon"
+                src="/images/gui-icons/arrow-out-icon.png"
+            />
+            <code>arrow-out-icon</code>.
+        </p>
+    </details>
     <p>
         You can find the license
         <a href="https://creativecommons.org/licenses/by/4.0/">here</a>.

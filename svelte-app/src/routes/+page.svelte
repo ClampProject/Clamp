@@ -61,6 +61,8 @@
     let compiler;
     let lastGeneratedCode = "";
 
+    let playerArea;
+
     const tabs = {};
 
     function playSound(name) {
@@ -92,17 +94,34 @@
     }
 
     function runButtonClicked() {
-        Engine.emit("RUN_BUTTON");
+        Engine.emitGlobal("RUN_BUTTON");
     }
     function stopButtonClicked() {
-        Engine.emit("STOP_BUTTON");
+        Engine.emitGlobal("STOP_BUTTON");
+    }
+    function fullscreenButtonClicked() {
+        try {
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            }
+            playerArea.requestFullscreen();
+        } catch (err) {
+            console.log(
+                "fullscreen button error, fullscreen may not be supported;",
+                err
+            );
+        }
+    }
+    function suspendButtonClicked() {
+        playSound("explode");
+        Engine.emitGlobal("SUSPEND");
     }
 </script>
 
 <NavigationBar>
     <NavigationOption on:click={updateProgram}>
         <img
-            alt="UpdateIcon"
+            alt="Pencil"
             src="/images/gui-icons/pencil-icon.png"
             width="16"
             style="margin-left:6px;margin-right:6px;"
@@ -114,7 +133,15 @@
         target="_blank"
         style="height:100%;text-decoration:none;margin-left:6px"
     >
-        <NavigationOption>Credits</NavigationOption>
+        <NavigationOption>
+            <img
+                alt="Info"
+                src="/images/gui-icons/information-icon.png"
+                width="16"
+                style="margin-left:6px;margin-right:6px;"
+            />
+            <span style="margin-right:6px;">Credits</span>
+        </NavigationOption>
     </a>
 </NavigationBar>
 <div class="main">
@@ -162,15 +189,39 @@
             </div>
         </div>
         <div class="right">
-            <div class="abovePlayer">
-                <button on:click={runButtonClicked} class="bar-button">
-                    <img alt="Run" src="/images/gui-icons/run-icon.png" />
-                </button>
-                <button on:click={stopButtonClicked} class="bar-button">
-                    <img alt="Stop" src="/images/gui-icons/cancel-icon.png" />
-                </button>
+            <div class="playerComponents" bind:this={playerArea}>
+                <div class="abovePlayer">
+                    <button on:click={runButtonClicked} class="bar-button">
+                        <img alt="Run" src="/images/gui-icons/run-icon.png" />
+                    </button>
+                    <button on:click={stopButtonClicked} class="bar-button">
+                        <img
+                            alt="Stop"
+                            src="/images/gui-icons/cancel-icon.png"
+                        />
+                    </button>
+                    <button
+                        on:click={fullscreenButtonClicked}
+                        class="bar-button"
+                    >
+                        <img
+                            alt="Fullscreen"
+                            src="/images/gui-icons/fullscreen-icon.png"
+                        />
+                    </button>
+                    <button
+                        on:click={suspendButtonClicked}
+                        class="bar-button"
+                        style="float:right"
+                    >
+                        <img
+                            alt="Suspend"
+                            src="/images/gui-icons/bomb-icon.png"
+                        />
+                    </button>
+                </div>
+                <KaboomPlayer />
             </div>
-            <KaboomPlayer />
             <div class="belowPlayer">
                 <p>Properties</p>
             </div>
@@ -275,6 +326,10 @@
         align-items: center;
     }
 
+    .playerComponents {
+        width: 100%;
+        height: calc(2.5rem + 360px);
+    }
     .abovePlayer {
         width: 100%;
         height: 2.5rem;

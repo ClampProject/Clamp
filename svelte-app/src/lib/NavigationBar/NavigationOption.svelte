@@ -21,8 +21,16 @@
         align-items: center;
 
         color: white;
-        font-size: 24px;
+        font-size: 18px;
         background: transparent;
         cursor: pointer;
+        border: 0;
+    }
+    button:focus,
+    button:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+    button:active {
+        background: rgba(255, 255, 255, 0.3);
     }
 </style>
