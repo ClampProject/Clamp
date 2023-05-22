@@ -4,3 +4,5 @@ All icons provided by [Mark James (FamFamFam)](https://www.iconarchive.com/artis
 These icons were chosen since I thought the style would look nice.
 
 License: https://creativecommons.org/licenses/by/4.0/
+
+More information can be found here: https://clamp-project.vercel.app/credits
