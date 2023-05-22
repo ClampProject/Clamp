@@ -66,7 +66,7 @@ function register() {
         args0: [
             {
                 "type": "field_image",
-                "src": "/images/gui-icons/cancel-icon.png",
+                "src": "/images/gui-icons/stop-icon.png",
                 "width": 24,
                 "height": 24,
                 "alt": "X",

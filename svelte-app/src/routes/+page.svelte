@@ -64,6 +64,7 @@
     let playerArea;
 
     const tabs = {};
+    let currentTab = "blocks";
 
     function playSound(name) {
         const audio = new Audio(`/sounds/${name}.mp3`);
@@ -84,6 +85,7 @@
     }
     function switchTab(selectedTab) {
         playSound("tabswitch");
+        currentTab = selectedTab;
         Object.getOwnPropertyNames(tabs).forEach((tabName) => {
             const tab = tabs[tabName];
             tab.dataset.active = false;
@@ -184,9 +186,25 @@
                     <p>Editing Character1</p>
                 </div>
             </div>
-            <div class="blocklyWrapper">
+            <!--
+                we can afford to respawn images & sounds tab every time,
+                not the blocks tab since it would break a lot of things
+            -->
+            <div
+                class="blocklyWrapper"
+                style={currentTab === "blocks" ? null : "display:none"}
+            >
                 <BlocklyComponent {config} locale={en} bind:workspace />
             </div>
+            {#if currentTab === "images"}
+                <div>
+                    <img alt="lol" src="/images/gui-icons/bomb-icon.png" />
+                </div>
+            {:else if currentTab === "sounds"}
+                <div>
+                    <p>soundss</p>
+                </div>
+            {/if}
         </div>
         <div class="right">
             <div class="playerComponents" bind:this={playerArea}>
@@ -195,10 +213,7 @@
                         <img alt="Run" src="/images/gui-icons/run-icon.png" />
                     </button>
                     <button on:click={stopButtonClicked} class="bar-button">
-                        <img
-                            alt="Stop"
-                            src="/images/gui-icons/cancel-icon.png"
-                        />
+                        <img alt="Stop" src="/images/gui-icons/stop-icon.png" />
                     </button>
                     <button
                         on:click={fullscreenButtonClicked}
@@ -223,7 +238,7 @@
                 <KaboomPlayer />
             </div>
             <div class="belowPlayer">
-                <p>Properties</p>
+                <div class="characters" />
             </div>
             <!-- <textarea
                 value={lastGeneratedCode}
