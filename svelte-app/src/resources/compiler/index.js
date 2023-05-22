@@ -30,13 +30,13 @@ class Compiler {
             `const variables = {}; // all variables are stored here instead of a "const variable = 123" for each set block`,
             `// this is so we dont end up with a Scratch for Discord where setting a variable with the name "message" breaks everything`,
             `// im allowed to say that because i worked on S4D lolol`,
-            `(async function(engine) {`
+            `(async function() {`
         ];
         const setupCode = [
             `const sprites = {}; // object so we can use invalid characters for sprite names and still easily access them`
         ];
         const footerCode = [
-            `})(kaboom);`
+            `})();`
         ];
 
         // initialize images
@@ -44,14 +44,14 @@ class Compiler {
             const variableName = JSON.stringify(image.name);
             const variableImage = JSON.stringify(image.image);
 
-            setupCode.push(`await engine.loadSprite(${variableName}, ${variableImage});`);
+            setupCode.push(`await Kaboom.loadSprite(${variableName}, ${variableImage});`);
         });
         // initialize sounds
         this.sounds.forEach(sound => {
             const variableName = JSON.stringify(sound.name);
             const variableData = JSON.stringify(sound.data);
 
-            setupCode.push(`await engine.loadSound(${variableName}, ${variableData});`);
+            setupCode.push(`await Kaboom.loadSound(${variableName}, ${variableData});`);
         });
         // initialize sprite code
         this.sprites.forEach(sprite => {
@@ -66,11 +66,11 @@ class Compiler {
                 size: isNaN(Number(sprite.size)) ? 0 : Number(sprite.size),
                 angle: isNaN(Number(sprite.angle)) ? 0 : Number(sprite.angle),
             };
-            setupCode.push(`sprites[${variableName}] = engine.add([
-                engine.sprite(${spriteData.defaultLook}),
-                engine.pos(${spriteData.x}, ${spriteData.y}),
-                engine.scale(${spriteData.size}),
-                engine.rotate(${spriteData.angle}),
+            setupCode.push(`sprites[${variableName}] = Kaboom.add([
+                Kaboom.sprite(${spriteData.defaultLook}),
+                Kaboom.pos(${spriteData.x}, ${spriteData.y}),
+                Kaboom.scale(${spriteData.size}),
+                Kaboom.rotate(${spriteData.angle}),
             ]);`);
         });
 

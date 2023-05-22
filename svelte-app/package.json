@@ -17,6 +17,7 @@
 	"dependencies": {
 		"@blockly/theme-dark": "^4.0.10",
 		"blockly": "^9.3.3",
+		"kaboom": "^2000.2.10",
 		"svelte-blockly": "^0.1.0"
 	}
 }

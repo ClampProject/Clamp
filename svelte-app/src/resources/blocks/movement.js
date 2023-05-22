@@ -5,6 +5,7 @@ const categoryPrefix = 'movement_';
 const categoryColor = '#0bf';
 
 function register() {
+    // go to x: () y: ()
     registerBlock(`${categoryPrefix}gotoxy`, {
         message0: 'go to x: %1 y: %2',
         args0: [

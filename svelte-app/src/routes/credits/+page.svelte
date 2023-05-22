@@ -13,6 +13,17 @@
         >.
     </p>
     <p>
+        <img
+            alt="blank-green-icon"
+            src="/images/gui-icons/blank-green-icon.png"
+        />
+        <code>blank-green-icon</code>
+        and
+        <img alt="run-icon" src="/images/gui-icons/run-icon.png" />
+        <code>run-icon</code>
+        were custom icons created by JeremyGamer13 based on the style of the others.
+    </p>
+    <p>
         You can find the license
         <a href="https://creativecommons.org/licenses/by/4.0/">here</a>.
     </p>

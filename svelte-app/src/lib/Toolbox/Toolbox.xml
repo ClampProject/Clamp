@@ -1,7 +1,7 @@
 <xml>
     <category name="Movement" colour="#0bf">
         <label text="Movement" />
-        <block type="movement_gotoxy" >
+        <block type="movement_gotoxy">
             <value name="X">
                 <shadow type="generic_number">
                     <field name="NUMBER">0</field>
@@ -17,5 +17,18 @@
     <category name="Appearance" colour="#f3a">
     </category>
     <category name="Actions" colour="#fa4">
+        <label text="Actions" />
+        <block type="actions_whenrunclicked" />
+        <block type="actions_whenstopclicked" />
+        <block type="actions_showmessage">
+            <value name="TEXT">
+                <shadow type="generic_text">
+                    <field name="TEXT">Hello!</field>
+                </shadow>
+            </value>
+        </block>
+        <label text="" />
+        <block type="actions_onflagevent" />
+        <block type="actions_fireflagevent" />
     </category>
 </xml>
