@@ -4,13 +4,29 @@ class Compiler {
     constructor(workspace) {
         this.workspace = workspace;
 
-        this.sprites = [];
-        this.images = [];
+        this.characters = [
+            {
+                name: "Apple",
+                startCostume: "_hordcoded_apple",
+                position: {
+                    x: 320,
+                    y: 180
+                },
+                size: 100,
+                angle: 0
+            }
+        ];
+        this.images = [
+            {
+                name: "_hordcoded_apple",
+                image: "https://kaboomjs.com/sprites/apple.png"
+            }
+        ];
         this.sounds = [];
     }
 
-    setSprites(array) {
-        this.sprites = array;
+    setCharacters(array) {
+        this.characters = array;
     }
     setImages(array) {
         this.images = array;
@@ -33,7 +49,7 @@ class Compiler {
             `(async function() {`
         ];
         const setupCode = [
-            `const sprites = {}; // object so we can use invalid characters for sprite names and still easily access them`
+            `const characters = {}; // object so we can use invalid characters for character names and still easily access them`
         ];
         const footerCode = [
             `})();`
@@ -53,24 +69,24 @@ class Compiler {
 
             setupCode.push(`await Kaboom.loadSound(${variableName}, ${variableData});`);
         });
-        // initialize sprite code
-        this.sprites.forEach(sprite => {
+        // initialize character code
+        this.characters.forEach(character => {
             // we need to clean all of these names to ensure they dont generate invalid code
             // so we use things like Number() and JSON.stringify() everywhere
-            const variableName = JSON.stringify(sprite.name);
+            const variableName = JSON.stringify(character.name);
 
-            const spriteData = {
-                defaultLook: JSON.stringify(sprite.name),
-                x: isNaN(Number(sprite.position.x)) ? 0 : Number(sprite.position.x),
-                y: isNaN(Number(sprite.position.y)) ? 0 : Number(sprite.position.y),
-                size: isNaN(Number(sprite.size)) ? 0 : Number(sprite.size),
-                angle: isNaN(Number(sprite.angle)) ? 0 : Number(sprite.angle),
+            const characterData = {
+                defaultLook: JSON.stringify(character.startCostume),
+                x: isNaN(Number(character.position.x)) ? 0 : Number(character.position.x),
+                y: isNaN(Number(character.position.y)) ? 0 : Number(character.position.y),
+                size: isNaN(Number(character.size)) ? 0 : Number(character.size),
+                angle: isNaN(Number(character.angle)) ? 0 : Number(character.angle),
             };
-            setupCode.push(`sprites[${variableName}] = Kaboom.add([
-                Kaboom.sprite(${spriteData.defaultLook}),
-                Kaboom.pos(${spriteData.x}, ${spriteData.y}),
-                Kaboom.scale(${spriteData.size}),
-                Kaboom.rotate(${spriteData.angle}),
+            setupCode.push(`characters[${variableName}] = Kaboom.add([
+                Kaboom.sprite(${characterData.defaultLook}),
+                Kaboom.pos(${characterData.x}, ${characterData.y}),
+                Kaboom.scale(${characterData.size}),
+                Kaboom.rotate(${characterData.angle}),
             ]);`);
         });
 

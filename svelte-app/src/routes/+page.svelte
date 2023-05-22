@@ -206,7 +206,7 @@
                     <img alt="lol" src="/images/gui-icons/bomb-icon.png" />
                 </div>
             {:else if currentTab === "sounds"}
-                <div>
+                <div class="soundsWrapper">
                     <p>soundss</p>
                 </div>
             {/if}
@@ -333,10 +333,12 @@
         margin-right: 6px;
     }
 
+    .soundsWrapper,
     .blocklyWrapper {
         width: 100%;
         height: calc(100% - 2.5rem);
     }
+
     .aboveBlockly {
         width: 100%;
         height: 2.5rem;
