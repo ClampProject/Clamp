@@ -60,6 +60,13 @@ class Engine {
             }
         })
     }
+    emitGlobal(...args) {
+        // we dont actually need to redefine emitGlobal
+        // we can just call the static property from here
+        Engine.emitGlobal(...args);
+        // this doesnt work inside the compiler since it doesnt have access to the class,
+        // but it works here since it does have access to the instance which CAN access the class
+    }
 
     dispose() {
         this._listeners = [];

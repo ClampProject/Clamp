@@ -4,6 +4,7 @@
     import Kaboom from "kaboom";
 
     import Engine from "../../resources/engine";
+    import ClampEditorCommunicator from "../../resources/editorCommunicator";
     import FlagEmitter from "../../resources/engine/FlagEmitter.js";
 
     let canvas;
@@ -17,10 +18,17 @@
         currentEngine.on("SUSPEND", () => {
             currentEngine.dispose();
         });
-        return new Function("FlagEmitter", "Kaboom", "Engine", code)(
+        return new Function(
+            "FlagEmitter",
+            "Kaboom",
+            "Engine",
+            "ClampEditor",
+            code
+        )(
             new FlagEmitter(),
             kaboomEngine,
-            currentEngine
+            currentEngine,
+            ClampEditorCommunicator
         );
     }
 
@@ -38,6 +46,9 @@
         });
 
         Engine.on("UPDATE", (code) => {
+            console.log(code);
+            ClampEditorCommunicator.initializingCode = true;
+            Engine.emitGlobal("CODE_INITIALIZE_UPDATE");
             runCodeInEngine(code);
         });
     });

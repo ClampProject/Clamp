@@ -27,6 +27,7 @@
 
     import Compiler from "../resources/compiler";
     import Engine from "../resources/engine";
+    import ClampEditorCommunicator from "../resources/editorCommunicator";
 
     // Blocks
     import registerGeneric from "../resources/blocks/generic.js";
@@ -65,6 +66,7 @@
     let workspace;
     let compiler;
     let lastGeneratedCode = "";
+    let initializingCode = false;
 
     let editTarget = {};
 
@@ -82,6 +84,10 @@
     onMount(() => {
         window.onbeforeunload = () => "";
         compiler = new Compiler(workspace);
+    });
+
+    Engine.on("CODE_INITIALIZE_UPDATE", () => {
+        initializingCode = ClampEditorCommunicator.initializingCode;
     });
 
     function updateProgram() {
@@ -193,6 +199,14 @@
                             src="/images/gui-icons/user-edit-icon.png"
                         />
                         <p>Editing {editTarget.name}</p>
+                    {/if}
+                    {#if initializingCode === true}
+                        <img
+                            alt="Updating"
+                            src="/images/gui-icons/cog-icon.png"
+                            style="margin-left:8px;"
+                        />
+                        <p>Updating...</p>
                     {/if}
                 </div>
             </div>
