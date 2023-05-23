@@ -66,6 +66,8 @@
     let compiler;
     let lastGeneratedCode = "";
 
+    let editTarget = {};
+
     let playerArea;
 
     const tabs = {};
@@ -184,11 +186,14 @@
                     </button>
                 </div>
                 <div class="details">
-                    <img
-                        alt="Edit"
-                        src="/images/gui-icons/user-edit-icon.png"
-                    />
-                    <p>Editing Character1</p>
+                    <!-- if we dont know the target yet, we can hide -->
+                    {#if editTarget}
+                        <img
+                            alt="Edit"
+                            src="/images/gui-icons/user-edit-icon.png"
+                        />
+                        <p>Editing {editTarget.name}</p>
+                    {/if}
                 </div>
             </div>
             <!--

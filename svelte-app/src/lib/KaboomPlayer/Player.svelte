@@ -9,6 +9,7 @@
     let canvas;
     let currentEngine;
     let isFullscreen = false;
+    let kaboomEngine;
 
     function runCodeInEngine(code) {
         if (currentEngine) currentEngine.dispose();
@@ -18,7 +19,7 @@
         });
         return new Function("FlagEmitter", "Kaboom", "Engine", code)(
             new FlagEmitter(),
-            Kaboom,
+            kaboomEngine,
             currentEngine
         );
     }
@@ -29,7 +30,7 @@
             isFullscreen = document.fullscreenElement != null;
         }, 10);
 
-        Kaboom({
+        kaboomEngine = Kaboom({
             canvas: canvas,
             width: 640,
             height: 360,
