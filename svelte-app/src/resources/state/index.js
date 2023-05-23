@@ -10,7 +10,13 @@ const defaultState = {
                 y: 180
             },
             size: 100,
-            angle: 0
+            angle: 0,
+            costumes: [
+                "_hardcoded_apple",
+            ],
+            sounds: [
+                "_hardcoded_explode",
+            ]
         }
     ],
     images: [
@@ -30,7 +36,109 @@ const defaultState = {
 };
 
 class ProjectState {
+    /**
+     * A default project state object.
+     * Use this if you need to reset the project to default.
+     */
     static default = defaultState;
+
+    /**
+     * The current project state.
+     * Object contains all images, sounds and characters in the project.
+     */
+    static currentProject = defaultState;
+    /**
+     * The ID of the character being edited in the editor.
+     */
+    static editingTarget = defaultState.characters[0].id;
+
+    /**
+     * Returns the target object in the currentProject state with the specified ID.
+     * @param {string} id 
+     * @returns Target with the specified ID
+     */
+    static getTargetById(id) {
+        const characters = ProjectState.currentProject.characters.filter(char => {
+            if (char.id === id) return true;
+            return false;
+        });
+        // we can always choose 0 since there will be only 1 result
+        // if there is more than 1, we have a corrupted/externally modified project
+        return characters[0];
+    }
+    /**
+     * Returns the image object in the currentProject state with the specified costume ID. 
+     * @param {string} targetId The target ID with the costume
+     * @param {string} costumeId The costume ID of the costume wanted
+     * @returns Costume with the specified ID
+     */
+    static getTargetCostumeById(targetId, costumeId) {
+        const character = ProjectState.getTargetById(targetId);
+        if (!character) return;
+
+        const costumes = character.costumes.filter(costume => {
+            if (costume.id === costumeId) return true;
+            return false;
+        });
+        // we can always choose 0 since there will be only 1 result
+        // if there is more than 1, we have a corrupted/externally modified project
+        return costumes[0];
+    }
+    /**
+     * Returns the sound object in the currentProject state with the specified sound ID. 
+     * @param {string} targetId The target ID with the costume
+     * @param {string} soundId The sound ID of the sound wanted
+     * @returns Sound with the specified ID
+     */
+    static getTargetSoundById(targetId, soundId) {
+        const character = ProjectState.getTargetById(targetId);
+        if (!character) return;
+
+        const sounds = character.sounds.filter(sound => {
+            if (sound.id === soundId) return true;
+            return false;
+        });
+        // we can always choose 0 since there will be only 1 result
+        // if there is more than 1, we have a corrupted/externally modified project
+        return sounds[0];
+    }
+
+    /**
+     * Gets the image object in the current project with the specified ID.
+     * @param {string} id 
+     * @returns Image object
+     */
+    static getImageById(id) {
+        return ProjectState._getObjectById("image", id);
+    }
+    /**
+     * Gets the sound object in the current project with the specified ID.
+     * @param {string} id 
+     * @returns sound object
+     */
+    static getSoundById(id) {
+        return ProjectState._getObjectById("sound", id);
+    }
+
+    /**
+     * Internal use only.
+     */
+    static _getObjectById(type, id) {
+        switch (type) {
+            case 'image':
+                const images = ProjectState.currentProject.images.filter(image => {
+                    if (image.id === id) return true;
+                    return false;
+                });
+                return images[0];
+            case 'sound':
+                const sounds = ProjectState.currentProject.sounds.filter(sound => {
+                    if (sound.id === id) return true;
+                    return false;
+                });
+                return sounds[0];
+        }
+    }
 }
 
 export default ProjectState;

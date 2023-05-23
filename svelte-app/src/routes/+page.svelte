@@ -6,6 +6,8 @@
     import NavigationMargin from "$lib/NavigationBar/NavigationMargin.svelte";
     import NavigationOption from "$lib/NavigationBar/NavigationOption.svelte";
     import KaboomPlayer from "$lib/KaboomPlayer/Player.svelte";
+    import SoundEditor from "$lib/SoundEditor/Editor.svelte";
+    import ImageEditor from "$lib/ImageEditor/Editor.svelte";
 
     // Toolbox
     import Toolbox from "$lib/Toolbox/Toolbox.xml?raw";
@@ -25,8 +27,9 @@
 
     import BlocklyComponent from "svelte-blockly";
 
-    import Compiler from "../resources/compiler";
+    import State from "../resources/state";
     import Engine from "../resources/engine";
+    import Compiler from "../resources/compiler";
     import ClampEditorCommunicator from "../resources/editorCommunicator";
 
     // Blocks
@@ -65,10 +68,10 @@
 
     let workspace;
     let compiler;
-    let lastGeneratedCode = "";
+    // let lastGeneratedCode = "";
     let initializingCode = false;
 
-    let editTarget = {};
+    let editTarget = State.editingTarget;
 
     let playerArea;
 
@@ -198,7 +201,7 @@
                             alt="Edit"
                             src="/images/gui-icons/user-edit-icon.png"
                         />
-                        <p>Editing {editTarget.name}</p>
+                        <p>Editing {State.getTargetById(editTarget).name}</p>
                     {/if}
                     {#if initializingCode === true}
                         <img
@@ -221,12 +224,12 @@
                 <BlocklyComponent {config} locale={en} bind:workspace />
             </div>
             {#if currentTab === "images"}
-                <div>
-                    <img alt="lol" src="/images/gui-icons/bomb-icon.png" />
+                <div class="imagesWrapper">
+                    <ImageEditor target={editTarget} />
                 </div>
             {:else if currentTab === "sounds"}
                 <div class="soundsWrapper">
-                    <p>soundss</p>
+                    <SoundEditor target={editTarget} />
                 </div>
             {/if}
         </div>
@@ -353,7 +356,9 @@
     }
 
     .soundsWrapper,
+    .imagesWrapper,
     .blocklyWrapper {
+        position: relative;
         width: 100%;
         height: calc(100% - 2.5rem);
     }
