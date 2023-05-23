@@ -15,11 +15,11 @@ class FlagEmitter {
         this._listeners.splice(idx, 1);
     }
     fire(color) {
-        this._listeners.forEach(listener => {
+        for (const listener of this._listeners) {
             if (listener.color === color) {
                 listener.callback();
             }
-        })
+        }
     }
 }
 

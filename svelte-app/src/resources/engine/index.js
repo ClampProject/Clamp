@@ -22,27 +22,25 @@ class Engine {
         if (idx === -1) return;
         Engine._listeners.splice(idx, 1);
     }
-    static emit(event, data) {
-        Engine._listeners.forEach(listener => {
+    static emit(event, ...data) {
+        for (const listener of Engine._listeners) {
             if (listener.event === event) {
-                listener.func(data);
+                listener.func(...data);
             }
-        })
+        }
     }
 
-    static emitGlobal(event, data) {
-        Engine._listeners.forEach(listener => {
+    static emitGlobal(event, ...data) {
+        for (const listener of Engine._listeners) {
             if (listener.event === event) {
-                listener.func(data);
+                listener.func(...data);
             }
-        })
-        Engine._instances.forEach(instance => {
-            instance._listeners.forEach(listener => {
-                if (listener.event === event) {
-                    listener.func(data);
-                }
-            })
-        })
+        }
+        for (const instance of Engine._instances) {
+            if (instance.event === event) {
+                instance.func(...data);
+            }
+        }
     }
 
     on(event, callback) {
@@ -53,12 +51,12 @@ class Engine {
         if (idx === -1) return;
         this._listeners.splice(idx, 1);
     }
-    emit(event, data) {
-        this._listeners.forEach(listener => {
+    emit(event, ...data) {
+        for (const listener of Engine._listeners) {
             if (listener.event === event) {
-                listener.func(data);
+                listener.func(...data);
             }
-        })
+        }
     }
     emitGlobal(...args) {
         // we dont actually need to redefine emitGlobal

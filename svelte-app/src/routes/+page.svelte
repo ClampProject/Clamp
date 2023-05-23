@@ -13,6 +13,7 @@
     import Toolbox from "$lib/Toolbox/Toolbox.xml?raw";
 
     // import Blockly from "blockly/core";
+    import Blockly from 'blockly/core';
     import DarkTheme from "@blockly/theme-dark";
     // this gives event blocks a little bump at the top
     DarkTheme.startHats = true;
@@ -105,27 +106,27 @@
     function switchTab(selectedTab) {
         playSound("tabswitch");
         currentTab = selectedTab;
-        Object.getOwnPropertyNames(tabs).forEach((tabName) => {
+        for (const tabName in tabs) {
             const tab = tabs[tabName];
             tab.dataset.active = false;
             if (tabName === selectedTab) {
                 tab.dataset.active = true;
             }
-        });
+        }
     }
     function switchCharacterTab(selectedTab) {
         playSound("tabswitch");
         currentCharacterTab = selectedTab;
-        Object.getOwnPropertyNames(characterTabs).forEach((tabName) => {
-            const tab = characterTabs[tabName];
+        for (const tabName in characterTabs) {
+            const tab = tabs[tabName];
             tab.dataset.active = false;
             if (tabName === selectedTab) {
                 tab.dataset.active = true;
             }
-        });
+        }
     }
 
-    function runButtonClicked() {
+    async function runButtonClicked() {
         Engine.emitGlobal("RUN_BUTTON");
     }
     function stopButtonClicked() {

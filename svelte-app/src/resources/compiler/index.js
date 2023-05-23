@@ -48,25 +48,25 @@ class Compiler {
         ];
 
         // initialize images
-        this.images.forEach(image => {
+        for (const image of this.images) {
             const variableName = JSON.stringify(image.id);
             const variableUserName = JSON.stringify(image.name);
             const variableImage = JSON.stringify(image.image);
 
             setupCode.push(`images[${variableName}] = await Kaboom.loadSprite(${variableName}, ${variableImage});`);
             descriptorCode.push(`nameTable.images[${variableName}] = String(${variableUserName});`);
-        });
+        };
         // initialize sounds
-        this.sounds.forEach(sound => {
+        for (const sound of this.sounds) {
             const variableName = JSON.stringify(sound.id);
             const variableUserName = JSON.stringify(sound.name);
             const variableData = JSON.stringify(sound.data);
 
             setupCode.push(`sounds[${variableName}] = await Kaboom.loadSound(${variableName}, ${variableData});`);
             descriptorCode.push(`nameTable.sounds[${variableName}] = String(${variableUserName});`);
-        });
+        };
         // initialize character code
-        this.characters.forEach(character => {
+        for (const character of this.characters) {
             // we need to clean all of these names to ensure they dont generate invalid code
             // so we use things like Number() and JSON.stringify() everywhere
             const variableName = JSON.stringify(character.id);
@@ -86,7 +86,7 @@ class Compiler {
                 Kaboom.rotate(${characterData.angle}),
             ]);`);
             descriptorCode.push(`nameTable.characters[${variableName}] = String(${variableUserName});`);
-        });
+        };
 
         return [].concat(headerCode, descriptorCode, setupCode, [
             // extra stuff that is always the same
