@@ -118,7 +118,7 @@
         playSound("tabswitch");
         currentCharacterTab = selectedTab;
         for (const tabName in characterTabs) {
-            const tab = tabs[tabName];
+            const tab = characterTabs[tabName];
             tab.dataset.active = false;
             if (tabName === selectedTab) {
                 tab.dataset.active = true;
