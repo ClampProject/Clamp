@@ -68,7 +68,7 @@
 
     let workspace;
     let compiler;
-    // let lastGeneratedCode = "";
+    let lastGeneratedCode = "";
     let initializingCode = false;
 
     let editTarget = State.editingTarget;
@@ -77,6 +77,9 @@
 
     const tabs = {};
     let currentTab = "blocks";
+
+    const characterTabs = {};
+    let currentCharacterTab = "properties";
 
     function playSound(name) {
         const audio = new Audio(`/sounds/${name}.mp3`);
@@ -104,6 +107,17 @@
         currentTab = selectedTab;
         Object.getOwnPropertyNames(tabs).forEach((tabName) => {
             const tab = tabs[tabName];
+            tab.dataset.active = false;
+            if (tabName === selectedTab) {
+                tab.dataset.active = true;
+            }
+        });
+    }
+    function switchCharacterTab(selectedTab) {
+        playSound("tabswitch");
+        currentCharacterTab = selectedTab;
+        Object.getOwnPropertyNames(characterTabs).forEach((tabName) => {
+            const tab = characterTabs[tabName];
             tab.dataset.active = false;
             if (tabName === selectedTab) {
                 tab.dataset.active = true;
@@ -265,7 +279,82 @@
                 <KaboomPlayer />
             </div>
             <div class="belowPlayer">
-                <div class="characters" />
+                <div class="characterTabSelection">
+                    <button
+                        on:click={() => switchCharacterTab("properties")}
+                        bind:this={characterTabs.properties}
+                        class="tab"
+                        data-active="true"
+                    >
+                        <img alt="" src="/images/gui-icons/bricks-icon.png" />
+                        Properties
+                    </button>
+                    <button
+                        on:click={() => switchCharacterTab("characters")}
+                        bind:this={characterTabs.characters}
+                        class="tab"
+                    >
+                        <img alt="" src="/images/gui-icons/group-icon.png" />
+                        Characters
+                    </button>
+                </div>
+                <div class="characterTabWrapper">
+                    {#if currentCharacterTab == "properties"}
+                        <div class="properties">
+                            <div style="height:8px" />
+                            <label>
+                                Start as
+                                <select>
+                                    <option>Apple</option>
+                                </select>
+                                costume
+                            </label>
+                            <div style="display:flex;flex-direction:row">
+                                <div>
+                                    X:
+                                    <input
+                                        type="number"
+                                        value="320"
+                                        style="width:64px"
+                                    />
+                                </div>
+                                <div style="margin-left:6px">
+                                    Y:
+                                    <input
+                                        type="number"
+                                        value="180"
+                                        style="width:64px"
+                                    />
+                                </div>
+                            </div>
+                            <div style="display:flex;flex-direction:row">
+                                Resized to
+                                <input
+                                    type="number"
+                                    value="100"
+                                    style="width:64px"
+                                />
+                                %
+                            </div>
+                            <div style="display:flex;flex-direction:row">
+                                Looking towards
+                                <input
+                                    type="number"
+                                    value="0"
+                                    style="width:64px"
+                                />
+                                °
+                            </div>
+                            <label>
+                                <input type="checkbox" />
+                                Has Gravity?
+                            </label>
+                        </div>
+                    {/if}
+                    {#if currentCharacterTab == "characters"}
+                        <div class="characters" />
+                    {/if}
+                </div>
             </div>
             <!-- <textarea
                 value={lastGeneratedCode}
@@ -283,6 +372,8 @@
         top: 0px;
         width: 100%;
         height: 100%;
+
+        min-width: 1220px;
     }
 
     .sides {
@@ -316,6 +407,14 @@
         align-items: stretch;
         flex-wrap: nowrap;
         justify-content: space-between;
+    }
+    .characterTabSelection {
+        height: 22px;
+
+        display: flex;
+        flex-direction: row;
+        align-items: stretch;
+        flex-wrap: nowrap;
     }
 
     .tab {
@@ -363,6 +462,11 @@
         height: calc(100% - 2.5rem);
     }
 
+    .characterTabWrapper {
+        width: 100%;
+        height: calc(100% - 22px);
+    }
+
     .aboveBlockly {
         width: 100%;
         height: 2.5rem;
@@ -405,5 +509,10 @@
     }
     .bar-button > img {
         width: 80%;
+    }
+
+    .properties {
+        display: flex;
+        flex-direction: column;
     }
 </style>

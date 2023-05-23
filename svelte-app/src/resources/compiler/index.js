@@ -90,11 +90,12 @@ class Compiler {
 
         return [].concat(headerCode, descriptorCode, setupCode, [
             // extra stuff that is always the same
-            '/* ok enough baby stuff LETS RUN SOME CODE */',
+            '/* extra events & setup */',
             'console.log("Content Loaded in", (Date.now() - INITIALIZE_BEGIN), "millseconds");',
             'ClampEditor.initializingCode = false; // tell clamp we are finished initializing the project and we can start running the user code',
             'Engine.emitGlobal("CODE_INITIALIZE_UPDATE"); // read above comment for details; this event is for svelte to update since it cant tell the state changed',
-            '// technically thats a Svelte problem that i could report but its such a specific use-case that i dont think its worth fixing'
+            '// technically thats a Svelte problem that i could report but its such a specific use-case that i dont think its worth fixing',
+            '/* ok enough baby stuff LETS RUN SOME CODE */',
         ], genCode, footerCode).join('\n');
     }
 }
