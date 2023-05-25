@@ -115,9 +115,10 @@ class Compiler {
             setupCode.push(`characters[${variableName}] = Kaboom.add([
                 Kaboom.sprite(${characterData.defaultLook}),
                 Kaboom.pos(${characterData.x}, ${characterData.y}),
-                Kaboom.scale(${characterData.size}),
+                Kaboom.scale(${characterData.size / 100}),
                 Kaboom.rotate(${characterData.angle}),
-            ]);console.log(characters[${variableName}]);`);
+                Kaboom.origin("center"),
+            ]);`);
             // with the character game object we can now actually run the code for that character
             genCode.push(`characterFunctions[${variableName}](characters[${variableName}]); // run code for character ${variableName}`);
             descriptorCode.push(`nameTable.characters[${variableName}] = String(${variableUserName});`);
