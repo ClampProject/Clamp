@@ -13,7 +13,7 @@
     import Toolbox from "$lib/Toolbox/Toolbox.xml?raw";
 
     // import Blockly from "blockly/core";
-    import Blockly from 'blockly/core';
+    import Blockly from "blockly/core";
     import DarkTheme from "@blockly/theme-dark";
     // this gives event blocks a little bump at the top
     DarkTheme.startHats = true;
@@ -91,6 +91,10 @@
     onMount(() => {
         window.onbeforeunload = () => "";
         compiler = new Compiler(workspace);
+        const editingTarget = State.getTargetById(editTarget);
+        if (editingTarget) {
+            editingTarget.workspace = workspace;
+        }
     });
 
     Engine.on("CODE_INITIALIZE_UPDATE", () => {

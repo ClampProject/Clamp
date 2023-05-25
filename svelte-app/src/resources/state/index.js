@@ -16,7 +16,8 @@ const defaultState = {
             ],
             sounds: [
                 "_hardcoded_explode",
-            ]
+            ],
+            workspace: null
         }
     ],
     images: [
