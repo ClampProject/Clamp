@@ -37,8 +37,10 @@ class Engine {
             }
         }
         for (const instance of Engine._instances) {
-            if (instance.event === event) {
-                instance.func(...data);
+            for (const listener of instance._listeners) {
+                if (listener.event === event) {
+                    listener.func(...data);
+                }
             }
         }
     }
