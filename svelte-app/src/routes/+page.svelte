@@ -33,6 +33,8 @@
     import Compiler from "../resources/compiler";
     import ClampEditorCommunicator from "../resources/editorCommunicator";
 
+    import preload from "../resources/preload";
+
     // Blocks
     import registerGeneric from "../resources/blocks/generic.js";
     registerGeneric();
@@ -89,6 +91,12 @@
     }
 
     onMount(() => {
+        preload([
+            "/sounds/confirm.mp3",
+            "/sounds/explode.mp3",
+            "/sounds/tabswitch.mp3",
+        ]);
+
         window.onbeforeunload = () => "";
         compiler = new Compiler(workspace);
         const editingTarget = State.getTargetById(editTarget);

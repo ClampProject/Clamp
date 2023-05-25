@@ -28,6 +28,19 @@
             </value>
         </block>
         <label text="" />
+        <block type="actions_createKaboom">
+            <value name="X">
+                <shadow type="generic_number">
+                    <field name="NUMBER">320</field>
+                </shadow>
+            </value>
+            <value name="Y">
+                <shadow type="generic_number">
+                    <field name="NUMBER">180</field>
+                </shadow>
+            </value>
+        </block>
+        <label text="" />
         <block type="actions_onflagevent" />
         <block type="actions_fireflagevent" />
     </category>

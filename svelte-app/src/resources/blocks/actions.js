@@ -33,6 +33,31 @@ function register() {
         const code = `alert(String(${TEXT}));`;
         return `${code}\n`;
     })
+    // create explosion at x: () y: ()
+    registerBlock(`${categoryPrefix}createKaboom`, {
+        message0: 'create explosion at x: %1 y: %2',
+        args0: [
+            {
+                "type": "input_value",
+                "name": "X",
+                "check": "Number"
+            },
+            {
+                "type": "input_value",
+                "name": "Y",
+                "check": "Number"
+            }
+        ],
+        previousStatement: null,
+        nextStatement: null,
+        inputsInline: true,
+        colour: categoryColor
+    }, (block) => {
+        const X = javascriptGenerator.valueToCode(block, 'X', javascriptGenerator.ORDER_ATOMIC);
+        const Y = javascriptGenerator.valueToCode(block, 'Y', javascriptGenerator.ORDER_ATOMIC);
+        const code = `Kaboom.addKaboom(new Kaboom.Vec2(Number(${X}), Number(${Y})));`;
+        return `${code}\n`;
+    })
     // when run clicked {}
     registerBlock(`${categoryPrefix}whenrunclicked`, {
         message0: 'when %1 clicked %2 %3',
