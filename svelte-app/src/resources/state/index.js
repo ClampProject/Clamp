@@ -1,3 +1,5 @@
+import Random from '../random';
+
 // this js file contains project details like what characters exist and their workspaces
 const defaultState = {
     characters: [
@@ -119,6 +121,62 @@ class ProjectState {
      */
     static getSoundById(id) {
         return ProjectState._getObjectById("sound", id);
+    }
+
+    /**
+     * Add an image to the image list.
+     * @param {string} name The image name.
+     * @param {string} url The URL of the image. Can be a Data URI or Website URL.
+     * @returns The image object that was added to the image list.
+     */
+    static createImage(name, url) {
+        const project = ProjectState.currentProject;
+        const imageObject = {
+            name: name,
+            id: `_user_image_${name.toLowerCase().replace(/[^0-9A-Za-z]+/gmi, "-")}:${Random.randomID()}`,
+            image: url
+        };
+        project.images.push(imageObject);
+        return imageObject;
+    }
+    /**
+     * Add an sound to the sound list.
+     * @param {string} name The sound name.
+     * @param {string} url The URL of the sound. Can be a Data URI or Website URL.
+     * @returns The sound object that was added to the sound list.
+     */
+    static createSound(name, url) {
+        const project = ProjectState.currentProject;
+        const soundObject = {
+            name: name,
+            id: `_user_sound_${name.toLowerCase().replace(/[^0-9A-Za-z]+/gmi, "-")}:${Random.randomID()}`,
+            data: url
+        };
+        project.sounds.push(soundObject);
+        return soundObject;
+    }
+
+    /**
+     * Adds an image to the costume list of a character.
+     * @param {string} characterId 
+     * @param {string} imageId 
+     */
+    static addImageToCharacter(characterId, imageId) {
+        const character = ProjectState.getTargetById(characterId);
+        if (!character) return;
+
+        character.costumes.push(imageId);
+    }
+    /**
+     * Adds a sound to the sound list of a character.
+     * @param {string} characterId 
+     * @param {string} soundId 
+     */
+    static addSoundToCharacter(characterId, soundId) {
+        const character = ProjectState.getTargetById(characterId);
+        if (!character) return;
+
+        character.sounds.push(soundId);
     }
 
     /**

@@ -14,7 +14,7 @@
 </script>
 
 <div class="main">
-    <p>{State.getTargetById(target).name} sounds</p>
+    <p style="margin-left:8px">• {State.getTargetById(target).name}</p>
     {#each State.getTargetById(target).sounds as soundId}
         <button on:click={() => playSoundId(soundId)}>
             <p>Play {State.getSoundById(soundId).name}</p>
