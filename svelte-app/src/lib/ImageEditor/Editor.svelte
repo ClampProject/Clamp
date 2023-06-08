@@ -25,7 +25,7 @@
     function newCostume() {
         const imageObject = State.createImage(
             "Image",
-            "https://clamp-project.vercel.app/images/empty64.png"
+            "https://clamp-coding.vercel.app/images/empty64.png"
         );
         State.addImageToCharacter(target, imageObject.id);
         selectedCostume = imageObject.id;

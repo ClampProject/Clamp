@@ -33,7 +33,7 @@ const defaultState = {
         {
             name: "Explode",
             id: "_hardcoded_explode",
-            data: "https://clamp-project.vercel.app/sounds/explode.mp3"
+            data: "https://clamp-coding.vercel.app/sounds/explode.mp3"
         }
     ]
 };

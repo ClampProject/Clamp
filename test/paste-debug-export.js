@@ -15,7 +15,7 @@ const variables = {}; // all variables are stored here instead of a "const varia
     const sounds = {};
     const characterFunctions = {}; // funny functionz :P this comment is so helpful
     images["_hardcoded_apple"] = await Kaboom.loadSprite("_hardcoded_apple", "https://kaboomjs.com/sprites/apple.png");
-    sounds["_hardcoded_explode"] = await Kaboom.loadSound("_hardcoded_explode", "https://clamp-project.vercel.app/sounds/explode.mp3");
+    sounds["_hardcoded_explode"] = await Kaboom.loadSound("_hardcoded_explode", "https://clamp-coding.vercel.app/sounds/explode.mp3");
     characters["_default_apple"] = Kaboom.add([
         Kaboom.sprite("_hardcoded_apple"),
         Kaboom.pos(320, 180),
