@@ -166,6 +166,8 @@
 
     let fileMenu;
     function showFileMenu() {
+        playSound("tabswitch");
+
         if (fileMenu.style.display == "none") {
             fileMenu.style.display = "";
             return;
@@ -252,6 +254,7 @@
         href="/credits"
         target="_blank"
         style="height:100%;text-decoration:none;margin-left:6px"
+        on:click={() => playSound("tabswitch")}
     >
         <NavigationOption>
             <img
