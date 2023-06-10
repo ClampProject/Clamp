@@ -12,6 +12,8 @@
     // Toolbox
     import Toolbox from "$lib/Toolbox/Toolbox.xml?raw";
 
+    import JSZip from "jszip";
+
     // import Blockly from "blockly/core";
     import Blockly from "blockly/core";
     import DarkTheme from "@blockly/theme-dark";
@@ -161,9 +163,82 @@
         playSound("explode");
         Emitter.emitGlobal("SUSPEND");
     }
+
+    let fileMenu;
+    function showFileMenu() {
+        if (fileMenu.style.display == "none") {
+            fileMenu.style.display = "";
+            return;
+        }
+        fileMenu.style.display = "none";
+    }
+
+    /*
+      TODO: file saving & loading
+    */
+    function downloadProject() {
+        playSound("tabswitch");
+
+        // data
+        const target = State.getTargetById(editTarget);
+        const xml = Blockly.Xml.domToText(
+            Blockly.Xml.workspaceToDom(workspace)
+        );
+
+        // zip
+        const zip = new JSZip();
+        zip.file(
+            "README.txt",
+            "This file is not meant to be opened!\nBe careful as you can permanently break your project!"
+        );
+
+        // workspaces
+        const workspaces = zip.folder("workspaces");
+        workspaces.file(target.id + ".xml", xml);
+
+        // do the rest of this
+
+        // images
+        // const images = zip.folder("images");
+    }
+    function loadProject() {
+        playSound("tabswitch");
+    }
 </script>
 
 <NavigationBar>
+    <NavigationOption on:click={showFileMenu}>
+        <img
+            alt="File"
+            src="/images/gui-icons/page-white-icon.png"
+            width="16"
+            style="margin-left:6px;margin-right:6px;"
+        />
+        <span style="margin-right:6px;">File</span>
+        <!-- menu below -->
+        <div bind:this={fileMenu} style="display:none" class="dialog-menu">
+            <NavigationOption on:click={loadProject}>
+                <img
+                    alt="Import"
+                    src="/images/gui-icons/page-white-put-icon.png"
+                    width="16"
+                    style="margin-left:6px;margin-right:6px;"
+                />
+                <span style="margin-right:6px;">Import</span>
+            </NavigationOption>
+            <NavigationOption on:click={downloadProject}>
+                <img
+                    alt="Save"
+                    src="/images/gui-icons/disk-icon.png"
+                    width="16"
+                    style="margin-left:6px;margin-right:6px;"
+                />
+                <span style="margin-right:6px;">Download</span>
+            </NavigationOption>
+        </div>
+    </NavigationOption>
+
+    <input class="project-name" type="text" placeholder="Project Name..." />
     <NavigationOption on:click={updateProgram}>
         <img
             alt="Pencil"
@@ -387,6 +462,38 @@
         height: 100%;
 
         min-width: 1220px;
+    }
+
+    .project-name {
+        width: 236px;
+        height: 80%;
+
+        font-size: 20px;
+
+        border-radius: 4px;
+        border: 3px dashed rgba(255, 255, 255, 0.5);
+        background: transparent;
+        color: white;
+    }
+    .project-name:active,
+    .project-name:focus {
+        border-radius: 0px;
+        border: 3px solid rgba(0, 0, 0, 0.5);
+        outline: none;
+        background: white;
+        color: black;
+    }
+
+    .dialog-menu {
+        position: absolute;
+        left: 0px;
+        top: 100%;
+
+        background: #222;
+        border: 4px solid white;
+        padding: 2px;
+
+        z-index: 10000;
     }
 
     .sides {

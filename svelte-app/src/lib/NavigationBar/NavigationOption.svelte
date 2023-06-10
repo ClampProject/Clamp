@@ -14,6 +14,8 @@
 
 <style>
     button {
+        position: relative;
+
         height: 100%;
 
         display: flex;

@@ -5,6 +5,12 @@
         class="logo-margin"
         style="height: 100%;"
     />
+    <img
+        src="/images/code.png"
+        alt="Clamp Coding Logo"
+        class="logo-margin"
+        style="height: 100%;"
+    />
     <slot />
 </div>
 
@@ -12,7 +18,7 @@
     div {
         width: 100%;
         height: 3.25rem;
-        overflow: hidden;
+        /* overflow: hidden; */
 
         z-index: 100;
         padding: 4px;
