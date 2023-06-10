@@ -32,7 +32,7 @@ class Compiler {
 
     /**
      * Generates JavaScript code from each character's workspace, images and sounds.
-     * This code can then be ran inside the KaboomPlayer component, or stand-alone in the future.
+     * This code can then be ran inside the GamePlayer component, or stand-alone in the future.
      */
     compile() {
         // set characters & others to the current project state
@@ -77,7 +77,7 @@ class Compiler {
             `const nameTable = {characters:{},images:{},sounds:{}}; // contains the ID: Name for each type`
         ];
         const footerCode = [
-            `})(Kaboom);`
+            `})(Engine);`
         ];
 
         // initialize images
@@ -86,7 +86,7 @@ class Compiler {
             const variableUserName = JSON.stringify(image.name);
             const variableImage = JSON.stringify(image.image);
 
-            setupCode.push(`images[${variableName}] = await Kaboom.loadSprite(${variableName}, ${variableImage});`);
+            setupCode.push(`images[${variableName}] = await Engine.createImage(${variableName}, ${variableImage});`);
             descriptorCode.push(`nameTable.images[${variableName}] = String(${variableUserName});`);
         };
         // initialize sounds
@@ -95,7 +95,7 @@ class Compiler {
             const variableUserName = JSON.stringify(sound.name);
             const variableData = JSON.stringify(sound.data);
 
-            setupCode.push(`sounds[${variableName}] = await Kaboom.loadSound(${variableName}, ${variableData});`);
+            setupCode.push(`sounds[${variableName}] = await Engine.createSound(${variableName}, ${variableData});`);
             descriptorCode.push(`nameTable.sounds[${variableName}] = String(${variableUserName});`);
         };
         // initialize character code
@@ -112,13 +112,14 @@ class Compiler {
                 size: isNaN(Number(character.size)) ? 0 : Number(character.size),
                 angle: isNaN(Number(character.angle)) ? 0 : Number(character.angle),
             };
-            setupCode.push(`characters[${variableName}] = Kaboom.add([
-                Kaboom.sprite(${characterData.defaultLook}),
-                Kaboom.pos(${characterData.x}, ${characterData.y}),
-                Kaboom.scale(${characterData.size / 100}),
-                Kaboom.rotate(${characterData.angle}),
-                Kaboom.origin("center"),
-            ]);`);
+            setupCode.push(`characters[${variableName}] = new Engine.Character(${variableName}, {
+                parent: Engine,
+                image: ${characterData.defaultLook},
+                position: { x: ${characterData.x}, y: ${characterData.y} },
+                size: ${characterData.size / 100},
+                rotation: ${characterData.angle},
+                origin: { x: "center", y: "center" },
+            });`);
             // with the character game object we can now actually run the code for that character
             genCode.push(`characterFunctions[${variableName}](characters[${variableName}]); // run code for character ${variableName}`);
             descriptorCode.push(`nameTable.characters[${variableName}] = String(${variableUserName});`);
@@ -129,7 +130,7 @@ class Compiler {
             '/* extra events & setup */',
             'console.log("Content Loaded in", (Date.now() - INITIALIZE_BEGIN), "millseconds");',
             'ClampEditor.initializingCode = false; // tell clamp we are finished initializing the project and we can start running the user code',
-            'Engine.emitGlobal("CODE_INITIALIZE_UPDATE"); // read above comment for details; this event is for svelte to update since it cant tell the state changed',
+            'Emitter.emitGlobal("CODE_INITIALIZE_UPDATE"); // read above comment for details; this event is for svelte to update since it cant tell the state changed',
             '// technically thats a Svelte problem that i could report but its such a specific use-case that i dont think its worth fixing',
             '/* ok enough baby stuff LETS RUN SOME CODE */',
         ], genCode.flat(Infinity), footerCode).join('\n');

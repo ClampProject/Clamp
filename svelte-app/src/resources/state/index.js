@@ -26,7 +26,7 @@ const defaultState = {
         {
             name: "Apple",
             id: "_hardcoded_apple",
-            image: "https://kaboomjs.com/sprites/apple.png"
+            image: "https://clamp-coding.vercel.app/images/apple.png"
         }
     ],
     sounds: [

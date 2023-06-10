@@ -5,7 +5,7 @@
     import NavigationBar from "$lib/NavigationBar/NavigationBar.svelte";
     import NavigationMargin from "$lib/NavigationBar/NavigationMargin.svelte";
     import NavigationOption from "$lib/NavigationBar/NavigationOption.svelte";
-    import KaboomPlayer from "$lib/KaboomPlayer/Player.svelte";
+    import GamePlayer from "$lib/GamePlayer/Player.svelte";
     import SoundEditor from "$lib/SoundEditor/Editor.svelte";
     import ImageEditor from "$lib/ImageEditor/Editor.svelte";
 
@@ -29,7 +29,7 @@
     import BlocklyComponent from "svelte-blockly";
 
     import State from "../resources/state";
-    import Engine from "../resources/engine";
+    import Emitter from "../resources/emitter";
     import Compiler from "../resources/compiler";
     import ClampEditorCommunicator from "../resources/editorCommunicator";
 
@@ -105,14 +105,14 @@
         }
     });
 
-    Engine.on("CODE_INITIALIZE_UPDATE", () => {
+    Emitter.on("CODE_INITIALIZE_UPDATE", () => {
         initializingCode = ClampEditorCommunicator.initializingCode;
     });
 
     function updateProgram() {
         playSound("confirm");
         const code = compiler.compile(workspace);
-        Engine.update(code);
+        Emitter.update(code);
         lastGeneratedCode = code;
     }
     function switchTab(selectedTab) {
@@ -139,10 +139,10 @@
     }
 
     async function runButtonClicked() {
-        Engine.emitGlobal("RUN_BUTTON");
+        Emitter.emitGlobal("RUN_BUTTON");
     }
     function stopButtonClicked() {
-        Engine.emitGlobal("STOP_BUTTON");
+        Emitter.emitGlobal("STOP_BUTTON");
     }
     function fullscreenButtonClicked() {
         try {
@@ -159,7 +159,7 @@
     }
     function suspendButtonClicked() {
         playSound("explode");
-        Engine.emitGlobal("SUSPEND");
+        Emitter.emitGlobal("SUSPEND");
     }
 </script>
 
@@ -289,7 +289,7 @@
                         />
                     </button>
                 </div>
-                <KaboomPlayer />
+                <GamePlayer />
             </div>
             <div class="belowPlayer">
                 <div class="characterTabSelection">

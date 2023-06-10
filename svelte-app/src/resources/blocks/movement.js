@@ -27,7 +27,7 @@ function register() {
     }, (block) => {
         const X = javascriptGenerator.valueToCode(block, 'X', javascriptGenerator.ORDER_ATOMIC);
         const Y = javascriptGenerator.valueToCode(block, 'Y', javascriptGenerator.ORDER_ATOMIC);
-        const code = `character.moveTo(Number(${X}), Number(${Y}));`;
+        const code = `character.gotoXY(Number(${X}), Number(${Y}));`;
         return `${code}\n`;
     })
 }
