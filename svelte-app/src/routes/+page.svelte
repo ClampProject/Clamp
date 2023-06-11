@@ -13,6 +13,8 @@
     import Toolbox from "$lib/Toolbox/Toolbox.xml?raw";
 
     import JSZip from "jszip";
+    import FileSaver from "file-saver";
+    import fileDialog from "file-dialog";
 
     // import Blockly from "blockly/core";
     import Blockly from "blockly/core";
@@ -43,6 +45,7 @@
 
     import registerMovement from "../resources/blocks/movement.js";
     import registerActions from "../resources/blocks/actions.js";
+    import ProjectState from "../resources/state";
     registerMovement();
     registerActions();
 
@@ -93,6 +96,8 @@
     }
 
     onMount(() => {
+        console.log("ignore the warnings above we dont care about those");
+
         preload([
             "/sounds/confirm.mp3",
             "/sounds/explode.mp3",
@@ -101,10 +106,17 @@
 
         window.onbeforeunload = () => "";
         compiler = new Compiler(workspace);
-        const editingTarget = State.getTargetById(editTarget);
-        if (editingTarget) {
-            editingTarget.workspace = workspace;
-        }
+        // update editing target xml
+        workspace.addChangeListener(() => {
+            const editingTarget = State.getTargetById(editTarget);
+            const dom = Blockly.Xml.workspaceToDom(workspace);
+            editingTarget.xml = Blockly.Xml.domToText(dom);
+        });
+
+        // debug
+        // window.addEventListener("keypress", () => {
+        //     console.log(State.currentProject);
+        // });
     });
 
     Emitter.on("CODE_INITIALIZE_UPDATE", () => {
@@ -178,34 +190,103 @@
     /*
       TODO: file saving & loading
     */
+    let projectName = "";
     function downloadProject() {
         playSound("tabswitch");
 
+        // generate file name
+        let filteredProjectName = projectName.replace(/[^a-z0-9\-]+/gim, "_");
+        let fileName = filteredProjectName + ".clamp";
+        if (!filteredProjectName) {
+            fileName = "MyProject.clamp";
+        }
+
         // data
-        const target = State.getTargetById(editTarget);
-        const xml = Blockly.Xml.domToText(
-            Blockly.Xml.workspaceToDom(workspace)
-        );
+        const projectData = State.serializeProject(State.currentProject);
 
         // zip
         const zip = new JSZip();
         zip.file(
             "README.txt",
-            "This file is not meant to be opened!\nBe careful as you can permanently break your project!"
+            "This file is not meant to be opened!" +
+                "\nBe careful as you can permanently break your project!"
         );
 
         // workspaces
         const workspaces = zip.folder("workspaces");
-        workspaces.file(target.id + ".xml", xml);
+        for (const character of State.currentProject.characters) {
+            workspaces.file(character.id + ".xml", character.xml);
+        }
 
-        // do the rest of this
+        // data
+        const data = zip.folder("data");
+        data.file("project.json", projectData);
 
-        // images
-        // const images = zip.folder("images");
+        // download
+        zip.generateAsync({ type: "blob" }).then((blob) => {
+            FileSaver.saveAs(blob, fileName);
+        });
     }
     function loadProject() {
         playSound("tabswitch");
+
+        fileDialog({ accept: ".clamp" }).then((files) => {
+            if (!files) return;
+            const file = files[0];
+
+            // set project name
+            const projectNameIdx = file.name.lastIndexOf(".clamp");
+            projectName = file.name.substring(0, projectNameIdx);
+
+            JSZip.loadAsync(file.arrayBuffer()).then(async (zip) => {
+                console.log("loaded zip file...");
+
+                // get project json from the data folder
+                const dataFolder = zip.folder("data");
+                const projectJsonString = await dataFolder
+                    .file("project.json")
+                    .async("string");
+                const projectJson = JSON.parse(projectJsonString);
+
+                // get project workspace xml stuffs
+                const workspacesFolder = zip.folder("workspaces");
+                const fileNames = [];
+                workspacesFolder.forEach((_, file) => {
+                    const fileName = file.name.replace("workspaces/", "");
+                    fileNames.push(fileName);
+                });
+                // console.log(fileNames); // debug
+                const idWorkspacePairs = {};
+                for (const fileName of fileNames) {
+                    const idx = fileName.lastIndexOf(".xml");
+                    const id = fileName.substring(0, idx);
+                    // assign to pairs
+                    idWorkspacePairs[id] = await workspacesFolder
+                        .file(fileName)
+                        .async("string");
+                }
+                // console.log(idWorkspacePairs); // debug
+
+                // laod
+                console.log(projectJson); // debug
+                State.loadProject(projectJson, idWorkspacePairs);
+            });
+        });
     }
+
+    // editing target changes
+    Emitter.on("EDITING_TARGET_UPDATED", () => {
+        // update editing target
+        editTarget = ProjectState.editingTarget;
+        // update workspace to editing target workspace
+        const target = ProjectState.getTargetById(editTarget);
+        const xml = target.xml;
+        const dom = Blockly.utils.xml.textToDom(xml);
+        Blockly.Xml.domToWorkspace(dom, workspace);
+    });
+
+    // character list
+    function newCharacter() {}
 </script>
 
 <NavigationBar>
@@ -240,7 +321,14 @@
         </div>
     </NavigationOption>
 
-    <input class="project-name" type="text" placeholder="Project Name..." />
+    <input
+        class="project-name"
+        type="text"
+        placeholder="Project Name..."
+        style="margin-left:4px;margin-right:4px"
+        bind:value={projectName}
+    />
+
     <NavigationOption on:click={updateProgram}>
         <img
             alt="Pencil"
@@ -436,14 +524,26 @@
                                 />
                                 °
                             </div>
-                            <label>
-                                <input type="checkbox" />
-                                Has Gravity?
-                            </label>
                         </div>
                     {/if}
                     {#if currentCharacterTab == "characters"}
-                        <div class="characters" />
+                        <div class="characters">
+                            <div class="character-preview-div">
+                                <button
+                                    class="box"
+                                    on:click={() => newCharacter()}
+                                >
+                                    <img
+                                        alt={"New"}
+                                        title={"Create a new Character"}
+                                        class="character-image-preview"
+                                        style="width:32px;height:32px;image-rendering: pixelated;"
+                                        src={"/images/gui-icons/add-icon.png"}
+                                    />
+                                </button>
+                                <p class="character-preview-name">New</p>
+                            </div>
+                        </div>
                     {/if}
                 </div>
             </div>
@@ -637,5 +737,46 @@
     .properties {
         display: flex;
         flex-direction: column;
+    }
+
+    .character-preview-div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: calc(5.5em + 32px);
+    }
+    .character-image-preview {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+    .character-preview-name {
+        width: 60%;
+        color: white;
+        text-align: center;
+        margin-block: 0;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    .box {
+        position: relative;
+        width: 5.5em;
+        height: 5.5em;
+        padding: 8px;
+        border: 4px solid rgba(255, 255, 255, 0.25);
+        border-radius: 16px;
+        background: transparent;
+        margin: 8px;
+    }
+    .box:focus,
+    .box:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+    .box:active {
+        background: rgba(255, 255, 255, 0.25);
+    }
+    .box[data-selected="true"] {
+        border: 4px solid #b200fe;
     }
 </style>

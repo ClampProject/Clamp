@@ -1,4 +1,5 @@
 import Random from '../random';
+import Emitter from '../emitter';
 
 // this js file contains project details like what characters exist and their workspaces
 const defaultState = {
@@ -19,7 +20,7 @@ const defaultState = {
             sounds: [
                 "_hardcoded_explode",
             ],
-            workspace: null
+            xml: ""
         }
     ],
     images: [
@@ -49,11 +50,57 @@ class ProjectState {
      * The current project state.
      * Object contains all images, sounds and characters in the project.
      */
-    static currentProject = defaultState;
+    static currentProject = JSON.parse(JSON.stringify(defaultState));
     /**
      * The ID of the character being edited in the editor.
      */
     static editingTarget = defaultState.characters[0].id;
+
+    /**
+     * Converts a project state to a string. Used for saving projects.
+     * @param {ProjectState} state The state to stringify
+     * @returns A string version of the state
+     */
+    static serializeProject(state) {
+        const origin = {
+            characters: []
+        };
+        // these we can use from state directly
+        origin.images = state.images;
+        origin.sounds = state.sounds;
+        // characters have a workspace property that we cannot save
+        for (const character of state.characters) {
+            // create a new character and get properties from character into it
+            const newCharacter = {};
+            for (const prop in character) {
+                if (prop === "workspace" || prop === "xml") {
+                    // dont save this property
+                    continue;
+                }
+                newCharacter[prop] = character[prop];
+            }
+            origin.characters.push(newCharacter);
+        }
+        // convert to string
+        const project = JSON.stringify(origin);
+        return project;
+    }
+    /**
+     * Loads a project state. The state must be valid or problems will occur.
+     * The state parameter will be modified by Clamp in runtime, so clone it before this function if you need it elsewhere.
+     * @param {ProjectState} state The project state to load (likely a serialized project but parsed into a JSON object)
+     * @param {{id:WorkspaceXML}} workspaces An object containing id:WorkspaceXML pairs.
+     */
+    static loadProject(state, workspaces) {
+        ProjectState.currentProject = state;
+        for (const id in workspaces) {
+            const target = ProjectState.getTargetById(id);
+            if (!target) continue;
+            target.xml = workspaces[id];
+            ProjectState.editingTarget = ProjectState.currentProject.characters[0].id;
+            Emitter.emitGlobal("EDITING_TARGET_UPDATED");
+        }
+    }
 
     /**
      * Returns the target object in the currentProject state with the specified ID.

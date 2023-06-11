@@ -1,4 +1,4 @@
-import javascriptGenerator from '../javascriptGenerator';
+import xmlToCode from './xmlToCode.js';
 import ProjectState from '../state';
 
 class Compiler {
@@ -44,15 +44,16 @@ class Compiler {
         // to make sure character specific blocks work like {go to x: () y: ()}
         const genCode = [];
         for (const character of this.characters) {
+            // workspace prop is not good no mor
             // if no workspace set, dont do the thingy
-            if (!character.workspace) continue;
+            // if (!character. workspace) continue;
 
             const characterIdentifier = JSON.stringify(character.id);
             // we can push an array & just flatten genCode later because funny
             genCode.push([
                 `// Character ${characterIdentifier}`,
                 `characterFunctions[${characterIdentifier}] = (character) => { // characterFunctions is defined in setupCode`,
-                javascriptGenerator.workspaceToCode(character.workspace),
+                xmlToCode(character.xml),
                 `}`
             ])
         }

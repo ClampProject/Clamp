@@ -91,6 +91,11 @@
         background: white;
 
         overflow: hidden;
+
+        user-select: none;
+        -ms-user-select: none;
+        -moz-user-select: none;
+        -webkit-user-select: none;
     }
     .fullscreen {
         transform-origin: left top;

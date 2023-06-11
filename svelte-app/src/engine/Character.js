@@ -64,6 +64,7 @@ class Character {
     updateCharacter() {
         if (!this._element) {
             this._element = new Image();
+            this._element.draggable = false;
             const image = this._engine.images[this.currentImage];
             // image is already loaded in browser
             // so this should be instant
