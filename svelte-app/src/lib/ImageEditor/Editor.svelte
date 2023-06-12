@@ -373,6 +373,8 @@
         border: white 4px solid;
         background: transparent;
         color: white;
+
+        cursor: pointer;
     }
     .library-item:focus,
     .library-item:hover {
@@ -401,6 +403,8 @@
         border-radius: 1000px;
 
         font-size: 20px;
+
+        cursor: pointer;
     }
     .library-exit:active {
         background: #cc53ff;
@@ -429,6 +433,7 @@
         border-radius: 16px;
         background: transparent;
         margin: 8px;
+        cursor: pointer;
     }
     .box:focus,
     .box:hover {

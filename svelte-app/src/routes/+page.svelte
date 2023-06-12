@@ -842,6 +842,7 @@
         border-radius: 16px;
         background: transparent;
         margin: 8px;
+        cursor: pointer;
     }
     .box:focus,
     .box:hover {

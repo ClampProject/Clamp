@@ -13,6 +13,21 @@
                 </shadow>
             </value>
         </block>
+        <block type="movement_gotorandom" />
+        <block type="movement_setxy">
+            <value name="POS">
+                <shadow type="generic_number">
+                    <field name="NUMBER">80</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="movement_changexy">
+            <value name="POS">
+                <shadow type="generic_number">
+                    <field name="NUMBER">80</field>
+                </shadow>
+            </value>
+        </block>
     </category>
     <category name="Appearance" colour="#f3a">
     </category>

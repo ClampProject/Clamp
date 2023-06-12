@@ -38,5 +38,9 @@
     {
         "name": "Deny",
         "image": "/images/library/image/deny.png"
+    },
+    {
+        "name": "Heart",
+        "image": "/images/library/image/heart.png"
     }
 ]

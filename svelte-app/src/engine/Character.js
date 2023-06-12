@@ -54,6 +54,60 @@ class Character {
         this.updateCharacter();
     }
 
+    /**
+     * Moves the character on the x axis only.
+     * @param {number} x 
+     */
+    setX(x) {
+        if (!this.position) {
+            this.position = {};
+        }
+
+        this.position.x = x;
+
+        this.updateCharacter();
+    }
+    /**
+     * Moves the character on the y axis only.
+     * @param {number} y 
+     */
+    setY(y) {
+        if (!this.position) {
+            this.position = {};
+        }
+
+        this.position.y = y;
+
+        this.updateCharacter();
+    }
+
+    /**
+     * Changes the character's position on the x axis only.
+     * @param {number} x 
+     */
+    changeX(x) {
+        if (!this.position) {
+            this.position = {};
+        }
+
+        this.position.x += x;
+
+        this.updateCharacter();
+    }
+    /**
+     * Changes the character's position on the y axis only.
+     * @param {number} y 
+     */
+    changeY(y) {
+        if (!this.position) {
+            this.position = {};
+        }
+
+        this.position.y += y;
+
+        this.updateCharacter();
+    }
+
     // INTERNAL USE FUNCTIONS BELOW
     // probably
 
