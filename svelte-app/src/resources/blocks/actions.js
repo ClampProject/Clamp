@@ -19,9 +19,11 @@ function register() {
         message0: 'wait %1 seconds',
         args0: [
             {
-                "type": "input_value",
+                "type": "field_number",
                 "name": "TIME",
-                "check": "Number"
+                "check": "Number",
+                "value": 10,
+                "acceptsBlocks": true
             }
         ],
         previousStatement: null,
@@ -29,7 +31,7 @@ function register() {
         inputsInline: true,
         colour: categoryColor
     }, (block) => {
-        const TIME = javascriptGenerator.valueToCode(block, 'TIME', javascriptGenerator.ORDER_ATOMIC);
+        const TIME = javascriptGenerator.exportField(block, 'TIME', javascriptGenerator.ORDER_ATOMIC);
         const code = `await new Promise(resolve => setTimeout(() => resolve(), ${TIME} * 1000));`;
         return `${code}\n`;
     })
@@ -38,9 +40,11 @@ function register() {
         message0: 'show message %1',
         args0: [
             {
-                "type": "input_value",
+                "type": "field_input",
                 "name": "TEXT",
-                "check": "String"
+                "check": "String",
+                "text": "Hello!",
+                "acceptsBlocks": true
             }
         ],
         previousStatement: null,
@@ -48,7 +52,7 @@ function register() {
         inputsInline: true,
         colour: categoryColor
     }, (block) => {
-        const TEXT = javascriptGenerator.valueToCode(block, 'TEXT', javascriptGenerator.ORDER_ATOMIC);
+        const TEXT = javascriptGenerator.exportField(block, 'TEXT', javascriptGenerator.ORDER_ATOMIC);
         const code = `alert(String(${TEXT}));`;
         return `${code}\n`;
     })

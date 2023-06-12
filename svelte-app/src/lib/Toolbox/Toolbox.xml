@@ -1,32 +1,9 @@
 <xml>
     <category name="Movement" colour="#0bf">
-        <block type="movement_gotoxy">
-            <value name="X">
-                <shadow type="generic_number">
-                    <field name="NUMBER">320</field>
-                </shadow>
-            </value>
-            <value name="Y">
-                <shadow type="generic_number">
-                    <field name="NUMBER">180</field>
-                </shadow>
-            </value>
-        </block>
+        <block type="movement_gotoxy" />
         <block type="movement_gotorandom" />
-        <block type="movement_setxy">
-            <value name="POS">
-                <shadow type="generic_number">
-                    <field name="NUMBER">80</field>
-                </shadow>
-            </value>
-        </block>
-        <block type="movement_changexy">
-            <value name="POS">
-                <shadow type="generic_number">
-                    <field name="NUMBER">80</field>
-                </shadow>
-            </value>
-        </block>
+        <block type="movement_setxy" />
+        <block type="movement_changexy" />
     </category>
     <category name="Appearance" colour="#f3a">
         <block type="appearance_showCharacter" />
@@ -37,20 +14,8 @@
     <category name="Actions" colour="#fa4">
         <block type="actions_whenrunclicked" />
         <block type="actions_whenstopclicked" />
-        <block type="actions_showmessage">
-            <value name="TEXT">
-                <shadow type="generic_text">
-                    <field name="TEXT">Hello!</field>
-                </shadow>
-            </value>
-        </block>
-        <block type="actions_waitSeconds">
-            <value name="TIME">
-                <shadow type="generic_number">
-                    <field name="NUMBER">1</field>
-                </shadow>
-            </value>
-        </block>
+        <block type="actions_showmessage" />
+        <block type="actions_waitSeconds" />
         <label text="" />
         <block type="actions_onflagevent" />
         <block type="actions_fireflagevent" />

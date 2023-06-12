@@ -10,14 +10,18 @@ function register() {
         message0: 'go to x: %1 y: %2',
         args0: [
             {
-                "type": "input_value",
+                "type": "field_number",
                 "name": "X",
-                "check": "Number"
+                "check": "Number",
+                "value": 320,
+                "acceptsBlocks": true
             },
             {
-                "type": "input_value",
+                "type": "field_number",
                 "name": "Y",
-                "check": "Number"
+                "check": "Number",
+                "value": 180,
+                "acceptsBlocks": true
             }
         ],
         previousStatement: null,
@@ -25,8 +29,8 @@ function register() {
         inputsInline: true,
         colour: categoryColor
     }, (block) => {
-        const X = javascriptGenerator.valueToCode(block, 'X', javascriptGenerator.ORDER_ATOMIC);
-        const Y = javascriptGenerator.valueToCode(block, 'Y', javascriptGenerator.ORDER_ATOMIC);
+        const X = javascriptGenerator.exportField(block, 'X', javascriptGenerator.ORDER_ATOMIC);
+        const Y = javascriptGenerator.exportField(block, 'Y', javascriptGenerator.ORDER_ATOMIC);
         const code = `character.gotoXY(Number(${X}), Number(${Y}));`;
         return `${code}\n`;
     })
@@ -61,9 +65,11 @@ function register() {
                 ]
             },
             {
-                "type": "input_value",
+                "type": "field_number",
                 "name": "POS",
-                "check": "Number"
+                "check": "Number",
+                "value": 80,
+                "acceptsBlocks": true
             }
         ],
         previousStatement: null,
@@ -72,7 +78,7 @@ function register() {
         colour: categoryColor
     }, (block) => {
         const XY = block.getFieldValue('XY');
-        const POS = javascriptGenerator.valueToCode(block, 'POS', javascriptGenerator.ORDER_ATOMIC);
+        const POS = javascriptGenerator.exportField(block, 'POS', javascriptGenerator.ORDER_ATOMIC);
         const code = `character.set${XY}(Number(${POS}));`;
         return `${code}\n`;
     })
@@ -95,10 +101,12 @@ function register() {
                 ]
             },
             {
-                "type": "input_value",
+                "type": "field_number",
                 "name": "POS",
-                "check": "Number"
-            }
+                "check": "Number",
+                "value": 80,
+                "acceptsBlocks": true
+            },
         ],
         previousStatement: null,
         nextStatement: null,
@@ -106,7 +114,7 @@ function register() {
         colour: categoryColor
     }, (block) => {
         const XY = block.getFieldValue('XY');
-        const POS = javascriptGenerator.valueToCode(block, 'POS', javascriptGenerator.ORDER_ATOMIC);
+        const POS = javascriptGenerator.exportField(block, 'POS', javascriptGenerator.ORDER_ATOMIC);
         const code = `character.change${XY}(Number(${POS}));`;
         return `${code}\n`;
     })
