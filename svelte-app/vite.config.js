@@ -11,10 +11,10 @@ export default defineConfig({
 	},
 	build: {
 		commonjsOptions: {
-			exclude: [],
+			exclude: ['file-dialog'],
 			include: [
 				'@blockly/continuous-toolbox',
-				'file-dialog'
+
 			]
 		}
 	}
