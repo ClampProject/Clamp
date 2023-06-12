@@ -345,9 +345,13 @@
         width: 100%;
         height: calc(90% - 88px);
 
+        overflow: auto;
+
         display: flex;
+        flex-wrap: wrap;
         flex-direction: row;
         align-items: baseline;
+        align-content: flex-start;
     }
     .library-footer {
         width: 90%;

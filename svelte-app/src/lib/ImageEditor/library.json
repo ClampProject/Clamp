@@ -10,5 +10,33 @@
     {
         "name": "Banana",
         "image": "/images/library/image/banana.png"
+    },
+    {
+        "name": "Pear",
+        "image": "/images/library/image/pear.png"
+    },
+    {
+        "name": "Stickman",
+        "image": "/images/library/image/stickman.png"
+    },
+    {
+        "name": "Button",
+        "image": "/images/library/image/button_unpressed.png"
+    },
+    {
+        "name": "Pressed Button",
+        "image": "/images/library/image/button_pressed.png"
+    },
+    {
+        "name": "Cursor",
+        "image": "/images/library/image/cursor.png"
+    },
+    {
+        "name": "Checkmark",
+        "image": "/images/library/image/checkmark.png"
+    },
+    {
+        "name": "Deny",
+        "image": "/images/library/image/deny.png"
     }
 ]
