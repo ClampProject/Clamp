@@ -14,6 +14,7 @@ const defaultState = {
             },
             size: 100,
             angle: 0,
+            visible: true,
             costumes: [
                 "_hardcoded_apple",
             ],

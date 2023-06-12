@@ -112,6 +112,7 @@ class Compiler {
                 y: isNaN(Number(character.position.y)) ? 0 : Number(character.position.y),
                 size: isNaN(Number(character.size)) ? 0 : Number(character.size),
                 angle: isNaN(Number(character.angle)) ? 0 : Number(character.angle),
+                visible: String(character.visible) == "true",
             };
             setupCode.push(`characters[${variableName}] = new Engine.Character(${variableName}, {
                 parent: Engine,
@@ -119,6 +120,7 @@ class Compiler {
                 position: { x: ${characterData.x}, y: ${characterData.y} },
                 size: ${characterData.size / 100},
                 rotation: ${characterData.angle},
+                hidden: (!(${characterData.visible})),
                 origin: { x: "center", y: "center" },
             });`);
             // with the character game object we can now actually run the code for that character

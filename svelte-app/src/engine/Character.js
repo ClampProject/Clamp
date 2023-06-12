@@ -1,7 +1,7 @@
 import generateTransformCSS from "../resources/generateTransformCSS";
 
 class Character {
-    constructor(id, { parent, image, position, size, rotation, origin }) {
+    constructor(id, { parent, image, position, size, rotation, origin, hidden }) {
         this.id = id;
         this._engine = parent;
 
@@ -14,7 +14,7 @@ class Character {
         // make these into addon blocks
         this.stretch = { x: 1, y: 1 };
         this.skew = { x: 0, y: 0 };
-        this.hidden = false
+        this.hidden = hidden;
 
         // assign to parent character list
         this._engine.characters[this.id] = this;
@@ -159,7 +159,7 @@ class Character {
         });
 
         // display styles
-        style.display = this.hidden ? 'none' : ''
+        style.display = this.hidden ? 'none' : '';
     }
 
     /**
@@ -175,16 +175,16 @@ class Character {
      * hide this character
      */
     hide() {
-        this.hidden = true
-        this.updateCharacter()
+        this.hidden = true;
+        this.updateCharacter();
     }
 
     /**
      * show this character
      */
     show() {
-        this.hidden = false
-        this.updateCharacter()
+        this.hidden = false;
+        this.updateCharacter();
     }
 }
 

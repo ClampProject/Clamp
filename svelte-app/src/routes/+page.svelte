@@ -538,9 +538,13 @@
                             </p>
                             <label>
                                 Start as
-                                <select on:change={switchCostume}>
+                                <select
+                                    on:change={switchCostume}
+                                    value={State.getTargetById(editTarget)
+                                        .startCostume}
+                                >
                                     {#each State.getTargetById(editTarget).costumes as costumeID}
-                                        <option>
+                                        <option value={costumeID}>
                                             {State.getImageById(costumeID).name}
                                         </option>
                                     {/each}
@@ -552,7 +556,16 @@
                                     X:
                                     <input
                                         type="number"
-                                        value="320"
+                                        value={State.getTargetById(editTarget)
+                                            .position.x}
+                                        on:change={(event) => {
+                                            playSound("tabswitch");
+                                            const target =
+                                                State.getTargetById(editTarget);
+                                            target.position.x =
+                                                event.target.value;
+                                            reloadPropertiesComponent();
+                                        }}
                                         style="width:64px"
                                     />
                                 </div>
@@ -560,29 +573,68 @@
                                     Y:
                                     <input
                                         type="number"
-                                        value="180"
+                                        value={State.getTargetById(editTarget)
+                                            .position.y}
+                                        on:change={(event) => {
+                                            playSound("tabswitch");
+                                            const target =
+                                                State.getTargetById(editTarget);
+                                            target.position.y =
+                                                event.target.value;
+                                            reloadPropertiesComponent();
+                                        }}
                                         style="width:64px"
                                     />
                                 </div>
                             </div>
                             <div style="display:flex;flex-direction:row">
-                                Resized to
+                                Size:
                                 <input
                                     type="number"
-                                    value="100"
-                                    style="width:64px"
+                                    style="width:64px;margin-left:4px"
+                                    value={State.getTargetById(editTarget).size}
+                                    on:change={(event) => {
+                                        playSound("tabswitch");
+                                        const target =
+                                            State.getTargetById(editTarget);
+                                        target.size = event.target.value;
+                                        reloadPropertiesComponent();
+                                    }}
                                 />
                                 %
                             </div>
                             <div style="display:flex;flex-direction:row">
-                                Looking towards
+                                Rotated
                                 <input
                                     type="number"
-                                    value="0"
-                                    style="width:64px"
+                                    style="width:64px;margin-left:4px;margin-right:4px"
+                                    value={State.getTargetById(editTarget)
+                                        .angle}
+                                    on:change={(event) => {
+                                        playSound("tabswitch");
+                                        const target =
+                                            State.getTargetById(editTarget);
+                                        target.angle = event.target.value;
+                                        reloadPropertiesComponent();
+                                    }}
                                 />
                                 °
                             </div>
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    checked={State.getTargetById(editTarget)
+                                        .visible}
+                                    on:change={(event) => {
+                                        playSound("tabswitch");
+                                        const target =
+                                            State.getTargetById(editTarget);
+                                        target.visible = event.target.checked;
+                                        reloadPropertiesComponent();
+                                    }}
+                                />
+                                Is Showing?
+                            </label>
                         </div>
                     {/if}
                     {#if currentCharacterTab == "characters" && _reloadCharactersComponent}
