@@ -9,12 +9,12 @@ export default defineConfig({
 			'file-saver',
 		]
 	},
-	build: {
-		commonjsOptions: {
-			include: [
-				'@blockly/continuous-toolbox',
-				'file-saver',
-			]
-		}
-	}
+	// build: {
+	// 	commonjsOptions: {
+	// 		include: [
+	// 			'@blockly/continuous-toolbox',
+	// 			'file-saver',
+	// 		]
+	// 	}
+	// }
 });
