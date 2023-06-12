@@ -19,11 +19,10 @@
     // import Blockly from "blockly/core";
     import Blockly from "blockly/core";
     import DarkTheme from "@blockly/theme-dark";
-    import {
-        ContinuousToolbox,
-        ContinuousFlyout,
-        ContinuousMetrics,
-    } from "@blockly/continuous-toolbox";
+    // vercel wants us to import thingys like this
+    import ContinuousToolboxPlugin from "@blockly/continuous-toolbox";
+    const { ContinuousToolbox, ContinuousFlyout, ContinuousMetrics } =
+        ContinuousToolboxPlugin;
     // this gives event blocks a little bump at the top
     DarkTheme.startHats = true;
     DarkTheme.fontStyle = {
