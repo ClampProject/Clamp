@@ -8,8 +8,8 @@ export default defineConfig({
 	},
 	build: {
 		commonjsOptions: {
-			exclude: ['@blockly/continuous-toolbox'],
-			include: []
+			exclude: [],
+			include: ['@blockly/continuous-toolbox']
 		}
 	}
 });
