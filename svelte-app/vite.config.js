@@ -5,8 +5,8 @@ export default defineConfig({
 	plugins: [sveltekit()],
 	optimizeDeps: {
 		include: [
-			'@blockly/continuous-toolbox',
-			'file-dialog'
+			// '@blockly/continuous-toolbox',
+			// 'file-dialog'
 		],
 		exclude: []
 	},
@@ -14,8 +14,8 @@ export default defineConfig({
 		commonjsOptions: {
 			exclude: [],
 			include: [
-				// '@blockly/continuous-toolbox',
-				// 'file-dialog'
+				'@blockly/continuous-toolbox',
+				'file-dialog'
 			]
 		}
 	}
