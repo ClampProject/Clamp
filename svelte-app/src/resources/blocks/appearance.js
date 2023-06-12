@@ -6,7 +6,7 @@ const categoryColor = '#f3a';
 function register() {
     // show me
     registerBlock(`${categoryPrefix}showCharacter`, {
-        message0: 'show me',
+        message0: 'show character',
         previousStatement: null,
         nextStatement: null,
         inputsInline: true,
@@ -17,7 +17,7 @@ function register() {
     })
     // hide me
     registerBlock(`${categoryPrefix}hideCharacter`, {
-        message0: 'hide me',
+        message0: 'hide character',
         previousStatement: null,
         nextStatement: null,
         inputsInline: true,

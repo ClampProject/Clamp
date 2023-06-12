@@ -286,7 +286,14 @@
         const target = State.getTargetById(editTarget);
         const xml = target.xml;
         const dom = Blockly.utils.xml.textToDom(xml);
+        // clear workspace so we dont duplicate blocks
+        workspace.clear();
+        // set workspace
         Blockly.Xml.domToWorkspace(dom, workspace);
+
+        // reload components
+        reloadCharactersComponent();
+        reloadPropertiesComponent();
     });
 
     // reloading character list on update
