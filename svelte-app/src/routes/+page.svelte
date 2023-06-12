@@ -300,7 +300,10 @@
         <span style="margin-right:6px;">File</span>
         <!-- menu below -->
         <div bind:this={fileMenu} style="display:none" class="dialog-menu">
-            <NavigationOption on:click={loadProject}>
+            <NavigationOption
+                style="height:48px;width:100%"
+                on:click={loadProject}
+            >
                 <img
                     alt="Import"
                     src="/images/gui-icons/page-white-put-icon.png"
@@ -309,7 +312,10 @@
                 />
                 <span style="margin-right:6px;">Import</span>
             </NavigationOption>
-            <NavigationOption on:click={downloadProject}>
+            <NavigationOption
+                style="height:48px;width:100%"
+                on:click={downloadProject}
+            >
                 <img
                     alt="Save"
                     src="/images/gui-icons/disk-icon.png"

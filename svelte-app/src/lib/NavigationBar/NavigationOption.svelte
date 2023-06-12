@@ -3,12 +3,14 @@
 
     const dispatch = createEventDispatcher();
 
+    export let style = "";
+
     function event() {
         dispatch("click");
     }
 </script>
 
-<button on:click={event}>
+<button {style} on:click={event}>
     <slot />
 </button>
 
