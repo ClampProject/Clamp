@@ -47,7 +47,7 @@
         <block type="actions_waitSeconds">
             <value name="TIME">
                 <shadow type="generic_number">
-                    <field name="NUMBER">10</field>
+                    <field name="NUMBER">1</field>
                 </shadow>
             </value>
         </block>

@@ -42,5 +42,33 @@
     {
         "name": "Heart",
         "image": "/images/library/image/heart.png"
+    },
+    {
+        "name": "Box",
+        "image": "/images/library/image/box.png"
+    },
+    {
+        "name": "Circle",
+        "image": "/images/library/image/circle.png"
+    },
+    {
+        "name": "Triangle",
+        "image": "/images/library/image/triangle.png"
+    },
+    {
+        "name": "Cube",
+        "image": "/images/library/image/cube.png"
+    },
+    {
+        "name": "Clamp Logo",
+        "image": "/images/icon.png"
+    },
+    {
+        "name": "Rotating Arrow",
+        "image": "/images/library/image/rotate_right_arrow.png"
+    },
+    {
+        "name": "Arrow",
+        "image": "/images/library/image/arrow.png"
     }
 ]
