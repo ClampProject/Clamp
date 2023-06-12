@@ -8,13 +8,5 @@ export default defineConfig({
 			'@blockly/continuous-toolbox',
 			'file-saver',
 		]
-	},
-	// build: {
-	// 	commonjsOptions: {
-	// 		include: [
-	// 			'@blockly/continuous-toolbox',
-	// 			'file-saver',
-	// 		]
-	// 	}
-	// }
+	}
 });
