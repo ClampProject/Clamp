@@ -84,6 +84,11 @@
         if (idx == -1) return;
         character.costumes.splice(idx, 1);
         selectedCostume = character.costumes[0];
+
+        if (character.startCostume === costumeId) {
+            character.startCostume = character.costumes[0];
+        }
+
         reloadComponent();
         reloadEditorComponents();
 
