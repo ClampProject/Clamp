@@ -30,6 +30,7 @@
         </block>
     </category>
     <category name="Appearance" colour="#f3a">
+        <label text="Appearance" />
         <block type="appearance_showCharacter" />
         <block type="appearance_hideCharacter" />
     </category>
