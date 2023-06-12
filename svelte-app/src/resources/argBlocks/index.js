@@ -1,4 +1,5 @@
 import Blockly from 'blockly/core';
+import javascriptGenerator from '../javascriptGenerator';
 
 // cloned from https://github.com/google/blockly/blob/a6d6393748776a0945cca98444275d2fb2b55640/core/block.ts#L1085
 Blockly.Block.prototype.getField = function(name) {
@@ -50,6 +51,7 @@ export default (arg, color, name, block) => {
     if (!arg.acceptsBlocks) return arg
 
     switch (arg.type) {
+    case 'field_angle':
     case 'field_input':
     case 'field_number':
         color = '#fff'
@@ -66,6 +68,11 @@ export default (arg, color, name, block) => {
                 });
             }
         };
+
+        javascriptGenerator[newBlockName] = (block) => {
+            const NUMBER = block.getFieldValue(arg.name);
+            return [NUMBER, javascriptGenerator.ORDER_NONE];
+        }
 
         const oldInit = block.init
         block.init = function() {

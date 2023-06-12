@@ -29,8 +29,8 @@ function register() {
         inputsInline: true,
         colour: categoryColor
     }, (block) => {
-        const X = javascriptGenerator.exportField(block, 'X', javascriptGenerator.ORDER_ATOMIC);
-        const Y = javascriptGenerator.exportField(block, 'Y', javascriptGenerator.ORDER_ATOMIC);
+        const X = javascriptGenerator.valueToCode(block, 'X', javascriptGenerator.ORDER_ATOMIC);
+        const Y = javascriptGenerator.valueToCode(block, 'Y', javascriptGenerator.ORDER_ATOMIC);
         const code = `character.gotoXY(Number(${X}), Number(${Y}));`;
         return `${code}\n`;
     })
@@ -78,7 +78,7 @@ function register() {
         colour: categoryColor
     }, (block) => {
         const XY = block.getFieldValue('XY');
-        const POS = javascriptGenerator.exportField(block, 'POS', javascriptGenerator.ORDER_ATOMIC);
+        const POS = javascriptGenerator.valueToCode(block, 'POS', javascriptGenerator.ORDER_ATOMIC);
         const code = `character.set${XY}(Number(${POS}));`;
         return `${code}\n`;
     })
@@ -114,7 +114,7 @@ function register() {
         colour: categoryColor
     }, (block) => {
         const XY = block.getFieldValue('XY');
-        const POS = javascriptGenerator.exportField(block, 'POS', javascriptGenerator.ORDER_ATOMIC);
+        const POS = javascriptGenerator.valueToCode(block, 'POS', javascriptGenerator.ORDER_ATOMIC);
         const code = `character.change${XY}(Number(${POS}));`;
         return `${code}\n`;
     })

@@ -31,7 +31,7 @@ function register() {
         inputsInline: true,
         colour: categoryColor
     }, (block) => {
-        const TIME = javascriptGenerator.exportField(block, 'TIME', javascriptGenerator.ORDER_ATOMIC);
+        const TIME = javascriptGenerator.valueToCode(block, 'TIME', javascriptGenerator.ORDER_ATOMIC);
         const code = `await new Promise(resolve => setTimeout(() => resolve(), ${TIME} * 1000));`;
         return `${code}\n`;
     })
@@ -52,7 +52,7 @@ function register() {
         inputsInline: true,
         colour: categoryColor
     }, (block) => {
-        const TEXT = javascriptGenerator.exportField(block, 'TEXT', javascriptGenerator.ORDER_ATOMIC);
+        const TEXT = javascriptGenerator.valueToCode(block, 'TEXT', javascriptGenerator.ORDER_ATOMIC);
         const code = `alert(String(${TEXT}));`;
         return `${code}\n`;
     })
