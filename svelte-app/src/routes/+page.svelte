@@ -19,11 +19,7 @@
     // import Blockly from "blockly/core";
     import Blockly from "blockly/core";
     import DarkTheme from "@blockly/theme-dark";
-    import {
-        ContinuousToolbox,
-        ContinuousFlyout,
-        ContinuousMetrics,
-    } from "@blockly/continuous-toolbox";
+    import ContinuousToolboxPlugin from "@blockly/continuous-toolbox";
     // this gives event blocks a little bump at the top
     DarkTheme.startHats = true;
     DarkTheme.fontStyle = {
@@ -79,9 +75,9 @@
             scaleSpeed: 1.1,
         },
         plugins: {
-            toolbox: ContinuousToolbox,
-            flyoutsVerticalToolbox: ContinuousFlyout,
-            metricsManager: ContinuousMetrics,
+            toolbox: ContinuousToolboxPlugin.ContinuousToolbox,
+            flyoutsVerticalToolbox: ContinuousToolboxPlugin.ContinuousFlyout,
+            metricsManager: ContinuousToolboxPlugin.ContinuousMetrics,
         },
     };
 
