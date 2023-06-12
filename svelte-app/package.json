@@ -19,7 +19,6 @@
 		"@blockly/theme-dark": "^4.0.10",
 		"@sveltejs/adapter-vercel": "^3.0.0",
 		"blockly": "^9.0.0",
-		"file-dialog": "^0.0.8",
 		"file-saver": "^2.0.5",
 		"jszip": "^3.10.1",
 		"svelte-blockly": "^0.1.0"

@@ -4,19 +4,16 @@ import { defineConfig } from 'vite';
 export default defineConfig({
 	plugins: [sveltekit()],
 	optimizeDeps: {
-		include: [
-			'@blockly/continuous-toolbox',
-			'file-dialog'
-		],
-		exclude: []
+		include: ['@blockly/continuous-toolbox']
 	},
 	build: {
 		commonjsOptions: {
-			exclude: [],
-			include: [
-				'@blockly/continuous-toolbox',
-				'file-dialog'
-			]
+			include: ['@blockly/continuous-toolbox']
+		}
+	},
+	dev: {
+		commonjsOptions: {
+			include: ['@blockly/continuous-toolbox']
 		}
 	}
 });

@@ -14,7 +14,7 @@
 
     import JSZip from "jszip";
     import FileSaver from "file-saver";
-    import fileDialog from "file-dialog";
+    import fileDialog from "../resources/fileDialog";
 
     // import Blockly from "blockly/core";
     import Blockly from "blockly/core";

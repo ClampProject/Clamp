@@ -6,7 +6,7 @@
     import proxyFetch from "../../resources/proxyFetch";
 
     import FileSaver from "file-saver";
-    import fileDialog from "file-dialog";
+    import fileDialog from "../../resources/fileDialog";
 
     import ImageLibrary from "./library.json";
 
