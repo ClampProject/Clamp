@@ -1,8 +1,12 @@
 <script>
     import State from "../../resources/state";
     import BlobAndDataUrl from "../../resources/blobanddataurl";
+    import Emitter from "../../resources/emitter";
 
     import proxyFetch from "../../resources/proxyFetch";
+
+    import FileSaver from "file-saver";
+    import fileDialog from "file-dialog";
 
     let selectedCostume = "";
     // target is an ID, not the character object
@@ -17,11 +21,15 @@
             _reloadComponent = 1;
         }, 1);
     }
+    function reloadEditorComponents() {
+        Emitter.emit("RELOAD_IMAGE_COMPONENTS");
+    }
 
     function selectCostume(id) {
         selectedCostume = id;
         reloadComponent();
     }
+
     function newCostume() {
         const imageObject = State.createImage(
             "Image",
@@ -30,7 +38,39 @@
         State.addImageToCharacter(target, imageObject.id);
         selectedCostume = imageObject.id;
         reloadComponent();
+        reloadEditorComponents();
     }
+    function importCostume() {
+        // ask for file input
+        fileDialog({ accept: "image/*" }).then((files) => {
+            if (!files) return;
+            const file = files[0];
+
+            // create costume name
+            const costumeNameIdx = file.name.lastIndexOf(".");
+            const costumeName = file.name.substring(0, costumeNameIdx);
+
+            // fr?!? 💀
+            const fr = new FileReader();
+            fr.onerror = () => {
+                alert("Failed to import the image.");
+            };
+            fr.onload = () => {
+                // file readed lets make image
+                const dataUrl = fr.result;
+                const imageObject = State.createImage(costumeName, dataUrl);
+
+                // add image to character
+                State.addImageToCharacter(target, imageObject.id);
+                selectedCostume = imageObject.id;
+                reloadComponent();
+                reloadEditorComponents();
+            };
+            // read file
+            fr.readAsDataURL(file);
+        });
+    }
+
     function deleteCostume(costumeId, skipConfirm) {
         if (!skipConfirm) {
             if (!confirm("Do you want to delete this costume?")) return;
@@ -45,19 +85,13 @@
         character.costumes.splice(idx, 1);
         selectedCostume = character.costumes[0];
         reloadComponent();
+        reloadEditorComponents();
 
-        if (costumeId.startsWith("_hardcoded")) return;
+        // if (costumeId.startsWith("_hardcoded")) return;
     }
 
     function downloadBlob(blob, fileName) {
-        const blobUrl = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = blobUrl;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-        URL.revokeObjectURL(blobUrl);
+        FileSaver.saveAs(blob, fileName);
     }
     function exportCostume() {
         if (!selectedCostume) return;
@@ -103,12 +137,12 @@
     <div class="main">
         <p style="margin-left:8px">• {State.getTargetById(target).name}</p>
         <div class="image-list">
-            <!-- New Costume Button -->
+            <!-- New Image Button -->
             <div class="costume-preview-div">
                 <button class="box" on:click={() => newCostume()}>
                     <img
-                        alt={"New Costume"}
-                        title={"New Costume"}
+                        alt={"New Image"}
+                        title={"New Image"}
                         class="image-preview"
                         style="width:32px;height:32px;image-rendering: pixelated;"
                         src={"/images/gui-icons/add-icon.png"}
@@ -118,7 +152,7 @@
             </div>
             <!-- Import Image Button -->
             <div class="costume-preview-div">
-                <button class="box" on:click={() => newCostume()}>
+                <button class="box" on:click={() => importCostume()}>
                     <img
                         alt={"Import an Image"}
                         title={"Import an Image"}
@@ -172,7 +206,7 @@
             {/each}
         </div>
         <button class="export-button" on:click={exportCostume}>
-            Download Costume
+            Download Image
         </button>
     </div>
 {/if}

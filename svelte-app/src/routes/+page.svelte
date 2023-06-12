@@ -45,7 +45,6 @@
 
     import registerMovement from "../resources/blocks/movement.js";
     import registerActions from "../resources/blocks/actions.js";
-    import ProjectState from "../resources/state";
     registerMovement();
     registerActions();
 
@@ -187,9 +186,6 @@
         fileMenu.style.display = "none";
     }
 
-    /*
-      TODO: file saving & loading
-    */
     let projectName = "";
     function downloadProject() {
         playSound("tabswitch");
@@ -277,16 +273,52 @@
     // editing target changes
     Emitter.on("EDITING_TARGET_UPDATED", () => {
         // update editing target
-        editTarget = ProjectState.editingTarget;
+        editTarget = State.editingTarget;
         // update workspace to editing target workspace
-        const target = ProjectState.getTargetById(editTarget);
+        const target = State.getTargetById(editTarget);
         const xml = target.xml;
         const dom = Blockly.utils.xml.textToDom(xml);
         Blockly.Xml.domToWorkspace(dom, workspace);
     });
 
+    // reloading character list on update
+    // svelte doesnt have a reload component thing yet
+    // so just do this lol
+    let _reloadCharactersComponent = 1;
+    function reloadCharactersComponent() {
+        _reloadCharactersComponent = 0;
+        setTimeout(() => {
+            _reloadCharactersComponent = 1;
+        }, 1);
+    }
+    // reload properties component
+    let _reloadPropertiesComponent = 1;
+    function reloadPropertiesComponent() {
+        _reloadPropertiesComponent = 0;
+        setTimeout(() => {
+            _reloadPropertiesComponent = 1;
+        }, 1);
+    }
+    // reload components on other menus being changed
+    Emitter.on("RELOAD_IMAGE_COMPONENTS", () => {
+        reloadCharactersComponent();
+        reloadPropertiesComponent();
+    });
+
     // character list
-    function newCharacter() {}
+    function newCharacter() {
+        // reload since character list updated and svelte doesnt know that
+        reloadCharactersComponent();
+    }
+
+    // properties menu
+    function switchCostume(e) {
+        playSound("tabswitch");
+        const idx = e.target.selectedIndex;
+        const target = State.getTargetById(editTarget);
+        target.startCostume = target.costumes[idx];
+        reloadCharactersComponent();
+    }
 </script>
 
 <NavigationBar>
@@ -484,15 +516,21 @@
                     </button>
                 </div>
                 <div class="characterTabWrapper">
-                    {#if currentCharacterTab == "properties"}
+                    {#if currentCharacterTab == "properties" && _reloadPropertiesComponent}
                         <div class="properties">
-                            <div style="height:8px" />
+                            <p style="margin-block:5px">
+                                • {State.getTargetById(editTarget).name}
+                            </p>
                             <label>
                                 Start as
-                                <select>
-                                    <option>Apple</option>
+                                <select on:change={switchCostume}>
+                                    {#each State.getTargetById(editTarget).costumes as costumeID}
+                                        <option>
+                                            {State.getImageById(costumeID).name}
+                                        </option>
+                                    {/each}
                                 </select>
-                                costume
+                                image
                             </label>
                             <div style="display:flex;flex-direction:row">
                                 <div>
@@ -532,8 +570,30 @@
                             </div>
                         </div>
                     {/if}
-                    {#if currentCharacterTab == "characters"}
+                    {#if currentCharacterTab == "characters" && _reloadCharactersComponent}
                         <div class="characters">
+                            {#each State.currentProject.characters as character}
+                                <div class="character-preview-div">
+                                    <button
+                                        class="box"
+                                        data-selected={editTarget ===
+                                            character.id}
+                                        on:click={() => newCharacter()}
+                                    >
+                                        <img
+                                            alt={character.name}
+                                            title={character.name}
+                                            class="character-image-preview"
+                                            src={State.getImageById(
+                                                character.startCostume
+                                            ).image}
+                                        />
+                                    </button>
+                                    <p class="character-preview-name">
+                                        {character.name}
+                                    </p>
+                                </div>
+                            {/each}
                             <div class="character-preview-div">
                                 <button
                                     class="box"
@@ -741,8 +801,16 @@
     }
 
     .properties {
+        margin-left: 6px;
         display: flex;
         flex-direction: column;
+    }
+    .characters {
+        width: 100%;
+        overflow-x: auto;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
     }
 
     .character-preview-div {
