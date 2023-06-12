@@ -1,0 +1,14 @@
+[
+    {
+        "name": "Blank",
+        "image": "https://clamp-coding.vercel.app/images/empty64.png"
+    },
+    {
+        "name": "Apple",
+        "image": "/images/apple.png"
+    },
+    {
+        "name": "Banana",
+        "image": "/images/library/image/banana.png"
+    }
+]

@@ -8,6 +8,8 @@
     import FileSaver from "file-saver";
     import fileDialog from "file-dialog";
 
+    import ImageLibrary from "./library.json";
+
     let selectedCostume = "";
     // target is an ID, not the character object
     export let target;
@@ -25,12 +27,20 @@
         Emitter.emit("RELOAD_IMAGE_COMPONENTS");
     }
 
+    function playSound(name) {
+        const audio = new Audio(`/sounds/${name}.mp3`);
+        audio.play();
+        audio.volume = 0.5;
+    }
+
     function selectCostume(id) {
+        playSound("tabswitch");
         selectedCostume = id;
         reloadComponent();
     }
 
     function newCostume() {
+        playSound("confirm");
         const imageObject = State.createImage(
             "Image",
             "https://clamp-coding.vercel.app/images/empty64.png"
@@ -41,6 +51,7 @@
         reloadEditorComponents();
     }
     function importCostume() {
+        playSound("tabswitch");
         // ask for file input
         fileDialog({ accept: "image/*" }).then((files) => {
             if (!files) return;
@@ -65,6 +76,8 @@
                 selectedCostume = imageObject.id;
                 reloadComponent();
                 reloadEditorComponents();
+
+                playSound("confirm");
             };
             // read file
             fr.readAsDataURL(file);
@@ -89,6 +102,8 @@
             character.startCostume = character.costumes[0];
         }
 
+        playSound("explode");
+
         reloadComponent();
         reloadEditorComponents();
 
@@ -99,6 +114,8 @@
         FileSaver.saveAs(blob, fileName);
     }
     function exportCostume() {
+        playSound("tabswitch");
+
         if (!selectedCostume) return;
         const costumeObject = State.getImageById(selectedCostume);
         // .image is either a url or data url btw
@@ -136,8 +153,57 @@
                 .catch(() => alert("Failed to download the image."));
         }
     }
+    // image libraru
+    let isImageLibraryOpen = false;
+    function openCostumeLibrary() {
+        playSound("tabswitch");
+        isImageLibraryOpen = true;
+    }
+    function importLibraryImage(image) {
+        playSound("confirm");
+        const imageObject = State.createImage(image.name, image.image);
+        State.addImageToCharacter(target, imageObject.id);
+        selectedCostume = imageObject.id;
+        reloadComponent();
+        reloadEditorComponents();
+    }
 </script>
 
+{#if isImageLibraryOpen}
+    <div class="library">
+        <div class="library-title">
+            <h1>Images</h1>
+        </div>
+        <div class="library-contents">
+            {#each ImageLibrary as image}
+                <button
+                    class="library-item"
+                    on:click={() => importLibraryImage(image)}
+                >
+                    <img
+                        src={image.image}
+                        alt={image.name}
+                        title={image.name}
+                        class="library-image"
+                    />
+                    <p style="margin-block:0">{image.name}</p>
+                </button>
+            {/each}
+        </div>
+        <div class="library-footer">
+            <button
+                class="library-exit"
+                on:click={() => {
+                    isImageLibraryOpen = false;
+                    playSound("tabswitch");
+                }}
+            >
+                Cancel
+            </button>
+        </div>
+    </div>
+    <div class="backing" />
+{/if}
 {#if _reloadComponent}
     <div class="main">
         <p style="margin-left:8px">• {State.getTargetById(target).name}</p>
@@ -167,6 +233,19 @@
                     />
                 </button>
                 <p class="costume-name">Import</p>
+            </div>
+            <!-- Choose Library Image Button -->
+            <div class="costume-preview-div">
+                <button class="box" on:click={() => openCostumeLibrary()}>
+                    <img
+                        alt={"Find an Image from a Library"}
+                        title={"Find an Image from a Library"}
+                        class="image-preview"
+                        style="width:32px;height:32px;image-rendering: pixelated;"
+                        src={"/images/gui-icons/folder-magnify-icon.png"}
+                    />
+                </button>
+                <p class="costume-name">Find</p>
             </div>
             {#each State.getTargetById(target).costumes as costumeId}
                 <div class="costume-preview-div">
@@ -223,6 +302,104 @@
         top: 0px;
         width: 100%;
         height: 100%;
+    }
+    .library {
+        position: absolute;
+        left: 10%;
+        top: 10%;
+        width: 80%;
+        height: 80%;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        background: #222;
+        border: white 4px solid;
+
+        z-index: 80000;
+    }
+    .backing {
+        position: absolute;
+        left: 0%;
+        top: 0%;
+        width: 100%;
+        height: 100%;
+
+        background: rgba(0, 0, 0, 0.5);
+
+        z-index: 70000;
+    }
+
+    .library-title {
+        width: 90%;
+        height: 88px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    }
+    .library-contents {
+        width: 100%;
+        height: calc(90% - 88px);
+
+        display: flex;
+        flex-direction: row;
+        align-items: baseline;
+    }
+    .library-footer {
+        width: 90%;
+        height: 10%;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        border-top: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .library-item {
+        width: 128px;
+
+        margin: 6px;
+
+        border: white 4px solid;
+        background: transparent;
+        color: white;
+    }
+    .library-item:focus,
+    .library-item:hover {
+        font-weight: bold;
+    }
+    .library-item:active {
+        background: rgba(255, 255, 255, 0.15);
+        font-weight: bold;
+    }
+    .library-image {
+        width: 100px;
+        height: 100px;
+
+        margin: 4px;
+
+        object-fit: contain;
+    }
+
+    .library-exit {
+        width: 50%;
+        height: 75%;
+
+        background: #b200fe;
+        color: white;
+        border: 0;
+        border-radius: 1000px;
+
+        font-size: 20px;
+    }
+    .library-exit:active {
+        background: #cc53ff;
     }
 
     .image-list {
