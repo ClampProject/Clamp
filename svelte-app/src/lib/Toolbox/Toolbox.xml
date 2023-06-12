@@ -31,6 +31,8 @@
     </category>
     <category name="Appearance" colour="#f3a">
     </category>
+    <category name="Sounds" colour="#f55">
+    </category>
     <category name="Actions" colour="#fa4">
         <label text="Actions" />
         <block type="actions_whenrunclicked" />
@@ -45,5 +47,16 @@
         <label text="" />
         <block type="actions_onflagevent" />
         <block type="actions_fireflagevent" />
+    </category>
+    <category name="Controls" colour="#56f">
+    </category>
+    <category name="Operations" colour="#1d4">
+    </category>
+    <sep class="bt"/>
+    <category name="Variables" colour="#4CBEFF">
+    </category>
+    <category name="Lists" colour="#4C9BFF">
+    </category>
+    <category name="Tables" colour="#4C65FF">
     </category>
 </xml>
