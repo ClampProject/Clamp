@@ -30,6 +30,8 @@
         </block>
     </category>
     <category name="Appearance" colour="#f3a">
+        <block type="appearance_showCharacter" />
+        <block type="appearance_hideCharacter" />
     </category>
     <category name="Sounds" colour="#f55">
     </category>
@@ -41,6 +43,13 @@
             <value name="TEXT">
                 <shadow type="generic_text">
                     <field name="TEXT">Hello!</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="actions_waitSeconds">
+            <value name="TIME">
+                <shadow type="generic_number">
+                    <field name="NUMBER">10</field>
                 </shadow>
             </value>
         </block>

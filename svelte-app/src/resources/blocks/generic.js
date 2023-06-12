@@ -41,6 +41,27 @@ function register() {
         const code = `String(${JSON.stringify(TEXT)})`;
         return [code, javascriptGenerator.ORDER_NONE];
     })
+    // boolean
+    registerBlock(`${categoryPrefix}boolean`, {
+        message0: '%1',
+        args0: [
+            {
+                "type": "field_dropdown",
+                "name": "STATE",
+                "options": [
+                    ["True", "true"], 
+                    ["False", "false"], 
+                    ["Random", "Boolean(Math.round(Math.random()))"]
+                ]
+            }
+        ],
+        output: "Boolean",
+        inputsInline: true,
+        colour: categoryColor
+    }, (block) => {
+        const code = block.getFieldValue('STATE');
+        return [code, javascriptGenerator.ORDER_NONE];
+    })
 }
 
 export default register;

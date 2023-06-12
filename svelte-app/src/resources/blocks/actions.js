@@ -14,6 +14,25 @@ function flagImage(color) {
 }
 
 function register() {
+    // wait () seconds
+    registerBlock(`${categoryPrefix}waitSeconds`, {
+        message0: 'wait %1 seconds',
+        args0: [
+            {
+                "type": "input_value",
+                "name": "TIME",
+                "check": "Number"
+            }
+        ],
+        previousStatement: null,
+        nextStatement: null,
+        inputsInline: true,
+        colour: categoryColor
+    }, (block) => {
+        const TIME = javascriptGenerator.valueToCode(block, 'TIME', javascriptGenerator.ORDER_ATOMIC);
+        const code = `await new Promise(resolve => setTimeout(() => resolve(), ${TIME} * 1000));`;
+        return `${code}\n`;
+    })
     // show message ()
     registerBlock(`${categoryPrefix}showmessage`, {
         message0: 'show message %1',
@@ -57,7 +76,7 @@ function register() {
         colour: categoryColor
     }, (block) => {
         const BLOCKS = javascriptGenerator.statementToCode(block, 'BLOCKS');
-        const code = `Emitter.on("RUN_BUTTON", () => { ${BLOCKS} });`;
+        const code = `Emitter.on("RUN_BUTTON", async () => { ${BLOCKS} });`;
         return `${code}\n`;
     })
     // when stop clicked {}
@@ -84,7 +103,7 @@ function register() {
         colour: categoryColor
     }, (block) => {
         const BLOCKS = javascriptGenerator.statementToCode(block, 'BLOCKS');
-        const code = `Emitter.on("STOP_BUTTON", () => { ${BLOCKS} });`;
+        const code = `Emitter.on("STOP_BUTTON", async () => { ${BLOCKS} });`;
         return `${code}\n`;
     })
 
@@ -120,7 +139,7 @@ function register() {
     }, (block) => {
         const FLAG = block.getFieldValue('FLAG');
         const BLOCKS = javascriptGenerator.statementToCode(block, 'BLOCKS');
-        const code = `FlagEmitter.on(${JSON.stringify(FLAG)}, async function() { ${BLOCKS} });`;
+        const code = `FlagEmitter.on(${JSON.stringify(FLAG)}, async () => { ${BLOCKS} });`;
         return `${code}\n`;
     })
     // fire ()

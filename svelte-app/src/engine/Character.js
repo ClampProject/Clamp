@@ -14,6 +14,7 @@ class Character {
         // make these into addon blocks
         this.stretch = { x: 1, y: 1 };
         this.skew = { x: 0, y: 0 };
+        this.hiden = false
 
         // assign to parent character list
         this._engine.characters[this.id] = this;
@@ -156,6 +157,9 @@ class Character {
             skew: this.skew,
             rotate: this.rotation
         });
+
+        // rendering
+        style.display = this.hiden ? 'none' : ''
     }
 
     /**
@@ -165,6 +169,22 @@ class Character {
         if (this._element) {
             this._element.remove();
         }
+    }
+
+    /**
+     * hide this character
+     */
+    hide() {
+        this.hiden = true
+        this.updateCharacter()
+    }
+
+    /**
+     * show this character
+     */
+    show() {
+        this.hiden = false
+        this.updateCharacter()
     }
 }
 

@@ -45,8 +45,10 @@
 
     import registerMovement from "../resources/blocks/movement.js";
     import registerActions from "../resources/blocks/actions.js";
+    import registerAppearance from "../resources/blocks/appearance.js";
     registerMovement();
     registerActions();
+    registerAppearance();
 
     const en = {
         rtl: false,
