@@ -1,6 +1,5 @@
 <xml>
     <category name="Movement" colour="#0bf">
-        <label text="Movement" />
         <block type="movement_gotoxy">
             <value name="X">
                 <shadow type="generic_number">
@@ -30,14 +29,12 @@
         </block>
     </category>
     <category name="Appearance" colour="#f3a">
-        <label text="Appearance" />
         <block type="appearance_showCharacter" />
         <block type="appearance_hideCharacter" />
     </category>
     <category name="Sounds" colour="#f55">
     </category>
     <category name="Actions" colour="#fa4">
-        <label text="Actions" />
         <block type="actions_whenrunclicked" />
         <block type="actions_whenstopclicked" />
         <block type="actions_showmessage">
