@@ -224,7 +224,7 @@ function register() {
     }, (block) => {
         const TEXT1 = javascriptGenerator.valueToCode(block, 'TEXT1', javascriptGenerator.ORDER_ATOMIC);
         const TEXT2 = javascriptGenerator.valueToCode(block, 'TEXT2', javascriptGenerator.ORDER_ATOMIC);
-        const code = `${TEXT1} + ${TEXT2}`;
+        const code = `String(${TEXT1}) + String(${TEXT2})`;
         return [`(${code})`, javascriptGenerator.ORDER_NONE];
     })
     // length of ()
@@ -244,7 +244,7 @@ function register() {
         colour: categoryColor
     }, (block) => {
         const TEXT1 = javascriptGenerator.valueToCode(block, 'TEXT1', javascriptGenerator.ORDER_ATOMIC);
-        const code = `${TEXT1}.length`;
+        const code = `String(${TEXT1}).length`;
         return [`(${code})`, javascriptGenerator.ORDER_NONE];
     })
     // letter () of ()
@@ -272,7 +272,7 @@ function register() {
     }, (block) => {
         const INDEX = javascriptGenerator.valueToCode(block, 'INDEX', javascriptGenerator.ORDER_ATOMIC);
         const TEXT = javascriptGenerator.valueToCode(block, 'TEXT', javascriptGenerator.ORDER_ATOMIC);
-        const code = `${TEXT}.charAt(${INDEX} - 1)`;
+        const code = `String(${TEXT}).charAt(${INDEX} - 1)`;
         return [`(${code})`, javascriptGenerator.ORDER_NONE];
     })
     // letters from () to () in ()
@@ -308,7 +308,7 @@ function register() {
         const INDEX1 = javascriptGenerator.valueToCode(block, 'INDEX1', javascriptGenerator.ORDER_ATOMIC);
         const INDEX2 = javascriptGenerator.valueToCode(block, 'INDEX2', javascriptGenerator.ORDER_ATOMIC);
         const TEXT = javascriptGenerator.valueToCode(block, 'TEXT', javascriptGenerator.ORDER_ATOMIC);
-        const code = `${TEXT}.substring(${INDEX1} - 1, ${INDEX2})`;
+        const code = `String(${TEXT}).substring(${INDEX1} - 1, ${INDEX2})`;
         return [`(${code})`, javascriptGenerator.ORDER_NONE];
     })
     // () includes ()?
@@ -336,7 +336,7 @@ function register() {
     }, (block) => {
         const TEXT1 = javascriptGenerator.valueToCode(block, 'TEXT1', javascriptGenerator.ORDER_ATOMIC);
         const TEXT2 = javascriptGenerator.valueToCode(block, 'TEXT2', javascriptGenerator.ORDER_ATOMIC);
-        const code = `${TEXT1}.includes(${TEXT2})`;
+        const code = `String(${TEXT1}).includes(String(${TEXT2}))`;
         return [`(${code})`, javascriptGenerator.ORDER_NONE];
     })
     // [index/last index] of () in ()
@@ -373,7 +373,7 @@ function register() {
         const TYPE = block.getFieldValue('TYPE');
         const LOOKING = javascriptGenerator.valueToCode(block, 'LOOKING', javascriptGenerator.ORDER_ATOMIC);
         const TEXT = javascriptGenerator.valueToCode(block, 'TEXT', javascriptGenerator.ORDER_ATOMIC);
-        const code = `${TEXT}.${TYPE}(${LOOKING}) + 1`;
+        const code = `String(${TEXT}).${TYPE}(String(${LOOKING})) + 1`;
         return [`(${code})`, javascriptGenerator.ORDER_NONE];
     })
     // () [starts/ends] with ()?
@@ -410,7 +410,7 @@ function register() {
         const TYPE = block.getFieldValue('TYPE');
         const TEXT1 = javascriptGenerator.valueToCode(block, 'TEXT1', javascriptGenerator.ORDER_ATOMIC);
         const TEXT2 = javascriptGenerator.valueToCode(block, 'TEXT2', javascriptGenerator.ORDER_ATOMIC);
-        const code = `${TEXT1}.${TYPE}(${TEXT2})`;
+        const code = `String(${TEXT1}).${TYPE}(String(${TEXT2}))`;
         return [`(${code})`, javascriptGenerator.ORDER_NONE];
     })
 
@@ -457,7 +457,7 @@ function register() {
         const REPLACE = javascriptGenerator.valueToCode(block, 'REPLACE', javascriptGenerator.ORDER_ATOMIC);
         const WITH = javascriptGenerator.valueToCode(block, 'WITH', javascriptGenerator.ORDER_ATOMIC);
 
-        const code = `${TEXT}.${TYPE}(${REPLACE}, ${WITH})`;
+        const code = `String(${TEXT}).${TYPE}(String(${REPLACE}), String(${WITH}))`;
         return [`(${code})`, javascriptGenerator.ORDER_NONE];
     })
     // convert () to [UPPERCASE/lowercase]
@@ -486,7 +486,7 @@ function register() {
     }, (block) => {
         const CASING = block.getFieldValue('CASING');
         const TEXT = javascriptGenerator.valueToCode(block, 'TEXT', javascriptGenerator.ORDER_ATOMIC);
-        const code = `${TEXT}.${CASING}()`;
+        const code = `String(${TEXT}).${CASING}()`;
         return [`(${code})`, javascriptGenerator.ORDER_NONE];
     })
 
