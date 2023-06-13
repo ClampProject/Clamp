@@ -41,7 +41,7 @@ function register() {
         const OPERATION = block.getFieldValue('OPERATION');
         const X = javascriptGenerator.valueToCode(block, 'X', javascriptGenerator.ORDER_ATOMIC);
         const Y = javascriptGenerator.valueToCode(block, 'Y', javascriptGenerator.ORDER_ATOMIC);
-        const code = `Number(${X}) ${OPERATION} Number(${Y})`;
+        const code = `${X} ${OPERATION} ${Y}`;
         return [`(${code})`, javascriptGenerator.ORDER_NONE];
     })
     // random [number/decimal number] between () and ()
@@ -78,17 +78,18 @@ function register() {
         const TYPE = block.getFieldValue('TYPE');
         const MIN = javascriptGenerator.valueToCode(block, 'MIN', javascriptGenerator.ORDER_ATOMIC);
         const MAX = javascriptGenerator.valueToCode(block, 'MAX', javascriptGenerator.ORDER_ATOMIC);
-        const code = `${TYPE}(randomNumberGen(Number(${MIN}), Number(${MAX})))`;
+        const code = `${TYPE}(randomNumberGen(${MIN}, ${MAX}))`;
         return [`(${code})`, javascriptGenerator.ORDER_NONE];
     })
     // () [=/≠/</>/≤/≥] ()
+    // this block shouldnt be static
     registerBlock(`${categoryPrefix}equaloperations`, {
         message0: '%1 %2 %3',
         args0: [
             {
                 "type": "field_number",
                 "name": "X",
-                "check": "Number",
+                "check": ["Number", "String"],
                 "value": 1,
                 "acceptsBlocks": true
             },
@@ -107,7 +108,7 @@ function register() {
             {
                 "type": "field_number",
                 "name": "Y",
-                "check": "Number",
+                "check": ["Number", "String"],
                 "value": 2,
                 "acceptsBlocks": true
             },

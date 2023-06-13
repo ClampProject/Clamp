@@ -32,6 +32,8 @@ function register() {
     }, (block) => {
         const ITERATIONS = javascriptGenerator.valueToCode(block, 'ITERATIONS', javascriptGenerator.ORDER_ATOMIC);
         const BLOCKS = javascriptGenerator.statementToCode(block, 'BLOCKS');
+        // bro just make some actual variable security then :skull:
+        // or do what scratch did and dont use var names in export
         // we do var () of <Array> because we dont need an iteration variable
         // but that means we still need to have an array sooo
         const array = `Array.from(Array(${ITERATIONS}).keys()).map(() => { return 0; })`;

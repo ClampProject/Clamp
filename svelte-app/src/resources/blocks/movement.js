@@ -31,7 +31,7 @@ function register() {
     }, (block) => {
         const X = javascriptGenerator.valueToCode(block, 'X', javascriptGenerator.ORDER_ATOMIC);
         const Y = javascriptGenerator.valueToCode(block, 'Y', javascriptGenerator.ORDER_ATOMIC);
-        const code = `character.gotoXY(Number(${X}), Number(${Y}));`;
+        const code = `character.gotoXY(${X}, ${Y});`;
         return `${code}\n`;
     })
     // go to random spot
@@ -79,7 +79,7 @@ function register() {
     }, (block) => {
         const XY = block.getFieldValue('XY');
         const POS = javascriptGenerator.valueToCode(block, 'POS', javascriptGenerator.ORDER_ATOMIC);
-        const code = `character.set${XY}(Number(${POS}));`;
+        const code = `character.set${XY}(${POS});`;
         return `${code}\n`;
     })
     // change [x/y] to ()
@@ -115,7 +115,7 @@ function register() {
     }, (block) => {
         const XY = block.getFieldValue('XY');
         const POS = javascriptGenerator.valueToCode(block, 'POS', javascriptGenerator.ORDER_ATOMIC);
-        const code = `character.change${XY}(Number(${POS}));`;
+        const code = `character.change${XY}(${POS});`;
         return `${code}\n`;
     })
 
@@ -140,7 +140,7 @@ function register() {
         colour: categoryColor
     }, (block) => {
         const ANGLE = javascriptGenerator.valueToCode(block, 'ANGLE', javascriptGenerator.ORDER_ATOMIC);
-        const code = `character.rotateTo(Number(${ANGLE}));`;
+        const code = `character.rotateTo(${ANGLE});`;
         return `${code}\n`;
     })
     // turn [left/right] by ()
@@ -187,7 +187,7 @@ function register() {
     }, (block) => {
         const DIR = block.getFieldValue('DIR');
         const ANGLE = javascriptGenerator.valueToCode(block, 'ANGLE', javascriptGenerator.ORDER_ATOMIC);
-        const code = `character.rotateBy(0 ${DIR} Number(${ANGLE}));`;
+        const code = `character.rotateBy(0 ${DIR} ${ANGLE});`;
         return `${code}\n`;
     })
     // rotate to a random direction
