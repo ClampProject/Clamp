@@ -32,6 +32,8 @@ class Character {
 
     // CHARACTER STUFF
 
+    // MOVEMENT
+
     /**
      * Moves the character to the specified location.
      * @param {number} x 
@@ -109,6 +111,46 @@ class Character {
         this.updateCharacter();
     }
 
+    // ROTATION
+
+    /**
+     * Sets the direction to this angle.
+     * @param {number} angle 
+     */
+    rotateTo(angle) {
+        this.rotation = angle;
+        this.updateCharacter();
+    }
+    /**
+     * Rotates the direction by this angle.
+     * @param {number} angle 
+     */
+    rotateBy(angle) {
+        if (typeof this.rotation === "undefined") {
+            this.rotation = 0;
+        }
+        this.rotation += angle;
+        this.updateCharacter();
+    }
+
+    // DISPLAY
+
+    /**
+     * hide this character
+     */
+    hide() {
+        this.hidden = true;
+        this.updateCharacter();
+    }
+
+    /**
+     * show this character
+     */
+    show() {
+        this.hidden = false;
+        this.updateCharacter();
+    }
+
     // INTERNAL USE FUNCTIONS BELOW
     // probably
 
@@ -155,7 +197,7 @@ class Character {
                 y: this.size * this.stretch.y,
             },
             skew: this.skew,
-            rotate: this.rotation
+            rotate: (0 - this.rotation)
         });
 
         // display styles
@@ -169,22 +211,6 @@ class Character {
         if (this._element) {
             this._element.remove();
         }
-    }
-
-    /**
-     * hide this character
-     */
-    hide() {
-        this.hidden = true;
-        this.updateCharacter();
-    }
-
-    /**
-     * show this character
-     */
-    show() {
-        this.hidden = false;
-        this.updateCharacter();
     }
 }
 

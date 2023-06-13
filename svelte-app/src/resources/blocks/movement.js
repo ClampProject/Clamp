@@ -118,6 +118,121 @@ function register() {
         const code = `character.change${XY}(Number(${POS}));`;
         return `${code}\n`;
     })
+
+    // rotation
+
+    // rotate to ()
+    // (degrees symbol is added by angle field)
+    registerBlock(`${categoryPrefix}rotateto`, {
+        message0: 'rotate to %1',
+        args0: [
+            {
+                "type": "field_angle",
+                "name": "ANGLE",
+                "check": "Number",
+                "angle": 0,
+                "acceptsBlocks": true
+            },
+        ],
+        previousStatement: null,
+        nextStatement: null,
+        inputsInline: true,
+        colour: categoryColor
+    }, (block) => {
+        const ANGLE = javascriptGenerator.valueToCode(block, 'ANGLE', javascriptGenerator.ORDER_ATOMIC);
+        const code = `character.rotateTo(Number(${ANGLE}));`;
+        return `${code}\n`;
+    })
+    // turn [left/right] by ()
+    // (degrees symbol is added by angle field)
+    registerBlock(`${categoryPrefix}turndirby`, {
+        message0: 'turn %1 by %2',
+        args0: [
+            {
+                "type": "field_dropdown",
+                "name": "DIR",
+                "options": [
+                    [
+                        {
+                            "src": "/images/gui-icons/arrow-rotate-right.png",
+                            "width": 24,
+                            "height": 24,
+                            "alt": "Right"
+                        },
+                        "-"
+                    ],
+                    [
+                        {
+                            "src": "/images/gui-icons/arrow-rotate-left.png",
+                            "width": 24,
+                            "height": 24,
+                            "alt": "Left"
+                        },
+                        "+"
+                    ]
+                ]
+            },
+            {
+                "type": "field_angle",
+                "name": "ANGLE",
+                "check": "Number",
+                "angle": 12,
+                "acceptsBlocks": true
+            },
+        ],
+        previousStatement: null,
+        nextStatement: null,
+        inputsInline: true,
+        colour: categoryColor
+    }, (block) => {
+        const DIR = block.getFieldValue('DIR');
+        const ANGLE = javascriptGenerator.valueToCode(block, 'ANGLE', javascriptGenerator.ORDER_ATOMIC);
+        const code = `character.rotateBy(0 ${DIR} Number(${ANGLE}));`;
+        return `${code}\n`;
+    })
+    // rotate to a random direction
+    registerBlock(`${categoryPrefix}rotaterandom`, {
+        message0: 'rotate to a random direction',
+        previousStatement: null,
+        nextStatement: null,
+        inputsInline: true,
+        colour: categoryColor
+    }, () => {
+        const code = `character.rotateTo(Math.round(Math.random() * 360));`;
+        return `${code}\n`;
+    })
+
+    // RETURN BLOCKS
+
+    // [x/y] position
+    registerBlock(`${categoryPrefix}getxy`, {
+        message0: '%1 position',
+        args0: [
+            {
+                "type": "field_dropdown",
+                "name": "AXIS",
+                "options": [
+                    ["x", "x"],
+                    ["y", "y"]
+                ]
+            },
+        ],
+        output: ["Number"],
+        colour: categoryColor
+    }, (block) => {
+        const AXIS = block.getFieldValue('AXIS');
+        const code = `character.position[${JSON.stringify(AXIS)}]`;
+        return [`(${code})`, javascriptGenerator.ORDER_NONE];
+    })
+    // rotation
+    registerBlock(`${categoryPrefix}getrotation`, {
+        message0: 'rotation',
+        output: ["Number"],
+        colour: categoryColor
+    }, () => {
+        const code = `character.rotation`;
+        return [`(${code})`, javascriptGenerator.ORDER_NONE];
+    })
 }
 
 export default register;

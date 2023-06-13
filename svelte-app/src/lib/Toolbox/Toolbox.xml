@@ -4,6 +4,13 @@
         <block type="movement_gotorandom" />
         <block type="movement_setxy" />
         <block type="movement_changexy" />
+        <label text="" />
+        <block type="movement_rotateto" />
+        <block type="movement_turndirby" />
+        <block type="movement_rotaterandom" />
+        <label text="" />
+        <block type="movement_getxy" />
+        <block type="movement_getrotation" />
     </category>
     <category name="Appearance" colour="#f3a">
         <block type="appearance_showCharacter" />

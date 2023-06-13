@@ -42,7 +42,7 @@ function register() {
             {
                 "type": "field_input",
                 "name": "TEXT",
-                "check": "String",
+                "check": null,
                 "text": "Hello!",
                 "acceptsBlocks": true
             }
