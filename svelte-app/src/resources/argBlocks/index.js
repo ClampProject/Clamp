@@ -71,7 +71,7 @@ export default (arg, color, name, block) => {
 
         javascriptGenerator[newBlockName] = (block) => {
             const value = block.getFieldValue(arg.name);
-            return [JSOB.stringify(value), javascriptGenerator.ORDER_NONE];
+            return [JSON.stringify(value), javascriptGenerator.ORDER_NONE];
         }
 
         const oldInit = block.init

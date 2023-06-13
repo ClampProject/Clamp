@@ -32,6 +32,7 @@
     import "blockly/blocks";
 
     import BlocklyComponent from "svelte-blockly";
+    let blocklyToolboxIsVisible = true;
 
     import State from "../resources/state";
     import Emitter from "../resources/emitter";
@@ -49,11 +50,13 @@
     import registerActions from "../resources/blocks/actions.js";
     import registerConditions from "../resources/blocks/conditions.js";
     import registerRepeats from "../resources/blocks/repeats.js";
+    import registerOperations from "../resources/blocks/operations.js";
     registerMovement();
     registerAppearance();
     registerActions();
     registerConditions();
     registerRepeats();
+    registerOperations();
 
     const en = {
         rtl: false,
@@ -472,6 +475,23 @@
                 style={currentTab === "blocks" ? null : "display:none"}
             >
                 <BlocklyComponent {config} locale={en} bind:workspace />
+                <!-- the toolbox takes up a lot of space so theres a button to hide it -->
+                <button
+                    on:click={() => {
+                        blocklyToolboxIsVisible = !blocklyToolboxIsVisible;
+                        workspace
+                            .getFlyout()
+                            .setVisible(blocklyToolboxIsVisible);
+                    }}
+                    class="hide-toolbox"
+                >
+                    <img
+                        src={blocklyToolboxIsVisible
+                            ? "/images/gui-icons/arrow-rotate-left.png"
+                            : "/images/gui-icons/arrow-rotate-right.png"}
+                        alt="Hide Toolbox"
+                    />
+                </button>
             </div>
             {#if currentTab === "images"}
                 <div class="imagesWrapper">
@@ -820,6 +840,37 @@
         position: relative;
         width: 100%;
         height: calc(100% - 2.5rem);
+    }
+
+    .hide-toolbox {
+        position: absolute;
+        bottom: 0px;
+        left: 0px;
+
+        width: 32px;
+        height: 32px;
+        margin: 0;
+        padding: 0;
+
+        background: transparent;
+        border: 0;
+        border-radius: 0;
+
+        z-index: 100000;
+
+        cursor: pointer;
+    }
+    .hide-toolbox > img {
+        position: absolute;
+        bottom: 0px;
+        left: 0px;
+
+        width: 32px;
+        height: 32px;
+        margin: 0;
+        padding: 0;
+
+        image-rendering: pixelated;
     }
 
     .characterTabWrapper {

@@ -4,6 +4,7 @@
     import GameEngine from "../../engine";
 
     import Emitter from "../../resources/emitter";
+    import InputDevice from "../../resources/inputDevice";
     import ClampEditorCommunicator from "../../resources/editorCommunicator";
     import FlagEmitter from "../../resources/emitter/FlagEmitter.js";
 
@@ -27,12 +28,14 @@
             "Engine",
             "Emitter",
             "ClampEditor",
+            "InputDevice",
             code
         )(
             new FlagEmitter(),
             gameEngine,
             currentEmitter,
-            ClampEditorCommunicator
+            ClampEditorCommunicator,
+            InputDevice
         );
     }
 
@@ -56,6 +59,9 @@
 
             transformStyle = `scaleX(${multipliers.w}) scaleY(${multipliers.h})`;
         }, 10);
+
+        InputDevice._canvas = canvas;
+        InputDevice._mountEvents();
 
         const engineSettings = {
             parent: canvas,

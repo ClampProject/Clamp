@@ -34,6 +34,7 @@
     </category>
     <category name="Conditions" colour="#ffb900">
         <block type="conditions_ifthen" />
+        <block type="conditions_ifthenelse" />
         <block type="conditions_waituntil" />
     </category>
     <category name="Repeats" colour="#0ad">
@@ -42,6 +43,11 @@
         <block type="repeats_forever" />
     </category>
     <category name="Operations" colour="#1d4">
+        <block type="operations_mathoperations" />
+        <block type="operations_equaloperations" />
+        <block type="operations_andor" />
+        <block type="operations_not" />
+        <block type="operations_randomnumber" />
     </category>
     <category name="Controls" colour="#bc55ff">
     </category>
