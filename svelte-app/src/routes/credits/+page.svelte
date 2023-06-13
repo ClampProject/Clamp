@@ -76,6 +76,23 @@
             />
             <code>arrow-rotate-clockwise-icon</code>.
         </p>
+        <p>
+            <img alt="loop-icon" src="/images/gui-icons/loop-icon.png" />
+            <code>loop-icon</code>
+            was edited by JeremyGamer13. The original is
+            <img
+                alt="arrow-rotate-clockwise-icon"
+                src="/images/gui-icons/arrow-rotate-clockwise-icon.png"
+            />
+            <code>arrow-rotate-clockwise-icon</code>.
+        </p>
+        <p>
+            <img alt="mouse-icon" src="/images/gui-icons/mouse-icon.png" />
+            <code>mouse-icon</code>
+            was edited by JeremyGamer13. The original is
+            <img alt="cursor-icon" src="/images/gui-icons/cursor-icon.png" />
+            <code>cursor-icon</code>.
+        </p>
     </details>
     <p>
         You can find the license

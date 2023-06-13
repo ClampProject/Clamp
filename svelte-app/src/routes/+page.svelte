@@ -45,11 +45,15 @@
     registerGeneric();
 
     import registerMovement from "../resources/blocks/movement.js";
-    import registerActions from "../resources/blocks/actions.js";
     import registerAppearance from "../resources/blocks/appearance.js";
+    import registerActions from "../resources/blocks/actions.js";
+    import registerConditions from "../resources/blocks/conditions.js";
+    import registerRepeats from "../resources/blocks/repeats.js";
     registerMovement();
-    registerActions();
     registerAppearance();
+    registerActions();
+    registerConditions();
+    registerRepeats();
 
     const en = {
         rtl: false,

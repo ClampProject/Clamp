@@ -3,6 +3,7 @@ import registerBlock from '../register';
 
 const categoryPrefix = 'actions_';
 const categoryColor = '#fa4';
+const frameTime = 1000 / 60; // how much time before the next iteration in a loop
 
 function flagImage(color) {
     return {
@@ -33,6 +34,27 @@ function register() {
     }, (block) => {
         const TIME = javascriptGenerator.valueToCode(block, 'TIME', javascriptGenerator.ORDER_ATOMIC);
         const code = `await new Promise(resolve => setTimeout(() => resolve(), ${TIME} * 1000));`;
+        return `${code}\n`;
+    })
+    // wait one frame
+    registerBlock(`${categoryPrefix}waitframe`, {
+        message0: 'wait one frame',
+        previousStatement: null,
+        nextStatement: null,
+        inputsInline: true,
+        colour: categoryColor
+    }, () => {
+        const code = `await new Promise(resolve => setTimeout(() => resolve(), ${frameTime}));`;
+        return `${code}\n`;
+    })
+    // stop this script
+    registerBlock(`${categoryPrefix}stopscript`, {
+        message0: 'stop this script',
+        previousStatement: null,
+        inputsInline: true,
+        colour: categoryColor
+    }, () => {
+        const code = `return;`;
         return `${code}\n`;
     })
     // show message ()
@@ -108,6 +130,33 @@ function register() {
     }, (block) => {
         const BLOCKS = javascriptGenerator.statementToCode(block, 'BLOCKS');
         const code = `Emitter.on("STOP_BUTTON", async () => { ${BLOCKS} });`;
+        return `${code}\n`;
+    })
+    // when mouse clicks me {}
+    registerBlock(`${categoryPrefix}whencharacterclicked`, {
+        message0: 'when %1 clicks me %2 %3',
+        args0: [
+            {
+                "type": "field_image",
+                "src": "/images/gui-icons/mouse-icon.png",
+                "width": 24,
+                "height": 24,
+                "alt": "mouse",
+                "flipRtl": false
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_statement",
+                "name": "BLOCKS"
+            }
+        ],
+        inputsInline: true,
+        colour: categoryColor
+    }, (block) => {
+        const BLOCKS = javascriptGenerator.statementToCode(block, 'BLOCKS');
+        const code = `character.onEvent("CLICKED", async () => { ${BLOCKS} });`;
         return `${code}\n`;
     })
 

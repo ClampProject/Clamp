@@ -1,0 +1,57 @@
+import javascriptGenerator from '../javascriptGenerator';
+import registerBlock from '../register';
+
+const categoryPrefix = 'conditions_';
+const categoryColor = '#ffb900';
+const repeatDelayTime = 1000 / 60; // how much time before the next iteration in a loop
+
+function register() {
+    // if <> then {}
+    registerBlock(`${categoryPrefix}ifthen`, {
+        message0: 'if %1 then %2 %3',
+        args0: [
+            {
+                "type": "input_value",
+                "name": "CONDITION",
+                "check": "Boolean"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_statement",
+                "name": "BLOCKS"
+            }
+        ],
+        previousStatement: null,
+        nextStatement: null,
+        inputsInline: true,
+        colour: categoryColor
+    }, (block) => {
+        const CONDITION = javascriptGenerator.valueToCode(block, 'CONDITION', javascriptGenerator.ORDER_ATOMIC);
+        const BLOCKS = javascriptGenerator.statementToCode(block, 'BLOCKS');
+        const code = `if (${CONDITION ? CONDITION : 'false'}) { ${BLOCKS} };`;
+        return `${code}\n`;
+    })
+    // wait until <>
+    registerBlock(`${categoryPrefix}waituntil`, {
+        message0: 'wait until %1',
+        args0: [
+            {
+                "type": "input_value",
+                "name": "CONDITION",
+                "check": "Boolean"
+            }
+        ],
+        previousStatement: null,
+        nextStatement: null,
+        inputsInline: true,
+        colour: categoryColor
+    }, (block) => {
+        const CONDITION = javascriptGenerator.valueToCode(block, 'CONDITION', javascriptGenerator.ORDER_ATOMIC);
+        const code = `while ((!(${CONDITION ? CONDITION : 'false'})) && !character.disposed) { await new Promise(resolve => setTimeout(() => resolve(), ${repeatDelayTime})); };`;
+        return `${code}\n`;
+    })
+}
+
+export default register;

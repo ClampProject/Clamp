@@ -4,6 +4,7 @@ class Character {
     constructor(id, { parent, image, position, size, rotation, origin, hidden }) {
         this.id = id;
         this._engine = parent;
+        this.disposed = false;
 
         this.currentImage = image;
         this.position = position;
@@ -27,7 +28,29 @@ class Character {
 
         */
 
+        // for event handling
+        this._handlers = [];
+
+        // apply these things
         this.updateCharacter();
+    }
+
+    // EVENT HANDLING
+    onEvent(type, func) {
+        this._handlers.push({ type: type, callback: func });
+    }
+    dropoutEvent(type, func) {
+        const handler = { type: type, callback: func };
+        const idx = this._handlers.indexOf(handler);
+        if (idx === -1) return;
+        this._handlers.splice(idx, 1);
+    }
+    fireEvent(type, ...args) {
+        for (const handler of this._handlers) {
+            if (handler.type === type) {
+                handler.callback(...args);
+            }
+        }
     }
 
     // CHARACTER STUFF
@@ -167,9 +190,21 @@ class Character {
             // so this should be instant
             this._element.src = image.src;
             this._engine._parent.append(this._element);
+            // assign dom events
+            this.assignDOMEvents(this._element);
         }
 
         this.styleCharacter();
+    }
+
+    /**
+     * Assigns required DOM events to the specified character element.
+     */
+    assignDOMEvents(element) {
+        // click
+        element.addEventListener("click", () => {
+            this.fireEvent("CLICKED");
+        });
     }
 
     styleCharacter() {

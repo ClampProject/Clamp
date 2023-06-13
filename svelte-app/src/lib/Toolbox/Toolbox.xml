@@ -21,15 +21,29 @@
     <category name="Actions" colour="#fa4">
         <block type="actions_whenrunclicked" />
         <block type="actions_whenstopclicked" />
-        <block type="actions_showmessage" />
+        <block type="actions_whencharacterclicked" />
+        <label text="" />
         <block type="actions_waitSeconds" />
+        <block type="actions_waitframe" />
+        <block type="actions_showmessage" />
         <label text="" />
         <block type="actions_onflagevent" />
         <block type="actions_fireflagevent" />
+        <label text="" />
+        <block type="actions_stopscript" />
     </category>
-    <category name="Controls" colour="#56f">
+    <category name="Conditions" colour="#ffb900">
+        <block type="conditions_ifthen" />
+        <block type="conditions_waituntil" />
+    </category>
+    <category name="Repeats" colour="#0ad">
+        <block type="repeats_dotimes" />
+        <block type="repeats_repeatuntil" />
+        <block type="repeats_forever" />
     </category>
     <category name="Operations" colour="#1d4">
+    </category>
+    <category name="Controls" colour="#bc55ff">
     </category>
     <sep class="bt"/>
     <category name="Variables" colour="#4CBEFF">
