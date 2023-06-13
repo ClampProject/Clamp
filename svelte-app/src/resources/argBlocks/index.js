@@ -70,8 +70,8 @@ export default (arg, color, name, block) => {
         };
 
         javascriptGenerator[newBlockName] = (block) => {
-            const NUMBER = block.getFieldValue(arg.name);
-            return [NUMBER, javascriptGenerator.ORDER_NONE];
+            const value = block.getFieldValue(arg.name);
+            return [JSOB.stringify(value), javascriptGenerator.ORDER_NONE];
         }
 
         const oldInit = block.init
