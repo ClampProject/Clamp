@@ -47,7 +47,24 @@
         <block type="operations_equaloperations" />
         <block type="operations_andor" />
         <block type="operations_not" />
+        <block type="operations_bools" />
+        <label text="" />
         <block type="operations_randomnumber" />
+        <label text="" />
+        <block type="operations_join" />
+        <block type="operations_lengthof" />
+        <block type="operations_letterof" />
+        <block type="operations_lettersfromtoin" />
+        <label text="" />
+        <block type="operations_includes" />
+        <block type="operations_indexofin" />
+        <block type="operations_startsendswith" />
+        <label text="" />
+        <block type="operations_replacechars" />
+        <block type="operations_casingstring" />
+        <label text="" />
+        <block type="operations_doublemathoperations" />
+        <block type="operations_advancedoperations" />
     </category>
     <category name="Controls" colour="#bc55ff">
     </category>

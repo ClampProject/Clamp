@@ -6,6 +6,7 @@
     import Emitter from "../../resources/emitter";
     import InputDevice from "../../resources/inputDevice";
     import ClampEditorCommunicator from "../../resources/editorCommunicator";
+    import MathPlus from "../../resources/mathPlus";
     import FlagEmitter from "../../resources/emitter/FlagEmitter.js";
 
     let canvas;
@@ -29,13 +30,15 @@
             "Emitter",
             "ClampEditor",
             "InputDevice",
+            "MathPlus",
             code
         )(
             new FlagEmitter(),
             gameEngine,
             currentEmitter,
             ClampEditorCommunicator,
-            InputDevice
+            InputDevice,
+            MathPlus
         );
     }
 

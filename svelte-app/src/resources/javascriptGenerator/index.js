@@ -7,7 +7,7 @@ const { javascriptGenerator } = pkg;
 
 const oldValueToCode = javascriptGenerator.valueToCode 
 javascriptGenerator.valueToCode = function(block, name, order) {
-    const code = oldValueToCode.apply(this, block, name, order)
+    const code = oldValueToCode.apply(this, [block, name, order])
     const input = block.getInput(name)
     const parentType = input.connection.check;
     const childType = input.connection.targetConnection.check;
