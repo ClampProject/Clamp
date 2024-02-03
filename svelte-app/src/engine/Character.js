@@ -254,7 +254,6 @@ class Character {
 
         // display styles
         style.display = this.hidden ? 'none' : '';
-        console.log(this.displayHitbox);
         style.boxShadow = this.displayHitbox ? '0 0 0 1px red' : '';
     }
 
