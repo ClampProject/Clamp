@@ -1,7 +1,7 @@
 [
     {
         "name": "Blank",
-        "image": "https://clamp-coding.vercel.app/images/empty64.png"
+        "image": "/images/empty64.png"
     },
     {
         "name": "Apple",

@@ -125,18 +125,6 @@
           }
         }
         
-        // if (
-        //   !this.targetWorkspace.scrollbar &&
-        //   !this.autoClose &&
-        //   this.targetWorkspace.getFlyout() === this &&
-        //   this.toolboxPosition_ === toolbox.Position.LEFT
-        // ) {
-        //   this.targetWorkspace.translate(
-        //     this.targetWorkspace.scrollX + flyoutWidth,
-        //     this.targetWorkspace.scrollY,
-        //   );
-        // }
-        
         this.width_ = flyoutWidth;
         this.position();
         this.targetWorkspace.resizeContents();
@@ -714,6 +702,21 @@
                                     }}
                                 />
                                 Is Showing?
+                            </label>
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    checked={State.getTargetById(editTarget)
+                                        .visibleHitbox}
+                                    on:change={(event) => {
+                                        playSound("tabswitch");
+                                        const target =
+                                            State.getTargetById(editTarget);
+                                        target.visibleHitbox = event.target.checked;
+                                        reloadPropertiesComponent();
+                                    }}
+                                />
+                                Display Hitbox?
                             </label>
                         </div>
                     {/if}

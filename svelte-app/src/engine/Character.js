@@ -1,7 +1,7 @@
 import generateTransformCSS from "../resources/generateTransformCSS";
 
 class Character {
-    constructor(id, { parent, image, position, size, rotation, origin, hidden }) {
+    constructor(id, { parent, image, position, size, rotation, origin, hidden, displayHitbox }) {
         this.id = id;
         this._engine = parent;
         this.disposed = false;
@@ -16,6 +16,7 @@ class Character {
         this.stretch = { x: 1, y: 1 };
         this.skew = { x: 0, y: 0 };
         this.hidden = hidden;
+        this.displayHitbox = displayHitbox;
 
         // assign to parent character list
         this._engine.characters[this.id] = this;
@@ -174,6 +175,22 @@ class Character {
         this.updateCharacter();
     }
 
+    /**
+     * hide this character
+     */
+    hideHitbox() {
+        this.displayHitbox = true;
+        this.updateCharacter();
+    }
+
+    /**
+     * show this character
+     */
+    showHitbox() {
+        this.displayHitbox = false;
+        this.updateCharacter();
+    }
+
     // INTERNAL USE FUNCTIONS BELOW
     // probably
 
@@ -237,6 +254,8 @@ class Character {
 
         // display styles
         style.display = this.hidden ? 'none' : '';
+        console.log(this.displayHitbox);
+        style.boxShadow = this.displayHitbox ? '0 0 0 1px red' : '';
     }
 
     /**
