@@ -1,5 +1,7 @@
 import Random from '../random';
 import Emitter from '../emitter';
+import BlobAndDataUrl from '../blobanddataurl';
+import proxyFetch from '../proxyFetch';
 
 // this js file contains project details like what characters exist and their workspaces
 const defaultState = {
@@ -177,7 +179,16 @@ class ProjectState {
      * @param {string} url The URL of the image. Can be a Data URI or Website URL.
      * @returns The image object that was added to the image list.
      */
-    static createImage(name, url) {
+    static async createImage(name, url) {
+        try {
+            const res = await proxyFetch(url);
+            const arrayBuffer = await res.arrayBuffer();
+            const blob = BlobAndDataUrl.arrayBufferToBlob(arrayBuffer);
+            const dataUrl = await BlobAndDataUrl.blobToDataURL(blob);
+            url = dataUrl;
+        } catch {
+            // we'll just use the url then...
+        }
         const project = ProjectState.currentProject;
         const imageObject = {
             name: name,
@@ -193,7 +204,16 @@ class ProjectState {
      * @param {string} url The URL of the sound. Can be a Data URI or Website URL.
      * @returns The sound object that was added to the sound list.
      */
-    static createSound(name, url) {
+    static async createSound(name, url) {
+        try {
+            const res = await proxyFetch(url);
+            const arrayBuffer = await res.arrayBuffer();
+            const blob = BlobAndDataUrl.arrayBufferToBlob(arrayBuffer);
+            const dataUrl = await BlobAndDataUrl.blobToDataURL(blob);
+            url = dataUrl;
+        } catch {
+            // we'll just use the url then...
+        }
         const project = ProjectState.currentProject;
         const soundObject = {
             name: name,

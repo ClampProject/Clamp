@@ -64,9 +64,9 @@
         reloadComponent();
     }
 
-    function newCostume() {
+    async function newCostume() {
         playSound("confirm");
-        const imageObject = State.createImage(
+        const imageObject = await State.createImage(
             "Image",
             "https://clamp-coding.vercel.app/images/empty64.png"
         );
@@ -92,10 +92,10 @@
             fr.onerror = () => {
                 alert("Failed to import the image.");
             };
-            fr.onload = () => {
+            fr.onload = async () => {
                 // file readed lets make image
                 const dataUrl = fr.result;
-                const imageObject = State.createImage(costumeName, dataUrl);
+                const imageObject = await State.createImage(costumeName, dataUrl);
 
                 // add image to character
                 State.addImageToCharacter(target, imageObject.id);
@@ -187,9 +187,9 @@
         playSound("tabswitch");
         isImageLibraryOpen = true;
     }
-    function importLibraryImage(image) {
+    async function importLibraryImage(image) {
         playSound("confirm");
-        const imageObject = State.createImage(image.name, image.image);
+        const imageObject = await State.createImage(image.name, image.image);
         State.addImageToCharacter(target, imageObject.id);
         selectedCostume = imageObject.id;
         updateCostumeType();

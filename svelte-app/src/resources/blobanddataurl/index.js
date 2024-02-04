@@ -12,6 +12,25 @@ class BlobAndDataUrl {
         }
         return new Blob([u8arr], { type: mime });
     }
+
+    static blobToDataURL(blob) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onerror = reject;
+            reader.onabort = reject;
+            reader.onload = function (event) {
+                resolve(event.target.result);
+            };
+            reader.readAsDataURL(blob);
+        });
+    }
+
+    static arrayBufferToBlob(arrayBuffer, optMimeType) {
+        if (!optMimeType) {
+            return new Blob([arrayBuffer]);
+        }
+        return new Blob([arrayBuffer], { type: optMimeType });
+    }
 }
 
 export default BlobAndDataUrl;
