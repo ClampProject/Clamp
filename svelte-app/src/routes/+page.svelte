@@ -143,6 +143,7 @@
 
     let playerArea;
     
+    // expose a bunch of internal functions & classes, eventually for custom scripts to use
     onMount(() => {
         exposeWindow({
             Blockly,
@@ -156,6 +157,7 @@
             getWorkspace: () => workspace,
             getCompiler: () => compiler,
             getGeneratedCode: () => lastGeneratedCode,
+            getPlayerArea: () => playerArea,
 
             onMount,
             exposeWindow,
