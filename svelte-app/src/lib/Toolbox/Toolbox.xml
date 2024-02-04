@@ -68,6 +68,8 @@
     </category>
     <category name="Controls" colour="#bc55ff">
         <block type="controls_mousepressed" />
+        <block type="controls_mousex" />
+        <block type="controls_mousey" />
     </category>
     <sep class="bt"/>
     <category name="Variables" colour="#4CBEFF">

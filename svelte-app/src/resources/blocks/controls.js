@@ -26,6 +26,28 @@ function register() {
         const code = `InputDevice.mouse[${JSON.stringify(BUTTON)}]`;
         return [`(${code})`, javascriptGenerator.ORDER_NONE];
     })
+
+    // mouse x
+    registerBlock(`${categoryPrefix}mousex`, {
+        message0: 'mouse x',
+        args0: [],
+        output: ["Number"],
+        colour: categoryColor
+    }, (block) => {
+        const code = `InputDevice.mouse.x`;
+        return [`(${code})`, javascriptGenerator.ORDER_NONE];
+    })
+
+    // mouse y
+    registerBlock(`${categoryPrefix}mousey`, {
+        message0: 'mouse y',
+        args0: [],
+        output: ["Number"],
+        colour: categoryColor
+    }, (block) => {
+        const code = `InputDevice.mouse.y`;
+        return [`(${code})`, javascriptGenerator.ORDER_NONE];
+    })
 }
 
 export default register;
