@@ -39,7 +39,12 @@ const defaultState = {
             id: "_hardcoded_explode",
             data: "https://clamp-coding.vercel.app/sounds/explode.mp3"
         }
-    ]
+    ],
+    // should match the default state provided in compiler/precompile.js
+    settings: {
+        forceLoopPauses: true,
+    },
+    customData: {} // custom scripts can add data here
 };
 
 class ProjectState {
@@ -71,6 +76,8 @@ class ProjectState {
         // these we can use from state directly
         origin.images = state.images;
         origin.sounds = state.sounds;
+        origin.settings = state.settings;
+        origin.customData = state.customData;
         // characters have a workspace property that we cannot save
         for (const character of state.characters) {
             // create a new character and get properties from character into it

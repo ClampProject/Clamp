@@ -1,9 +1,17 @@
 import javascriptGenerator from '../javascriptGenerator';
 import registerBlock from '../register';
 
+import compileVars from '../compiler/compileVars';
+import Precompile from '../compiler/precompile';
+
 const categoryPrefix = 'repeats_';
 const categoryColor = '#0ad';
 const repeatDelayTime = 1000 / 60; // how much time before the next iteration in a loop
+
+const repeatDelayIfEnabled = () => {
+    if (!Precompile.forceLoopPauses) return '';
+    return `await new Promise(resolve => setTimeout(() => resolve(), ${repeatDelayTime}));`;
+};
 
 function register() {
     // do {} () times
@@ -44,16 +52,9 @@ function register() {
     }, (block) => {
         const ITERATIONS = javascriptGenerator.valueToCode(block, 'ITERATIONS', javascriptGenerator.ORDER_ATOMIC);
         const BLOCKS = javascriptGenerator.statementToCode(block, 'BLOCKS');
-        /**
-         * @todo Rewrite this to use a regular for loop.
-         */
-        // bro just make some actual variable security then :skull:
-        // or do what scratch did and dont use var names in export
-        // we do var () of <Array> because we dont need an iteration variable
-        // but that means we still need to have an array sooo
-        const array = `Array.from(Array(${ITERATIONS}).keys()).map(() => { return 0; })`;
-        // var is used so we can overwrite it
-        const code = `for (var ___ of ${array}) { ${BLOCKS} };`;
+        // compileVars.next() is a "random" variable name (just has a different index each use)
+        const variable = compileVars.next();
+        const code = `for (var ${variable} = 0; ${variable} < Number(${ITERATIONS}); ${variable}++) { ${BLOCKS} ${repeatDelayIfEnabled()} };`;
         return `${code}\n`;
     })
     // repeat {} until <>
@@ -92,7 +93,7 @@ function register() {
     }, (block) => {
         const CONDITION = javascriptGenerator.valueToCode(block, 'CONDITION', javascriptGenerator.ORDER_ATOMIC);
         const BLOCKS = javascriptGenerator.statementToCode(block, 'BLOCKS');
-        const code = `while ((!(${CONDITION ? CONDITION : 'false'})) && !character.disposed) { ${BLOCKS} await new Promise(resolve => setTimeout(() => resolve(), ${repeatDelayTime})); };`;
+        const code = `while ((!(${CONDITION ? CONDITION : 'false'})) && !character.disposed) { ${BLOCKS} ${repeatDelayIfEnabled()} };`;
         return `${code}\n`;
     })
     // forever
@@ -124,7 +125,7 @@ function register() {
         colour: categoryColor
     }, (block) => {
         const BLOCKS = javascriptGenerator.statementToCode(block, 'BLOCKS');
-        const code = `while (!character.disposed) { ${BLOCKS} await new Promise(resolve => setTimeout(() => resolve(), ${repeatDelayTime})); };`;
+        const code = `while (!character.disposed) { ${BLOCKS} ${repeatDelayIfEnabled()} };`;
         return `${code}\n`;
     })
 }

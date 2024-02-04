@@ -5,35 +5,82 @@ const INITIALIZE_BEGIN = Date.now(); // it may be useful in development to see h
 const variables = {}; // all variables are stored here instead of a "const variable = 123" for each set block
 // this is so we dont end up with a Scratch for Discord where setting a variable with the name "message" breaks everything
 // im allowed to say that because i worked on S4D lolol
-(async function () {
-    const nameTable = { characters: {}, images: {}, sounds: {} }; // contains the ID: Name for each type
-    nameTable.images["_hardcoded_apple"] = String("Apple");
-    nameTable.sounds["_hardcoded_explode"] = String("Explode");
-    nameTable.characters["_default_apple"] = String("Apple");
-    const characters = {}; // object so we can use invalid characters for character names and still easily access them
-    const images = {};
-    const sounds = {};
-    const characterFunctions = {}; // funny functionz :P this comment is so helpful
-    images["_hardcoded_apple"] = await Kaboom.loadSprite("_hardcoded_apple", "https://kaboomjs.com/sprites/apple.png");
-    sounds["_hardcoded_explode"] = await Kaboom.loadSound("_hardcoded_explode", "https://clamp-coding.vercel.app/sounds/explode.mp3");
-    characters["_default_apple"] = Kaboom.add([
-        Kaboom.sprite("_hardcoded_apple"),
-        Kaboom.pos(320, 180),
-        Kaboom.scale(100),
-        Kaboom.rotate(0),
-    ]); console.log(characters["_default_apple"]);
-    /* extra events & setup */
-    console.log("Content Loaded in", (Date.now() - INITIALIZE_BEGIN), "millseconds");
-    ClampEditor.initializingCode = false; // tell clamp we are finished initializing the project and we can start running the user code
-    Emitter.emitGlobal("CODE_INITIALIZE_UPDATE"); // read above comment for details; this event is for svelte to update since it cant tell the state changed
-    // technically thats a Svelte problem that i could report but its such a specific use-case that i dont think its worth fixing
-    /* ok enough baby stuff LETS RUN SOME CODE */
-    // Character "_default_apple"
-    characterFunctions["_default_apple"] = (character) => { // characterFunctions is defined in setupCode
-        Emitter.on("RUN_BUTTON", () => {
-            character.moveTo(Number((Number(320))), Number((Number(180))));
-        });
+/*
+    SCRIPT: src/resources/compiler/compileVarSection.js
+    DETAILS: This is the section that creates the compileVars API in the headerCode.
+        This file is thrown into the JS Export with no checking,
+        so syntax must be correct.
+*/
 
+const throwAwayVars = {}; // used for repeat loops
+const compileVars = {};
+compileVars._idx = 0;
+compileVars.new = () => {
+    const _listLow = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+    const _listHigh = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+    const _listSym = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '!', '@', '#', '$', '%', '&', '(', ')', '_', '-', '+', '=', '[', ']', '|'];
+    const list = [].concat(_listLow, _listHigh, _listSym);
+    let str = '';
+    for (let i = 0; i < 100; i++) {
+        str += list[Math.round(Math.random() * (list.length - 1))];
+    };
+    return str;
+};
+compileVars.next = () => {
+    compileVars._idx++;
+    return `v${compileVars._idx}`;
+};
+/*
+    SCRIPT: src/resources/compiler/randomNumberGen.js
+    DETAILS: Generates a random number between a min and max.
+        This file is thrown into the JS Export with no checking,
+        so syntax must be correct.
+*/
+
+function randomNumberGen(min, max) {
+    // swap if min is larger
+    if (min > max) {
+        let _v = max;
+        max = min;
+        min = _v;
     }
-    characterFunctions["_default_apple"](characters["_default_apple"]); // run code for character "_default_apple"
-})(Kaboom);
+    // math
+    const difference = max - min;
+    const random = Math.random() * difference;
+    return min + random;
+};
+(async function() {
+const nameTable = {characters:{},images:{},sounds:{}}; // contains the ID: Name for each type
+nameTable.images["_hardcoded_apple"] = String("Apple");
+nameTable.sounds["_hardcoded_explode"] = String("Explode");
+nameTable.characters["_default_apple"] = String("Apple");
+const characters = {}; // object so we can use invalid characters for character names and still easily access them
+const images = {};
+const sounds = {};
+const characterFunctions = {}; // funny functionz :P this comment is so helpful
+images["_hardcoded_apple"] = await Engine.createImage("_hardcoded_apple", "https://clamp-coding.vercel.app/images/apple.png");
+sounds["_hardcoded_explode"] = await Engine.createSound("_hardcoded_explode", "https://clamp-coding.vercel.app/sounds/explode.mp3");
+characters["_default_apple"] = new Engine.Character("_default_apple", {
+                parent: Engine,
+                image: "_hardcoded_apple",
+                position: { x: 320, y: 180 },
+                size: 1,
+                rotation: 0,
+                hidden: (!(true)),
+                displayHitbox: (false),
+                origin: { x: "center", y: "center" },
+            });
+/* extra events & setup */
+console.log("Content Loaded in", (Date.now() - INITIALIZE_BEGIN), "millseconds");
+ClampEditor.initializingCode = false; // tell clamp we are finished initializing the project and we can start running the user code
+Emitter.emitGlobal("CODE_INITIALIZE_UPDATE"); // read above comment for details; this event is for svelte to update since it cant tell the state changed
+// technically thats a Svelte problem that i could report but its such a specific use-case that i dont think its worth fixing
+/* ok enough baby stuff LETS RUN SOME CODE */
+// Character "_default_apple"
+characterFunctions["_default_apple"] = (character) => { // characterFunctions is defined in setupCode
+character.onEvent("CLICKED", async () => {   character.gotoXY(Math.round(Math.random() * 640), Math.round(Math.random() * 360));
+ });
+
+}
+characterFunctions["_default_apple"](characters["_default_apple"]); // run code for character "_default_apple"
+})(Engine);

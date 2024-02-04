@@ -1,5 +1,6 @@
 import xmlToCode from './xmlToCode.js';
 import ProjectState from '../state';
+import Precompile from './precompile';
 
 // compile functions
 import raw_randomNumberGen from './randomNumberGen.js?raw';
@@ -38,7 +39,14 @@ class Compiler {
      * Generates JavaScript code from each character's workspace, images and sounds.
      * This code can then be ran inside the GamePlayer component, or stand-alone in the future.
      */
-    compile() {
+    compile(optPrecompileInfo) {
+        // set precompile info
+        Object.assign(Precompile, ProjectState.currentProject.settings);
+        if (optPrecompileInfo && typeof optPrecompileInfo === 'object') {
+            // any properties not defined in optPrecompileInfo will stay the same
+            Object.assign(Precompile, optPrecompileInfo);
+        }
+
         // set characters & others to the current project state
         this.setCharacters(ProjectState.currentProject.characters);
         this.setImages(ProjectState.currentProject.images);

@@ -74,8 +74,11 @@
             height: 360,
         };
 
+        let shouldLogCode = false;
         Emitter.on("UPDATE", (code) => {
-            console.log(code);
+            if (shouldLogCode) {
+                console.log(code);
+            }
             if (gameEngine && !gameEngine.disposed) {
                 gameEngine.dispose();
             }
@@ -94,6 +97,11 @@
             getGameEngine: () => gameEngine,
             getFullscreen: () => isFullscreen,
             getCanvasTransformStyle: () => transformStyle,
+
+            enableLogOutput: () => {
+                shouldLogCode = true;
+                return shouldLogCode;
+            }
         }, false);
     });
 </script>

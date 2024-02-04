@@ -19,6 +19,8 @@ import Compiler from './compiler';
 import xmlToCode from './compiler/xmlToCode.js';
 import raw_randomNumberGen from './compiler/randomNumberGen.js?raw';
 import raw_compileVarSection from './compiler/compileVarSection.js?raw';
+import compileVars from './compiler/compileVars.js';
+import Precompile from './compiler/precompile.js';
 
 import javascriptGenerator from './javascriptGenerator';
 
@@ -39,7 +41,9 @@ export default (extraExports, includeDefaults) => {
         javascriptGenerator,
 
         Compiler,
+        Precompile,
         xmlToCode,
+        compileVars,
         raw_randomNumberGen,
         raw_compileVarSection,
 

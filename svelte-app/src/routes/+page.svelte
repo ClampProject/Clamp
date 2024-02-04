@@ -199,10 +199,12 @@
         window.onbeforeunload = () => "";
         compiler = new Compiler(workspace);
         // update editing target xml
-        workspace.addChangeListener(() => {
+        workspace.addChangeListener((...args) => {
             const editingTarget = State.getTargetById(editTarget);
             const dom = Blockly.Xml.workspaceToDom(workspace);
             editingTarget.xml = Blockly.Xml.domToText(dom);
+            // fixes problems with certain blocks not working when not attached to anything
+            Blockly.Events.disableOrphans(...args);
         });
 
         // debug
@@ -217,7 +219,7 @@
 
     function updateProgram() {
         playSound("confirm");
-        const code = compiler.compile(workspace);
+        const code = compiler.compile();
         Emitter.update(code);
         lastGeneratedCode = code;
     }
@@ -466,6 +468,16 @@
         style="margin-left:4px;margin-right:4px"
         bind:value={projectName}
     />
+
+    <!-- <NavigationOption on:click={updateProgram}>
+        <img
+            alt="Gear"
+            src="/images/gui-icons/cog-icon.png"
+            width="16"
+            style="margin-left:6px;margin-right:6px;"
+        />
+        <span style="margin-right:6px;">Settings</span>
+    </NavigationOption> -->
 
     <a
         href="/credits"
