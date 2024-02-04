@@ -364,6 +364,65 @@
             });
         });
     }
+    
+    // settings menu handler
+    let isShowingSettingsMenu = false;
+    let settingsMenuList;
+    function updateSettingsList(deleting) {
+        if (deleting) {
+            return Emitter.emitGlobal('EDITOR_SETTINGS_CLOSING', settingsMenuList);
+        }
+        setTimeout(() => {
+            Emitter.emitGlobal('EDITOR_SETTINGS_OPENED', settingsMenuList);
+        });
+    }
+
+    // register settings menu items
+    (() => {
+        let settingsElements;
+        const createElements = () => {
+            const div = document.createElement('div');
+            div.style.width = "100%";
+            // forceLoopPauses
+            const forceLoopPauses = div.appendChild(document.createElement('label'));
+            forceLoopPauses.innerHTML = '<div><h2>Force Loops to pause</h2><p>Used if loops have a chance to repeat forever. Wait blocks will be required inside of forever loops (and loops that may repeat forever) if this is disabled.</p></div>';
+            forceLoopPauses.style.margin = "8px 0";
+            forceLoopPauses.style.display = 'flex';
+            forceLoopPauses.style.alignItems = "center";
+            forceLoopPauses.style.justifyContent = "space-between";
+            const forceLoopPausesCheckbox = forceLoopPauses.appendChild(document.createElement('input'));
+            forceLoopPausesCheckbox.checked = State.currentProject.settings.forceLoopPauses;
+            forceLoopPausesCheckbox.type = 'checkbox';
+            forceLoopPausesCheckbox.style = 'width:48px;height:48px;margin-right:8px;';
+            forceLoopPausesCheckbox.onclick = () => {
+                State.currentProject.settings.forceLoopPauses = forceLoopPausesCheckbox.checked;
+            };
+            // forceConditionalPauses
+            const forceConditionalPauses = div.appendChild(document.createElement('label'));
+            forceConditionalPauses.innerHTML = '<div><h2>Force Conditional Pauses</h2><p>Used if blocks can wait for a statement to be true, but have a chance to wait forever. If this is disabled, the page will freeze when a block is waiting forever.</p></div>';
+            forceConditionalPauses.style.margin = "8px 0";
+            forceConditionalPauses.style.display = 'flex';
+            forceConditionalPauses.style.alignItems = "center";
+            forceConditionalPauses.style.justifyContent = "space-between";
+            const forceConditionalPausesCheckbox = forceConditionalPauses.appendChild(document.createElement('input'));
+            forceConditionalPausesCheckbox.checked = State.currentProject.settings.forceConditionalPauses;
+            forceConditionalPausesCheckbox.type = 'checkbox';
+            forceConditionalPausesCheckbox.style = 'width:48px;height:48px;margin-right:8px;';
+            forceConditionalPausesCheckbox.onclick = () => {
+                State.currentProject.settings.forceConditionalPauses = forceConditionalPausesCheckbox.checked;
+            };
+            return div;
+        };
+        Emitter.on('EDITOR_SETTINGS_OPENED', (settingsMenuList) => {
+            if (!settingsElements) settingsElements = createElements();
+            settingsMenuList.appendChild(settingsElements);
+        });
+        Emitter.on('EDITOR_SETTINGS_CLOSING', () => {
+            if (settingsElements) {
+                settingsElements.remove();
+            }
+        });
+    })();
 
     // editing target changes
     Emitter.on("EDITING_TARGET_UPDATED", () => {
@@ -469,7 +528,18 @@
         bind:value={projectName}
     />
 
-    <!-- <NavigationOption on:click={updateProgram}>
+    <NavigationOption on:click={() => {
+        if (isShowingSettingsMenu) {
+            // we wont be after click
+            updateSettingsList(true);
+        }
+        isShowingSettingsMenu = !isShowingSettingsMenu;
+        if (isShowingSettingsMenu) {
+            // we were just shown
+            updateSettingsList(false);
+        }
+        playSound("tabswitch");
+    }}>
         <img
             alt="Gear"
             src="/images/gui-icons/cog-icon.png"
@@ -477,7 +547,7 @@
             style="margin-left:6px;margin-right:6px;"
         />
         <span style="margin-right:6px;">Settings</span>
-    </NavigationOption> -->
+    </NavigationOption>
 
     <a
         href="/credits"
@@ -498,6 +568,27 @@
 </NavigationBar>
 <div class="main">
     <NavigationMargin />
+    {#if isShowingSettingsMenu}
+        <div class="library">
+            <div class="library-title">
+                <h1>Settings</h1>
+            </div>
+            <div class="library-contents" bind:this={settingsMenuList} />
+            <div class="library-footer">
+                <button
+                    class="library-exit"
+                    on:click={() => {
+                        updateSettingsList(true);
+                        isShowingSettingsMenu = false;
+                        playSound("tabswitch");
+                    }}
+                >
+                    OK
+                </button>
+            </div>
+        </div>
+        <div class="backing" />
+    {/if}
     <div class="sides">
         <div class="left">
             <div class="aboveBlockly">
@@ -1095,5 +1186,87 @@
     }
     .box[data-selected="true"] {
         border: 4px solid #b200fe;
+    }
+
+    /* settings menu */
+    .library {
+        position: absolute;
+        left: 10%;
+        top: 10%;
+        width: 80%;
+        height: 80%;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        background: #222;
+        border: white 4px solid;
+
+        z-index: 80000;
+    }
+    .backing {
+        position: absolute;
+        left: 0%;
+        top: 0%;
+        width: 100%;
+        height: 100%;
+
+        background: rgba(0, 0, 0, 0.5);
+
+        z-index: 70000;
+    }
+
+    .library-title {
+        width: 90%;
+        height: 88px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    }
+    .library-contents {
+        width: calc(100% - 16px);
+        height: calc(90% - 104px);
+        padding: 8px;
+
+        overflow: auto;
+
+        display: flex;
+        flex-wrap: nowrap;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .library-footer {
+        width: 90%;
+        height: 10%;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        border-top: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .library-exit {
+        width: 50%;
+        height: 75%;
+
+        background: rgb(163,0,232);
+        background: linear-gradient(0deg, rgba(163,0,232,1) 49%, rgba(191,41,255,1) 50%);
+        color: white;
+        border: 1px solid white;
+        border-radius: 8px;
+
+        font-size: 20px;
+
+        cursor: pointer;
+    }
+    .library-exit:active {
+        background: rgb(140,0,201);
+        background: linear-gradient(0deg, rgba(140,0,201,1) 48%, rgb(158, 34, 211) 49%);
     }
 </style>

@@ -43,6 +43,7 @@ const defaultState = {
     // should match the default state provided in compiler/precompile.js
     settings: {
         forceLoopPauses: true,
+        forceConditionalPauses: true,
     },
     customData: {} // custom scripts can add data here
 };

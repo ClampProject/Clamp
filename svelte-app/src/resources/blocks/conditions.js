@@ -1,9 +1,16 @@
 import javascriptGenerator from '../javascriptGenerator';
 import registerBlock from '../register';
 
+import Precompile from '../compiler/precompile';
+
 const categoryPrefix = 'conditions_';
 const categoryColor = '#ffb900';
 const repeatDelayTime = 1000 / 60; // how much time before the next iteration in a loop
+
+const repeatCondDelayIfEnabled = () => {
+    if (!Precompile.forceConditionalPauses) return '';
+    return `await new Promise(resolve => setTimeout(() => resolve(), ${repeatDelayTime}));`;
+};
 
 function register() {
     // if <> then {}
@@ -84,7 +91,7 @@ function register() {
         colour: categoryColor
     }, (block) => {
         const CONDITION = javascriptGenerator.valueToCode(block, 'CONDITION', javascriptGenerator.ORDER_ATOMIC);
-        const code = `while ((!(${CONDITION ? CONDITION : 'false'})) && !character.disposed) { await new Promise(resolve => setTimeout(() => resolve(), ${repeatDelayTime})); };`;
+        const code = `while ((!(${CONDITION ? CONDITION : 'false'})) && !character.disposed) { ${repeatCondDelayIfEnabled()} };`;
         return `${code}\n`;
     })
 }
