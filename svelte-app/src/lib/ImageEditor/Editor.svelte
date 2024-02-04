@@ -397,17 +397,19 @@
         width: 50%;
         height: 75%;
 
-        background: #b200fe;
+        background: rgb(163,0,232);
+        background: linear-gradient(0deg, rgba(163,0,232,1) 49%, rgba(191,41,255,1) 50%);
         color: white;
-        border: 0;
-        border-radius: 1000px;
+        border: 1px solid white;
+        border-radius: 8px;
 
         font-size: 20px;
 
         cursor: pointer;
     }
     .library-exit:active {
-        background: #cc53ff;
+        background: rgb(140,0,201);
+        background: linear-gradient(0deg, rgba(140,0,201,1) 48%, rgb(158, 34, 211) 49%);
     }
 
     .image-list {
@@ -462,15 +464,18 @@
 
     .export-button {
         margin: 8px;
-        border: 0;
-        border-radius: 8px;
-        background: #b200fe;
+        padding: 4px 8px;
+        background: rgb(163,0,232);
+        background: linear-gradient(0deg, rgba(163,0,232,1) 49%, rgba(191,41,255,1) 50%);
         color: white;
+        border: 1px solid white;
+        border-radius: 8px;
         font-size: 20px;
         cursor: pointer;
     }
     .export-button:active {
-        background: #d26aff;
+        background: rgb(140,0,201);
+        background: linear-gradient(0deg, rgba(140,0,201,1) 48%, rgb(158, 34, 211) 49%);
     }
 
     .delete-image-button {
