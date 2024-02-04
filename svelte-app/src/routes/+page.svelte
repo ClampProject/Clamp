@@ -57,6 +57,8 @@
     registerConditions();
     registerRepeats();
     registerOperations();
+    
+    import exposeWindow from "../resources/exposeWindow";
 
     const en = {
         rtl: false,
@@ -140,6 +142,32 @@
     let editTarget = State.editingTarget;
 
     let playerArea;
+    
+    onMount(() => {
+        exposeWindow({
+            Blockly,
+            DarkTheme,
+            JSZip,
+            FileSaver,
+            config,
+            en,
+            Toolbox,
+
+            getWorkspace: () => workspace,
+            getCompiler: () => compiler,
+            getGeneratedCode: () => lastGeneratedCode,
+
+            onMount,
+            exposeWindow,
+            registerGeneric,
+            registerMovement,
+            registerAppearance,
+            registerActions,
+            registerConditions,
+            registerRepeats,
+            registerOperations,
+        });
+    });
 
     const tabs = {};
     let currentTab = "blocks";
