@@ -1,3 +1,4 @@
+import javascriptGenerator from '../javascriptGenerator';
 import registerBlock from '../register';
 
 const categoryPrefix = 'controls_';
