@@ -67,6 +67,7 @@
         <block type="operations_advancedoperations" />
     </category>
     <category name="Controls" colour="#bc55ff">
+        <block type="controls_mousepressed" />
     </category>
     <sep class="bt"/>
     <category name="Variables" colour="#4CBEFF">

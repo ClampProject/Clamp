@@ -51,12 +51,14 @@
     import registerConditions from "../resources/blocks/conditions.js";
     import registerRepeats from "../resources/blocks/repeats.js";
     import registerOperations from "../resources/blocks/operations.js";
+    import registerControls from "../resources/blocks/controls.js";
     registerMovement();
     registerAppearance();
     registerActions();
     registerConditions();
     registerRepeats();
     registerOperations();
+    registerControls();
     
     import exposeWindow from "../resources/exposeWindow";
 
@@ -184,6 +186,7 @@
             registerConditions,
             registerRepeats,
             registerOperations,
+            registerControls,
         }, true);
     });
 
