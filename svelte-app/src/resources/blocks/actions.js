@@ -192,7 +192,7 @@ function register() {
     }, (block) => {
         const FLAG = block.getFieldValue('FLAG');
         const BLOCKS = javascriptGenerator.statementToCode(block, 'BLOCKS');
-        const code = `FlagEmitter.on(${FLAG}, async () => { ${BLOCKS} });`;
+        const code = `FlagEmitter.on(${JSON.stringify(FLAG)}, async () => { ${BLOCKS} });`;
         return `${code}\n`;
     })
     // fire ()
@@ -219,7 +219,7 @@ function register() {
         colour: categoryColor
     }, (block) => {
         const FLAG = block.getFieldValue('FLAG');
-        const code = `FlagEmitter.fire(${FLAG});`;
+        const code = `FlagEmitter.fire(${JSON.stringify(FLAG)});`;
         return `${code}\n`;
     })
 }
