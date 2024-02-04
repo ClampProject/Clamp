@@ -143,6 +143,18 @@
 
     let playerArea;
     
+    const tabs = {};
+    let currentTab = "blocks";
+
+    const characterTabs = {};
+    let currentCharacterTab = "properties";
+
+    function playSound(name) {
+        const audio = new Audio(`/sounds/${name}.mp3`);
+        audio.play();
+        audio.volume = 0.5;
+    }
+    
     // expose a bunch of internal functions & classes, eventually for custom scripts to use
     onMount(() => {
         exposeWindow({
@@ -158,9 +170,13 @@
             getCompiler: () => compiler,
             getGeneratedCode: () => lastGeneratedCode,
             getPlayerArea: () => playerArea,
+            getEditorTab: () => currentTab,
+            getEditorCharacterTab: () => currentCharacterTab,
 
             onMount,
             exposeWindow,
+            playSound,
+
             registerGeneric,
             registerMovement,
             registerAppearance,
@@ -168,20 +184,8 @@
             registerConditions,
             registerRepeats,
             registerOperations,
-        });
+        }, true);
     });
-
-    const tabs = {};
-    let currentTab = "blocks";
-
-    const characterTabs = {};
-    let currentCharacterTab = "properties";
-
-    function playSound(name) {
-        const audio = new Audio(`/sounds/${name}.mp3`);
-        audio.play();
-        audio.volume = 0.5;
-    }
 
     onMount(() => {
         console.log("ignore the warnings above we dont care about those");

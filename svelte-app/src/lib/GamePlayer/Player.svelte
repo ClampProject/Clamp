@@ -8,6 +8,8 @@
     import ClampEditorCommunicator from "../../resources/editorCommunicator";
     import MathPlus from "../../resources/mathPlus";
     import FlagEmitter from "../../resources/emitter/FlagEmitter.js";
+    
+    import exposeWindow from "../../resources/exposeWindow";
 
     let canvas;
     let currentEmitter;
@@ -82,6 +84,17 @@
             Emitter.emitGlobal("CODE_INITIALIZE_UPDATE");
             runCodeInEngine(code);
         });
+
+        // expose window functions
+        exposeWindow({
+            canvas,
+            engineSettings,
+
+            getPlayerEmitter: () => currentEmitter,
+            getGameEngine: () => gameEngine,
+            getFullscreen: () => isFullscreen,
+            getCanvasTransformStyle: () => transformStyle,
+        }, false);
     });
 </script>
 

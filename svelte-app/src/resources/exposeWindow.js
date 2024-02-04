@@ -22,8 +22,10 @@ import raw_compileVarSection from './compiler/compileVarSection.js?raw';
 
 import javascriptGenerator from './javascriptGenerator';
 
-export default (extraExports) => {
+export default (extraExports, includeDefaults) => {
+    if (typeof includeDefaults === 'undefined') includeDefaults = true;
     if (!extraExports) extraExports = {};
+    if (!window.Clamp) window.Clamp = {};
     const Clamp = {
         Random,
         Emitter,
@@ -47,7 +49,10 @@ export default (extraExports) => {
         generateTransformCSS,
         preloadAudio,
         proxyFetch,
-        ...extraExports
     };
-    window.Clamp = Clamp;
+    window.Clamp = {
+        ...window.Clamp,
+        ...extraExports,
+        ...(includeDefaults ? Clamp : {})
+    };
 }
