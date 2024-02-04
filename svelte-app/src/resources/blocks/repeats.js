@@ -25,6 +25,18 @@ function register() {
                 "acceptsBlocks": true
             }
         ],
+        message1: '%1',
+        args1: [
+            {
+                "type": "field_image",
+                "src": "/images/gui-icons/loop-icon.png",
+                "width": 24,
+                "height": 24,
+                "alt": "↺",
+                "flipRtl": false
+            },
+        ],
+        lastDummyAlign1: "RIGHT",
         previousStatement: null,
         nextStatement: null,
         inputsInline: true,
@@ -32,6 +44,9 @@ function register() {
     }, (block) => {
         const ITERATIONS = javascriptGenerator.valueToCode(block, 'ITERATIONS', javascriptGenerator.ORDER_ATOMIC);
         const BLOCKS = javascriptGenerator.statementToCode(block, 'BLOCKS');
+        /**
+         * @todo Rewrite this to use a regular for loop.
+         */
         // bro just make some actual variable security then :skull:
         // or do what scratch did and dont use var names in export
         // we do var () of <Array> because we dont need an iteration variable
@@ -58,6 +73,18 @@ function register() {
                 "check": "Boolean"
             }
         ],
+        message1: '%1',
+        args1: [
+            {
+                "type": "field_image",
+                "src": "/images/gui-icons/loop-icon.png",
+                "width": 24,
+                "height": 24,
+                "alt": "↺",
+                "flipRtl": false
+            },
+        ],
+        lastDummyAlign1: "RIGHT",
         previousStatement: null,
         nextStatement: null,
         inputsInline: true,
@@ -78,8 +105,20 @@ function register() {
             {
                 "type": "input_statement",
                 "name": "BLOCKS"
-            }
+            },
         ],
+        message1: '%1',
+        args1: [
+            {
+                "type": "field_image",
+                "src": "/images/gui-icons/loop-icon.png",
+                "width": 24,
+                "height": 24,
+                "alt": "↺",
+                "flipRtl": false
+            },
+        ],
+        lastDummyAlign1: "RIGHT",
         previousStatement: null,
         inputsInline: true,
         colour: categoryColor
