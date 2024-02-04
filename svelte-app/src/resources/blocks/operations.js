@@ -184,7 +184,8 @@ function register() {
                 "name": "BOOL",
                 "options": [
                     ["true", "true"],
-                    ["false", "false"]
+                    ["false", "false"],
+                    ["random", "random"],
                 ]
             }
         ],
@@ -193,7 +194,10 @@ function register() {
         colour: categoryColor
     }, (block) => {
         const BOOL = block.getFieldValue('BOOL');
-        const code = `${BOOL}`;
+        let code = `${BOOL}`;
+        if (BOOL === 'random') {
+            code = `Math.round(Math.random()) === 1`;
+        }
         return [`(${code})`, javascriptGenerator.ORDER_NONE];
     })
 
