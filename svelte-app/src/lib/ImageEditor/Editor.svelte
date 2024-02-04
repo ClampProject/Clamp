@@ -11,6 +11,7 @@
     import ImageLibrary from "./library.json";
 
     let selectedCostume = "";
+    let selectedCostumeType = "bitmap"; // can be bitmap, vector, or animated
     // target is an ID, not the character object
     export let target;
 
@@ -33,9 +34,33 @@
         audio.volume = 0.5;
     }
 
+    function updateCostumeType() {
+        selectedCostumeType = "bitmap";
+        if (!selectedCostume) return;
+        const costumeObject = State.getImageById(selectedCostume);
+        // .image is either a url or data url btw
+        const url = costumeObject.image;
+        if (!url) return;
+        proxyFetch(url)
+            .then(res => {
+                if (!res.ok) return;
+                const contentType = res.headers.get("Content-Type");
+                switch (contentType) {
+                    case 'image/apng':
+                    case 'image/gif':
+                        selectedCostumeType = 'animated';
+                        break;
+                    case 'image/svg+xml':
+                        selectedCostumeType = 'vector';
+                        break;
+                }
+            });
+    }
+
     function selectCostume(id) {
         playSound("tabswitch");
         selectedCostume = id;
+        updateCostumeType();
         reloadComponent();
     }
 
@@ -47,6 +72,7 @@
         );
         State.addImageToCharacter(target, imageObject.id);
         selectedCostume = imageObject.id;
+        updateCostumeType();
         reloadComponent();
         reloadEditorComponents();
     }
@@ -74,6 +100,7 @@
                 // add image to character
                 State.addImageToCharacter(target, imageObject.id);
                 selectedCostume = imageObject.id;
+                updateCostumeType();
                 reloadComponent();
                 reloadEditorComponents();
 
@@ -97,6 +124,7 @@
         if (idx == -1) return;
         character.costumes.splice(idx, 1);
         selectedCostume = character.costumes[0];
+        updateCostumeType();
 
         if (character.startCostume === costumeId) {
             character.startCostume = character.costumes[0];
@@ -164,6 +192,7 @@
         const imageObject = State.createImage(image.name, image.image);
         State.addImageToCharacter(target, imageObject.id);
         selectedCostume = imageObject.id;
+        updateCostumeType();
         reloadComponent();
         reloadEditorComponents();
     }
@@ -289,6 +318,12 @@
                 </div>
             {/each}
         </div>
+        {#if selectedCostumeType === 'vector'}
+            <!-- TODO: Add support for Vector-based images. -->
+            <p><i>This image is vector-based. This format is not yet supported, and will become a bitmap when edited.</i></p>
+        {:else if selectedCostumeType === 'animated'}
+            <p><i>This image may be animated. Animated images will become static images when edited.</i></p>
+        {/if}
         <button class="export-button" on:click={exportCostume}>
             Download Image
         </button>

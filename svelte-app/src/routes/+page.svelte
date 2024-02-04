@@ -463,15 +463,6 @@
         bind:value={projectName}
     />
 
-    <NavigationOption on:click={updateProgram}>
-        <img
-            alt="Pencil"
-            src="/images/gui-icons/pencil-icon.png"
-            width="16"
-            style="margin-left:6px;margin-right:6px;"
-        />
-        <span style="margin-right:6px;">Update</span>
-    </NavigationOption>
     <a
         href="/credits"
         target="_blank"
@@ -602,8 +593,26 @@
                     >
                         <img
                             alt="Suspend"
+                            title="Suspend Program"
                             src="/images/gui-icons/bomb-icon.png"
                         />
+                        <div>
+                            Suspend
+                        </div>
+                    </button>
+                    <button
+                        on:click={updateProgram}
+                        class="bar-button"
+                        style="float:right"
+                    >
+                        <img
+                            alt="Update"
+                            title="Update Project"
+                            src="/images/gui-icons/pencil-icon.png"
+                        />
+                        <div>
+                            Update
+                        </div>
                     </button>
                 </div>
                 <GamePlayer />
@@ -1009,6 +1018,12 @@
     }
     .bar-button > img {
         width: 80%;
+    }
+    .bar-button > div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: 10px;
     }
 
     .properties {

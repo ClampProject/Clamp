@@ -9,8 +9,11 @@ function proxyFetch(url, options) {
     return new Promise((resolve, reject) => {
         fetch(url, options).then(resolve)
             .catch(() => {
-                fetch(`https://api.allorigins.win/raw?url=${url}`, options).then(resolve)
-                    .catch(reject);
+                fetch(`https://corsproxy.io/?${url}`, options).then(resolve)
+                    .catch(() => {
+                        fetch(`https://api.allorigins.win/raw?url=${url}`, options).then(resolve)
+                            .catch(reject);
+                    });
             });
     });
 }
