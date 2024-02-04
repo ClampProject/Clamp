@@ -191,6 +191,24 @@ class Character {
         this.updateCharacter();
     }
 
+
+    /**
+     * Updates the image for the character to the specified image ID.
+     * @param {string} id image
+     */
+    changeImage(id) {
+        if (!this._element) {
+            // fix character
+            this.updateCharacter();
+        }
+
+        const image = this._engine.images[id];
+        if (!image) return;
+        this._element.src = image.src;
+
+        this.updateCharacter();
+    }
+
     // INTERNAL USE FUNCTIONS BELOW
     // probably
 
@@ -254,6 +272,8 @@ class Character {
 
         // display styles
         style.display = this.hidden ? 'none' : '';
+
+        // TODO: hitbox will not be accurate if we dont support rotations for character hitboxes. either support them, or change the way hitboxes are drawn.
         style.boxShadow = this.displayHitbox ? '0 0 0 1px red' : '';
     }
 

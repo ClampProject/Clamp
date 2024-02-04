@@ -8,6 +8,7 @@
     import ClampEditorCommunicator from "../../resources/editorCommunicator";
     import MathPlus from "../../resources/mathPlus";
     import FlagEmitter from "../../resources/emitter/FlagEmitter.js";
+    import State from "../../resources/state";
     
     import exposeWindow from "../../resources/exposeWindow";
 
@@ -33,6 +34,7 @@
             "ClampEditor",
             "InputDevice",
             "MathPlus",
+            "State",
             code
         )(
             new FlagEmitter(),
@@ -40,7 +42,8 @@
             currentEmitter,
             ClampEditorCommunicator,
             InputDevice,
-            MathPlus
+            MathPlus,
+            State
         );
     }
 

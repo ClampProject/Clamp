@@ -182,6 +182,23 @@ class ProjectState {
     }
 
     /**
+     * Gets the image object in the current project with the specified name.
+     * @param {string} name 
+     * @returns Image object
+     */
+    static getImageByName(name) {
+        return ProjectState._getObjectByName("image", name);
+    }
+    /**
+     * Gets the sound object in the current project with the specified name.
+     * @param {string} name 
+     * @returns sound object
+     */
+    static getSoundByName(name) {
+        return ProjectState._getObjectByName("sound", name);
+    }
+
+    /**
      * Add an image to the image list.
      * @param {string} name The image name.
      * @param {string} url The URL of the image. Can be a Data URI or Website URL.
@@ -269,6 +286,25 @@ class ProjectState {
             case 'sound':
                 const sounds = ProjectState.currentProject.sounds.filter(sound => {
                     if (sound.id === id) return true;
+                    return false;
+                });
+                return sounds[0];
+        }
+    }
+    /**
+     * Internal use only.
+     */
+    static _getObjectByName(type, name) {
+        switch (type) {
+            case 'image':
+                const images = ProjectState.currentProject.images.filter(image => {
+                    if (image.name === name) return true;
+                    return false;
+                });
+                return images[0];
+            case 'sound':
+                const sounds = ProjectState.currentProject.sounds.filter(sound => {
+                    if (sound.name === name) return true;
                     return false;
                 });
                 return sounds[0];

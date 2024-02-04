@@ -13,6 +13,11 @@
         <block type="movement_getrotation" />
     </category>
     <category name="Appearance" colour="#f3a">
+        <block type="appearance_changeImage">
+            <value name="IMAGE">
+                <shadow type="appearance_menu_imageMenu" />
+            </value>
+        </block>
         <block type="appearance_showCharacter" />
         <block type="appearance_hideCharacter" />
     </category>
