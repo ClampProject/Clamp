@@ -15,6 +15,7 @@
     import JSZip from "jszip";
     import * as FileSaver from "file-saver";
     import fileDialog from "../resources/fileDialog";
+    import ImageLibrary from "$lib/ImageEditor/library.json";
 
     // import Blockly from "blockly/core";
     import Blockly from "blockly/core";
@@ -446,9 +447,41 @@
     });
 
     // character list
-    function newCharacter() {
+    async function newCharacter() {
+        playSound("tabswitch");
+        // create a costume
+        const randomIdx = Math.round(Math.random() * (ImageLibrary.length - 1));
+        const targetImageObject = ImageLibrary[randomIdx];
+        const imageObject = await State.createImage(targetImageObject.name, targetImageObject.image);
+        // create a character
+        const characterNum = State.currentProject.characters.length;
+        const character = State.generateCharacter(`Character${characterNum}`, null, null, [
+            imageObject.id
+        ]);
+        State.createCharacter(character);
+        playSound("confirm");
         // reload since character list updated and svelte doesnt know that
         reloadCharactersComponent();
+    }
+    function switchCharacter(id) {
+        playSound("tabswitch");
+        State.editingTarget = id;
+        editTarget = id;
+        Emitter.emitGlobal("EDITING_TARGET_UPDATED");
+        reloadCharactersComponent();
+    }
+    function deleteCharacter(id, showConfirm) {
+        if (!showConfirm) {
+            if (!confirm("Do you want to delete this character?")) return;
+        }
+        
+        const character = State.getTargetById(id);
+        if (!character) return;
+        State.deleteCharacter(id, true);
+        
+        playSound("explode");
+
+        switchCharacter(State.currentProject.characters[0].id);
     }
 
     // properties menu
@@ -853,8 +886,32 @@
                                         class="box"
                                         data-selected={editTarget ===
                                             character.id}
-                                        on:click={() => newCharacter()}
+                                        on:click={() => switchCharacter(character.id)}
                                     >
+                                        <!-- del button -->
+                                        <button
+                                            class="delete-image-button"
+                                            style={State.currentProject.characters
+                                                .length <= 1
+                                                ? "cursor: not-allowed"
+                                                : ""}
+                                            on:click={(event) =>
+                                                State.currentProject.characters.length <= 1
+                                                    ? null
+                                                    : deleteCharacter(character.id, event.shiftKey)}
+                                        >
+                                            <!-- svelte-ignore a11y-img-redundant-alt -->
+                                            <img
+                                                src="/images/gui-icons/cancel-icon.png"
+                                                alt="Delete this Character"
+                                                title="Delete this Character"
+                                                style={State.currentProject.characters
+                                                    .length <= 1
+                                                    ? "filter: grayscale(1)"
+                                                    : ""}
+                                            />
+                                        </button>
+                                        <!-- image -->
                                         <img
                                             alt={character.name}
                                             title={character.name}
@@ -1119,10 +1176,12 @@
     }
     .characters {
         width: 100%;
-        overflow-x: auto;
+        height: 100%;
+        overflow: auto;
         display: flex;
+        flex-wrap: wrap;
         flex-direction: row;
-        align-items: center;
+        align-content: flex-start;
     }
 
     .character-preview-div {
@@ -1143,6 +1202,26 @@
         margin-block: 0;
         text-overflow: ellipsis;
         overflow: hidden;
+    }
+
+    .delete-image-button {
+        position: absolute;
+        top: -12px;
+        right: -12px;
+        width: 24px;
+        height: 24px;
+
+        background: transparent;
+        border: 0;
+
+        cursor: pointer;
+    }
+    .delete-image-button > img {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 24px;
+        height: 24px;
     }
 
     .box {

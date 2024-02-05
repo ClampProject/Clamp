@@ -23,7 +23,7 @@ const defaultState = {
             sounds: [
                 "_hardcoded_explode",
             ],
-            xml: ""
+            xml: "<xml></xml>"
         }
     ],
     images: [
@@ -198,6 +198,67 @@ class ProjectState {
         return ProjectState._getObjectByName("sound", name);
     }
 
+    static generateCharacter(optName, optId, optXml, optCostumes, optSounds) {
+        const project = ProjectState.currentProject;
+        const generatedId = Random.randomID();
+        const character = {
+            name: optName || "Character",
+            id: optId || generatedId,
+            startCostume: "_hardcoded_apple",
+            position: {
+                x: 320,
+                y: 180
+            },
+            size: 100,
+            angle: 0,
+            visible: true,
+            costumes: optCostumes || [],
+            sounds: optSounds || [],
+            xml: optXml || "<xml></xml>"
+        };
+        if (character.costumes.length <= 0) {
+            if (project && project.images.length > 0) {
+                character.costumes.push(project.images[0].id);
+            } else {
+                character.costumes.push("_hardcoded_apple");
+            }
+        }
+        character.startCostume = character.costumes[0];
+        return character;
+    }
+
+    /**
+     * Add a character to the character list.
+     * @param {object} characterObject A character object, created by State.generateCharacter()
+     * @returns The character object provided to the function.
+     */
+    static createCharacter(characterObject) {
+        const project = ProjectState.currentProject;
+        project.characters.push(characterObject);
+        return characterObject;
+    }
+    /**
+     * Deletes a character from the character list.
+     * @param {string} id
+     */
+    static deleteCharacter(id, deleteAssets) {
+        const project = ProjectState.currentProject;
+        const character = ProjectState._getObjectById("character", id);
+        if (!character) return;
+        const imageIds = character.costumes;
+        const soundIds = character.sounds;
+        const characterIdx = ProjectState._getIndexById("character", id);
+        if (characterIdx == -1) return;
+        project.characters.splice(characterIdx, 1);
+        if (deleteAssets) {
+            for (const id of imageIds) {
+                ProjectState.deleteImage(id);
+            }
+            for (const id of soundIds) {
+                ProjectState.deleteSound(id);
+            }
+        }
+    }
     /**
      * Add an image to the image list.
      * @param {string} name The image name.
@@ -248,6 +309,26 @@ class ProjectState {
         project.sounds.push(soundObject);
         return soundObject;
     }
+    /**
+     * Deletes an image from the image list.
+     * @param {string} id
+     */
+    static deleteImage(id) {
+        const project = ProjectState.currentProject;
+        const characterIdx = ProjectState._getIndexById("image", id);
+        if (characterIdx == -1) return;
+        project.images.splice(characterIdx, 1);
+    }
+    /**
+     * Deletes an image from the image list.
+     * @param {string} id
+     */
+    static deleteSound(id) {
+        const project = ProjectState.currentProject;
+        const characterIdx = ProjectState._getIndexById("sound", id);
+        if (characterIdx == -1) return;
+        project.sounds.splice(characterIdx, 1);
+    }
 
     /**
      * Adds an image to the costume list of a character.
@@ -277,6 +358,12 @@ class ProjectState {
      */
     static _getObjectById(type, id) {
         switch (type) {
+            case 'character':
+                const characters = ProjectState.currentProject.characters.filter(character => {
+                    if (character.id === id) return true;
+                    return false;
+                });
+                return characters[0];
             case 'image':
                 const images = ProjectState.currentProject.images.filter(image => {
                     if (image.id === id) return true;
@@ -294,8 +381,34 @@ class ProjectState {
     /**
      * Internal use only.
      */
+    static _getIndexById(type, id) {
+        let category = 'characters';
+        switch (type) {
+            case 'image':
+                category = 'images';
+                break;
+            case 'sound':
+                category = 'sounds';
+                break;
+        }
+        const allObjects = ProjectState.currentProject[category];
+        for (let i = 0; i < allObjects.length; i++) {
+            const element = allObjects[i];
+            if (element.id === id) return i;
+        }
+        return -1;
+    }
+    /**
+     * Internal use only.
+     */
     static _getObjectByName(type, name) {
         switch (type) {
+            case 'character':
+                const characters = ProjectState.currentProject.characters.filter(character => {
+                    if (character.name === name) return true;
+                    return false;
+                });
+                return characters[0];
             case 'image':
                 const images = ProjectState.currentProject.images.filter(image => {
                     if (image.name === name) return true;

@@ -121,8 +121,9 @@
 
         // remove costume from costume list
         const idx = character.costumes.indexOf(costumeId);
-        if (idx == -1) return;
+        if (idx === -1) return;
         character.costumes.splice(idx, 1);
+        State.deleteImage(costumeId);
         selectedCostume = character.costumes[0];
         updateCostumeType();
 
