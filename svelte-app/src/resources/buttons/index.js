@@ -1,7 +1,7 @@
 import Blockly from 'blockly/core'
 
 export default () => {
-    Blockly.registerButtonCallback("buttonPlaceholder", () => {
+    Blockly.Workspace.registerButtonCallback("buttonPlaceholder", () => {
         alert('coming soon!')
     })
 }
