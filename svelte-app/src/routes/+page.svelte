@@ -499,6 +499,11 @@
         target.startCostume = target.costumes[idx];
         reloadCharactersComponent();
     }
+
+    //button callbacks
+    workspace.registerButtonCallback("buttonPlaceholder", () => {
+        alert('coming soon!')
+    })
 </script>
 
 <NavigationBar>
