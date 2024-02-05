@@ -4,6 +4,7 @@ import FlyoutButton from './blockly/flyout-button';
 export default {
     Blockly: {
         ToolboxFlyout,
-        FlyoutButton
+        FlyoutButton,
+        Renderer
     },
 };

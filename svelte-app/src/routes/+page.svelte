@@ -86,7 +86,7 @@
         scrollbars: true,
         disable: false,
         theme: DarkTheme,
-        renderer: "zelos",
+        renderer: "custom_renderer",
         zoom: {
             controls: true,
             wheel: true,
@@ -104,6 +104,7 @@
 
     Patches.Blockly.ToolboxFlyout(Blockly, config);
     Patches.Blockly.FlyoutButton(Blockly);
+    Patches.Blockly.Renderer(Blockly);
     
     let workspace;
     let compiler;
