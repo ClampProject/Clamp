@@ -219,6 +219,7 @@
     }
 
     async function runButtonClicked() {
+        updateProgram();
         Emitter.emitGlobal("RUN_BUTTON");
     }
     function stopButtonClicked() {
@@ -705,20 +706,6 @@
                         />
                         <div>
                             Suspend
-                        </div>
-                    </button>
-                    <button
-                        on:click={updateProgram}
-                        class="bar-button"
-                        style="float:right"
-                    >
-                        <img
-                            alt="Update"
-                            title="Update Project"
-                            src="/images/gui-icons/pencil-icon.png"
-                        />
-                        <div>
-                            Update
                         </div>
                     </button>
                 </div>
