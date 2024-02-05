@@ -1315,15 +1315,15 @@
         background: linear-gradient(0deg, rgba(140,0,201,1) 48%, rgb(158, 34, 211) 49%);
     }
 
-    .BlocklyFlyoutButton > .BlocklyFlyoutButtonBackground {
+    .blocklyFlyoutButton > .blocklyFlyoutButtonBackground {
         width: 100%;
     }
 
-    .BlocklyFlyoutButton > .BlocklyFlyoutButtonShadow {
+    .blocklyFlyoutButton > .blocklyFlyoutButtonShadow {
         display: none;
     }
 
-    .BlocklyFlyoutButton > .BlocklyText {
+    .blocklyFlyoutButton > .blocklyText {
         text-anchor: initial;
     }
 </style>
