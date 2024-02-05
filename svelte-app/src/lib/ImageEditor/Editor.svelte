@@ -160,7 +160,7 @@
 
         if (url.startsWith("data:")) {
             // data url, no need to fetch when we have the data
-            const blob = BlobAndDataUrl.dataURLtoBlob(url);
+            const blob = BlobAndDataUrl.base64DataURLtoBlob(url);
             downloadBlob(
                 blob,
                 `${costumeObject.name.replace(/[^0-9a-zA-Z-]+/gim, "_")}.png`

@@ -237,7 +237,7 @@ class Character {
      */
     assignDOMEvents(element) {
         // click
-        element.addEventListener("click", () => {
+        element.addEventListener("mousedown", () => {
             this.fireEvent("CLICKED");
         });
     }

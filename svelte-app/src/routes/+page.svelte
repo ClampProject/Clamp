@@ -16,6 +16,7 @@
     import * as FileSaver from "file-saver";
     import fileDialog from "../resources/fileDialog";
     import ImageLibrary from "$lib/ImageEditor/library.json";
+    import { saveFormatVersion } from "../resources/state/download";
 
     // import Blockly from "blockly/core";
     import Blockly from "blockly/core";
@@ -260,29 +261,11 @@
             fileName = "MyProject.clamp";
         }
 
-        // data
-        const projectData = State.serializeProject(State.currentProject);
-
-        // zip
-        const zip = new JSZip();
-        zip.file(
-            "README.txt",
-            "This file is not meant to be opened!" +
-                "\nBe careful as you can permanently break your project!"
-        );
-
-        // workspaces
-        const workspaces = zip.folder("workspaces");
-        for (const character of State.currentProject.characters) {
-            workspaces.file(character.id + ".xml", character.xml);
-        }
-
-        // data
-        const data = zip.folder("data");
-        data.file("project.json", projectData);
-
-        // download
-        zip.generateAsync({ type: "blob" }).then((blob) => {
+        State.createClampZip(State.currentProject, "blob", {
+            projectName,
+            fileName,
+            time: Date.now()
+        }).then((blob) => {
             FileSaver.saveAs(blob, fileName);
         });
     }
@@ -292,44 +275,30 @@
         fileDialog({ accept: ".clamp" }).then((files) => {
             if (!files) return;
             const file = files[0];
+            const fileName = file.name;
 
-            // set project name
-            const projectNameIdx = file.name.lastIndexOf(".clamp");
-            projectName = file.name.substring(0, projectNameIdx);
-
-            JSZip.loadAsync(file.arrayBuffer()).then(async (zip) => {
-                console.log("loaded zip file...");
-
-                // get project json from the data folder
-                const dataFolder = zip.folder("data");
-                const projectJsonString = await dataFolder
-                    .file("project.json")
-                    .async("string");
-                const projectJson = JSON.parse(projectJsonString);
-
-                // get project workspace xml stuffs
-                const workspacesFolder = zip.folder("workspaces");
-                const fileNames = [];
-                workspacesFolder.forEach((_, file) => {
-                    const fileName = file.name.replace("workspaces/", "");
-                    fileNames.push(fileName);
-                });
-                // console.log(fileNames); // debug
-                const idWorkspacePairs = {};
-                for (const fileName of fileNames) {
-                    const idx = fileName.lastIndexOf(".xml");
-                    const id = fileName.substring(0, idx);
-                    // assign to pairs
-                    idWorkspacePairs[id] = await workspacesFolder
-                        .file(fileName)
-                        .async("string");
+            // returning false means we should stop loading
+            const formatVerFound = (version) => {
+                const alertMessage = `This project was saved in a newer version of Clamp, and may not work here.`
+                    + "\nThe site may become unstable or unusable. Do you still want to try loading this file?"
+                    + "\n"
+                    + `\n(file is v${version}, while you are using v${saveFormatVersion})`;
+                if (saveFormatVersion < version) {
+                    return confirm(alertMessage);
                 }
-                // console.log(idWorkspacePairs); // debug
-
-                // laod
-                console.log(projectJson); // debug
-                State.loadProject(projectJson, idWorkspacePairs);
-            });
+                return true;
+            };
+            State.loadClampZip(file.arrayBuffer(), formatVerFound)
+                .then((loaded) => {
+                    if (!loaded) return;
+                    // set project name
+                    const projectNameIdx = fileName.lastIndexOf(".clamp");
+                    projectName = fileName.substring(0, projectNameIdx);
+                })
+                .catch((err) => {
+                    alert(err);
+                    throw err;
+                });
         });
     }
     
@@ -474,6 +443,12 @@
         State.editingTarget = id;
         editTarget = id;
         Emitter.emitGlobal("EDITING_TARGET_UPDATED");
+        reloadCharactersComponent();
+    }
+    function renameCharacter(id, name) {
+        const character = State.getTargetById(id);
+        if (!character) return;
+        character.name = name;
         reloadCharactersComponent();
     }
     function deleteCharacter(id, showConfirm) {

@@ -3,6 +3,9 @@ import Emitter from '../emitter';
 import BlobAndDataUrl from '../blobanddataurl';
 import proxyFetch from '../proxyFetch';
 
+import downloadState from './download';
+import loadState from './load';
+
 // this js file contains project details like what characters exist and their workspaces
 const defaultState = {
     characters: [
@@ -65,6 +68,9 @@ class ProjectState {
      */
     static editingTarget = defaultState.characters[0].id;
 
+    static createClampZip = downloadState;
+    static loadClampZip = loadState;
+
     /**
      * Converts a project state to a string. Used for saving projects.
      * @param {ProjectState} state The state to stringify
@@ -75,8 +81,6 @@ class ProjectState {
             characters: []
         };
         // these we can use from state directly
-        origin.images = state.images;
-        origin.sounds = state.sounds;
         origin.settings = state.settings;
         origin.customData = state.customData;
         // characters have a workspace property that we cannot save
@@ -91,6 +95,19 @@ class ProjectState {
                 newCharacter[prop] = character[prop];
             }
             origin.characters.push(newCharacter);
+        }
+        // images & sounds should remove their data
+        origin.images = [];
+        origin.sounds = [];
+        for (const imageObj of state.images) {
+            const newObj = { ...imageObj };
+            delete newObj.image;
+            origin.images.push(newObj);
+        }
+        for (const soundObj of state.sounds) {
+            const newObj = { ...soundObj };
+            delete newObj.data;
+            origin.sounds.push(newObj);
         }
         // convert to string
         const project = JSON.stringify(origin);
@@ -108,9 +125,9 @@ class ProjectState {
             const target = ProjectState.getTargetById(id);
             if (!target) continue;
             target.xml = workspaces[id];
-            ProjectState.editingTarget = ProjectState.currentProject.characters[0].id;
-            Emitter.emitGlobal("EDITING_TARGET_UPDATED");
         }
+        ProjectState.editingTarget = ProjectState.currentProject.characters[0].id;
+        Emitter.emitGlobal("EDITING_TARGET_UPDATED");
     }
 
     /**
