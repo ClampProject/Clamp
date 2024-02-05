@@ -46,7 +46,17 @@
 				transform: translate(-1px, -1px);
 			}
 			.blocklyFlyoutButtonBackground {
-				fill: rgb(163,0,232);
+				fill: rgb(186, 27, 255);
+			}
+			.blocklyFlyoutButton {
+				cursor: pointer;
+			}
+			.blocklyFlyoutButton:hover .blocklyFlyoutButtonBackground,
+			.blocklyFlyoutButton:focus .blocklyFlyoutButtonBackground {
+				fill: rgb(200, 73, 255);
+			}
+			.blocklyFlyoutButton:active .blocklyFlyoutButtonBackground {
+				fill: rgb(149, 0, 212);
 			}
 		</style>
 		%sveltekit.head%
