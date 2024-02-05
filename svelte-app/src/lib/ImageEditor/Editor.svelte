@@ -58,6 +58,11 @@
     }
 
     function selectCostume(id) {
+        const character = State.getTargetById(target);
+        if (!character) return;
+        const idx = character.costumes.indexOf(id);
+        if (idx === -1) return;
+
         playSound("tabswitch");
         selectedCostume = id;
         updateCostumeType();
@@ -112,19 +117,21 @@
     }
 
     function deleteCostume(costumeId, skipConfirm) {
+        const character = State.getTargetById(target);
+        if (!character) return;
+
         if (!skipConfirm) {
             if (!confirm("Do you want to delete this costume?")) return;
         }
-
-        const character = State.getTargetById(target);
-        if (!character) return;
 
         // remove costume from costume list
         const idx = character.costumes.indexOf(costumeId);
         if (idx === -1) return;
         character.costumes.splice(idx, 1);
         State.deleteImage(costumeId);
-        selectedCostume = character.costumes[0];
+        if (selectedCostume === costumeId) {
+            selectedCostume = character.costumes[0];
+        }
         updateCostumeType();
 
         if (character.startCostume === costumeId) {

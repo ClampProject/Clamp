@@ -416,6 +416,7 @@
         workspace.clear();
         // set workspace
         Blockly.Xml.domToWorkspace(dom, workspace);
+        workspace.refreshToolboxSelection();
 
         // reload components
         reloadCharactersComponent();
@@ -464,6 +465,8 @@
         reloadCharactersComponent();
     }
     function switchCharacter(id) {
+        const character = State.getTargetById(id);
+        if (!character) return;
         playSound("tabswitch");
         State.editingTarget = id;
         editTarget = id;
@@ -471,17 +474,21 @@
         reloadCharactersComponent();
     }
     function deleteCharacter(id, showConfirm) {
+        const character = State.getTargetById(id);
+        if (!character) return;
+
         if (!showConfirm) {
             if (!confirm("Do you want to delete this character?")) return;
         }
         
-        const character = State.getTargetById(id);
-        if (!character) return;
         State.deleteCharacter(id, true);
-        
         playSound("explode");
 
-        switchCharacter(State.currentProject.characters[0].id);
+        if (State.editingTarget === id) {
+            switchCharacter(State.currentProject.characters[0].id);
+        } else {
+            reloadCharactersComponent();
+        }
     }
 
     // properties menu
