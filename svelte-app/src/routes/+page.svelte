@@ -125,6 +125,8 @@
         audio.play();
         audio.volume = 0.5;
     }
+
+    window.playSound = playSound;
     
     // expose a bunch of internal functions & classes, eventually for custom scripts to use
     onMount(() => {
