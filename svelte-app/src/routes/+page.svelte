@@ -102,8 +102,8 @@
         },
     };
 
-    // patch blockly to not resize flyout on zoom & add a max width to the flyout
     Patches.Blockly.ToolboxFlyout(Blockly, config);
+    Patches.Blockly.FlyoutButton(Blockly);
     
     let workspace;
     let compiler;
@@ -1313,17 +1313,5 @@
     .library-exit:active {
         background: rgb(140,0,201);
         background: linear-gradient(0deg, rgba(140,0,201,1) 48%, rgb(158, 34, 211) 49%);
-    }
-
-    .blocklyFlyoutButton > .blocklyFlyoutButtonBackground {
-        width: 100%;
-    }
-
-    .blocklyFlyoutButton > .blocklyFlyoutButtonShadow {
-        display: none;
-    }
-
-    .blocklyFlyoutButton > .blocklyText {
-        text-anchor: initial;
     }
 </style>
