@@ -45,6 +45,7 @@
     import ClampEditorCommunicator from "../resources/editorCommunicator";
 
     import preload from "../resources/preload";
+    import exposeWindow from "../resources/exposeWindow";
 
     // Blocks
     import registerGeneric from "../resources/blocks/generic.js";
@@ -65,12 +66,21 @@
     registerOperations();
     registerControls();
 
-    import registerButtons from "../resources/buttons"
+    import registerButtons from "../resources/buttons";
     onMount(() => {
-        registerButtons(workspace)
-    })
-    
-    import exposeWindow from "../resources/exposeWindow";
+        const originalRegister = workspace.registerButtonCallback;
+        workspace.registerButtonCallback = (id, callback) => {
+            originalRegister.call(workspace, id, (...args) => {
+                playSound("tabswitch");
+                callback(...args);
+            });
+        };
+        exposeWindow({
+            registerButtonCallback: workspace.registerButtonCallback,
+            zoriginal_RegisterButtonCallback: originalRegister,
+        })
+        registerButtons(workspace);
+    });
 
     const en = {
         rtl: false,
@@ -125,8 +135,6 @@
         audio.play();
         audio.volume = 0.5;
     }
-
-    window.playSound = playSound;
     
     // expose a bunch of internal functions & classes, eventually for custom scripts to use
     onMount(() => {
@@ -158,6 +166,7 @@
             registerRepeats,
             registerOperations,
             registerControls,
+            registerButtons,
         }, true);
     });
 
@@ -172,13 +181,17 @@
 
         window.onbeforeunload = () => "";
         compiler = new Compiler(workspace);
-        // update editing target xml
-        workspace.addChangeListener((...args) => {
+        workspace.addChangeListener((event) => {
+            if (event.type === Blockly.Events.TOOLBOX_ITEM_SELECT) {
+                playSound("tabswitch");
+                return;
+            }
+            // update editing target xml
             const editingTarget = State.getTargetById(editTarget);
             const dom = Blockly.Xml.workspaceToDom(workspace);
             editingTarget.xml = Blockly.Xml.domToText(dom);
             // fixes problems with certain blocks not working when not attached to anything
-            Blockly.Events.disableOrphans(...args);
+            Blockly.Events.disableOrphans(event);
         });
 
         // debug
