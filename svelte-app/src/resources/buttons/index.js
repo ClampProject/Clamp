@@ -1,9 +1,7 @@
 import Blockly from 'blockly/core'
 
-export default () => {
-    /* do to
-    Blockly.Workspace.registerButtonCallback("buttonPlaceholder", () => {
+export default (workspace) => {
+    workspace.registerButtonCallback("buttonPlaceholder", () => {
         alert('coming soon!')
     })
-    */
 }

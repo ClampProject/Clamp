@@ -66,7 +66,9 @@
     registerControls();
 
     import registerButtons from "../resources/buttons"
-    registerButtons()
+    onMount(() => {
+        registerButtons(workspace)
+    })
     
     import exposeWindow from "../resources/exposeWindow";
 
