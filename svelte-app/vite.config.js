@@ -8,5 +8,8 @@ export default defineConfig({
 			'@blockly/continuous-toolbox',
 			'file-saver',
 		]
-	}
+	},
+	build: {
+		modulePreload: false
+	},
 });
