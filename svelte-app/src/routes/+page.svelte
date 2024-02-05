@@ -479,6 +479,20 @@
         target.startCostume = target.costumes[idx];
         reloadCharactersComponent();
     }
+
+    // custom button
+    class FlyoutButtonExtended extends Blockly.FlyoutButton {
+        constructor() {
+            super()
+
+            this.TEXT_MARGIN_X = 16
+            this.TEXT_MARGIN_Y = 8
+            
+            this.BORDER_RADIUS = 8
+        }
+    }
+
+    Blockly.FlyoutButton = FlyoutButtonExtended
 </script>
 
 <NavigationBar>
