@@ -40,6 +40,18 @@
 		</style>
 		%sveltekit.head%
 	</head>
+	<script>
+		const fontName = localStorage.getItem('clamp:editorFont') || 'Arial';
+		const fontStyle = document.head.appendChild(document.createElement('style'));
+		fontStyle.innerHTML = `
+*:not(code) {
+	font-family: "${fontName}", Arial, Helvetica, sans-serif;
+}
+.blocklyTreeLabel {
+	font-family: "${fontName}", Arial, Helvetica, sans-serif !important;
+}
+`;
+	</script>
 	<body data-sveltekit-preload-data="hover">
 		<div style="display: contents">%sveltekit.body%</div>
 	</body>

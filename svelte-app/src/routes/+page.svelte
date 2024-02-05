@@ -21,11 +21,12 @@
     import DarkTheme from "@blockly/theme-dark";
     import * as ContinuousToolboxPlugin from "@blockly/continuous-toolbox";
     import Patches from "../patches";
-    
+
     // this gives event blocks a little bump at the top
     DarkTheme.startHats = true;
+    const fontName = localStorage.getItem('clamp:editorFont');
     DarkTheme.fontStyle = {
-        family: 'Arial, Helvetica, sans-serif',
+        family: `"${fontName || 'Arial'}", Arial, Helvetica, sans-serif`,
         weight: "600",
         size: 12,
     };
@@ -99,12 +100,11 @@
     
     let workspace;
     let compiler;
+    let playerArea;
     let lastGeneratedCode = "";
     let initializingCode = false;
-
+    
     let editTarget = State.editingTarget;
-
-    let playerArea;
     
     const tabs = {};
     let currentTab = "blocks";
@@ -347,6 +347,21 @@
         const createElements = () => {
             const div = document.createElement('div');
             div.style.width = "100%";
+            // customEditorFont
+            const customEditorFont = div.appendChild(document.createElement('label'));
+            customEditorFont.innerHTML = '<div><h2>Custom Editor Font</h2><p>Changes the font for the editor. <b>Font will only apply after refreshing the page.</b></p></div>';
+            customEditorFont.style.margin = "8px 0";
+            customEditorFont.style.display = 'flex';
+            customEditorFont.style.alignItems = "center";
+            customEditorFont.style.justifyContent = "space-between";
+            const customEditorFontSelect = customEditorFont.appendChild(document.createElement('input'));
+            customEditorFontSelect.value = localStorage.getItem('clamp:editorFont');
+            customEditorFontSelect.style = 'margin-right:8px;';
+            customEditorFontSelect.onchange = () => {
+                const fontName = customEditorFontSelect.value || 'Arial';
+                localStorage.setItem('clamp:editorFont', fontName);
+                console.log('updated font to', fontName);
+            };
             // forceLoopPauses
             const forceLoopPauses = div.appendChild(document.createElement('label'));
             forceLoopPauses.innerHTML = '<div><h2>Force Loops to pause</h2><p>Used if loops have a chance to repeat forever. Wait blocks will be required inside of forever loops (and loops that may repeat forever) if this is disabled.</p></div>';
