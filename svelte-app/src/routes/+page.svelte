@@ -66,6 +66,7 @@
     import registerRepeats from "../resources/blocks/repeats.js";
     import registerOperations from "../resources/blocks/operations.js";
     import registerControls from "../resources/blocks/controls.js";
+    import registerVariables from "../resources/blocks/variables.js";
     registerMovement();
     registerAppearance();
     registerActions();
@@ -73,6 +74,7 @@
     registerRepeats();
     registerOperations();
     registerControls();
+    registerVariables();
 
     import registerButtons from "../resources/buttons";
     onMount(() => {

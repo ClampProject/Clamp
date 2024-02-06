@@ -278,6 +278,17 @@ class Character {
     }
 
     /**
+     * Set a variable for this character.
+     * @param {string} id
+     * @param {string} value
+     */
+    setVariable(id, value) {
+        const variable = this.variables.find((v) => v.id === id);
+        if (!variable) return;
+        variable.value = value;
+    }
+
+    /**
      * Dispose of this character & it's elements.
      */
     dispose() {

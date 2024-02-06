@@ -79,7 +79,8 @@
     </category>
     <sep class="bt"/>
     <category name="Variables" colour="#4CBEFF">
-        <button text="Create variable" callbackKey="buttonPlaceholder" web-class="butcategory-variables" />
+        <button text="Create variable" callbackKey="registerVariable" web-class="butcategory-variables" />
+        <block type="variables_set" />
     </category>
     <category name="Lists" colour="#4C9BFF">
     </category>

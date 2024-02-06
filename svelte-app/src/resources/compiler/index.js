@@ -128,6 +128,7 @@ class Compiler {
                 angle: isNaN(Number(character.angle)) ? 0 : Number(character.angle),
                 visible: String(character.visible) == "true",
                 visibleHitbox: String(character.visibleHitbox) == "true",
+                variables: character.variables
             };
             setupCode.push(`characters[${variableName}] = new Engine.Character(${variableName}, {
                 parent: Engine,
@@ -138,6 +139,7 @@ class Compiler {
                 hidden: (!(${characterData.visible})),
                 displayHitbox: (${characterData.visibleHitbox}),
                 origin: { x: "center", y: "center" },
+                variables: ${JSON.stringify(characterData.variables)}
             });`);
             // with the character game object we can now actually run the code for that character
             genCode.push(`characterFunctions[${variableName}](characters[${variableName}]); // run code for character ${variableName}`);

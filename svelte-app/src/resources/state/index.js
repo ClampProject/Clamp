@@ -186,6 +186,13 @@ class ProjectState {
                 x: 320,
                 y: 180
             },
+            variables: [
+                {
+                    id: "g8yiZmS8sMWpXwG4yFD8XrR0120oQ5",
+                    name: "My Variable",
+                    value: 0
+                }
+            ],
             size: 100,
             angle: 0,
             visible: true,
