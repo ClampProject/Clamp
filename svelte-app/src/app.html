@@ -45,18 +45,55 @@
 				stroke-width: 3px;
 				transform: translate(-1px, -1px);
 			}
-			.blocklyFlyoutButtonBackground {
-				fill: rgb(186, 27, 255);
-			}
 			.blocklyFlyoutButton {
 				cursor: pointer;
 			}
+			.blocklyFlyoutButtonBackground {
+				fill: rgb(186, 27, 255);
+				filter: brightness(0.8);
+			}
 			.blocklyFlyoutButton:hover .blocklyFlyoutButtonBackground,
 			.blocklyFlyoutButton:focus .blocklyFlyoutButtonBackground {
-				fill: rgb(200, 73, 255);
+				filter: brightness(0.9);
 			}
 			.blocklyFlyoutButton:active .blocklyFlyoutButtonBackground {
-				fill: rgb(149, 0, 212);
+				filter: brightness(0.6);
+			}
+
+			/* buttons for specific categories */
+			.butcategory-movement .blocklyFlyoutButtonBackground {
+				fill: #0bf;
+			}
+			.butcategory-appearance .blocklyFlyoutButtonBackground {
+				fill: #f3a;
+			}
+			.butcategory-sounds .blocklyFlyoutButtonBackground {
+				fill: #f55;
+			}
+			.butcategory-actions .blocklyFlyoutButtonBackground {
+				fill: #fa4;
+			}
+			.butcategory-conditions .blocklyFlyoutButtonBackground {
+				fill: #ffb900;
+			}
+			.butcategory-repeats .blocklyFlyoutButtonBackground {
+				fill: #0ad;
+			}
+			.butcategory-operations .blocklyFlyoutButtonBackground {
+				fill: #1d4;
+			}
+			.butcategory-controls .blocklyFlyoutButtonBackground {
+				fill: #bc55ff;
+			}
+
+			.butcategory-variables .blocklyFlyoutButtonBackground {
+				fill: #4CBEFF;
+			}
+			.butcategory-lists .blocklyFlyoutButtonBackground {
+				fill: #4C9BFF;
+			}
+			.butcategory-tables .blocklyFlyoutButtonBackground {
+				fill: #4C65FF;
 			}
 		</style>
 		%sveltekit.head%
