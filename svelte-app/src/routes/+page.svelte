@@ -212,11 +212,30 @@
         initializingCode = ClampEditorCommunicator.initializingCode;
     });
 
+    let wasWaitingForUpdate = false;
+    let wasWaitingForUpdateCallback;
     function updateProgram() {
-        playSound("confirm");
-        const code = compiler.compile();
-        Emitter.update(code);
-        lastGeneratedCode = code;
+        return new Promise((resolve, reject) => {
+            // if we are waiting for an update, cancel it
+            if (wasWaitingForUpdate) {
+                Emitter.dropout("CODE_PROGRAM_UPDATED", wasWaitingForUpdateCallback);
+                wasWaitingForUpdateCallback(true); // marks cancelled
+            }
+            playSound("confirm");
+            const code = compiler.compile();
+            Emitter.update(code);
+            lastGeneratedCode = code;
+            wasWaitingForUpdate = true;
+            const callback = (cancelled) => {
+                if (cancelled === true) { // later in-dev this event might return actual data
+                    return reject('Program update was interrupted');
+                }
+                wasWaitingForUpdate = false;
+                resolve();
+            };
+            wasWaitingForUpdateCallback = callback;
+            Emitter.on("CODE_PROGRAM_UPDATED", callback);
+        });
     }
     function switchTab(selectedTab) {
         playSound("tabswitch");
@@ -242,7 +261,7 @@
     }
 
     async function runButtonClicked() {
-        updateProgram();
+        await updateProgram();
         Emitter.emitGlobal("RUN_BUTTON");
     }
     function stopButtonClicked() {
