@@ -238,6 +238,7 @@
         });
     }
     function switchTab(selectedTab) {
+        Emitter.emitGlobal("EDITOR_TAB_SWITCHING", selectedTab);
         playSound("tabswitch");
         currentTab = selectedTab;
         for (const tabName in tabs) {
@@ -247,6 +248,9 @@
                 tab.dataset.active = true;
             }
         }
+        setTimeout(() => { // page update
+            Emitter.emitGlobal("EDITOR_TAB_SWITCHED", selectedTab);
+        });
     }
     function switchCharacterTab(selectedTab) {
         playSound("tabswitch");

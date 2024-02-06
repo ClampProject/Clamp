@@ -9,15 +9,17 @@
     import fileDialog from "../../resources/fileDialog";
 
     import ImageLibrary from "./library.json";
+    import { onMount } from "svelte";
 
     let selectedCostume = "";
     let selectedCostumeType = "bitmap"; // can be bitmap, vector, or animated
     // target is an ID, not the character object
     export let target;
+    let targetObj;
 
     // svelte doesnt have a reload component thing yet
     // so just do this lol
-    let _reloadComponent = 1;
+    let _reloadComponent = 0;
     function reloadComponent() {
         _reloadComponent = 0;
         setTimeout(() => {
@@ -27,6 +29,31 @@
     function reloadEditorComponents() {
         Emitter.emit("RELOAD_IMAGE_COMPONENTS");
     }
+
+    onMount(() => {
+        targetObj = State.getTargetById(target);
+        // activates when we switch to any tab, but should be fine :idk_man:
+        Emitter.on('EDITOR_TAB_SWITCHING', () => {
+            targetObj = State.getTargetById(target);
+        });
+        Emitter.on('EDITOR_TAB_SWITCHED', (tab) => {
+            targetObj = State.getTargetById(target);
+            if (!selectedCostume && targetObj && tab === 'images') {
+                selectedCostume = targetObj.startCostume;
+                updateCostumeType();
+            }
+            reloadComponent(); // we are ready now
+        });
+        Emitter.on('EDITING_TARGET_UPDATED', () => {
+            _reloadComponent = 0;
+            target = State.editingTarget; // we might be slightly behind on update
+            targetObj = State.getTargetById(target);
+            if (targetObj) {
+                selectedCostume = targetObj.startCostume;
+            }
+            reloadComponent();
+        });
+    });
 
     function playSound(name) {
         const audio = new Audio(`/sounds/${name}.mp3`);
@@ -234,7 +261,7 @@
 {/if}
 {#if _reloadComponent}
     <div class="main">
-        <p style="margin-left:8px">• {State.getTargetById(target).name}</p>
+        <p style="margin-left:8px">• {targetObj.name}</p>
         <div class="image-list">
             <!-- New Image Button -->
             <div class="costume-preview-div">
@@ -275,7 +302,7 @@
                 </button>
                 <p class="costume-name">Find</p>
             </div>
-            {#each State.getTargetById(target).costumes as costumeId}
+            {#each targetObj.costumes as costumeId}
                 <div class="costume-preview-div">
                     <button
                         class="box"
@@ -284,12 +311,12 @@
                     >
                         <button
                             class="delete-image-button"
-                            style={State.getTargetById(target).costumes
+                            style={targetObj.costumes
                                 .length <= 1
                                 ? "cursor: not-allowed"
                                 : ""}
                             on:click={(event) =>
-                                State.getTargetById(target).costumes.length <= 1
+                                targetObj.costumes.length <= 1
                                     ? null
                                     : deleteCostume(costumeId, event.shiftKey)}
                         >
@@ -298,7 +325,7 @@
                                 src="/images/gui-icons/cancel-icon.png"
                                 alt="Delete this Image"
                                 title="Delete this Image"
-                                style={State.getTargetById(target).costumes
+                                style={targetObj.costumes
                                     .length <= 1
                                     ? "filter: grayscale(1)"
                                     : ""}
@@ -322,6 +349,8 @@
             <p><i>This image is vector-based. This format is not yet supported, and will become a bitmap when edited.</i></p>
         {:else if selectedCostumeType === 'animated'}
             <p><i>This image may be animated. Animated images will become static images when edited.</i></p>
+        {:else}
+            <p style="opacity: 0; user-select: none;"><i>googaga</i></p>
         {/if}
         <button class="export-button" on:click={exportCostume}>
             Download Image
