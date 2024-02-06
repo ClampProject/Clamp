@@ -1,4 +1,6 @@
 import BlobAndDataUrl from './blobanddataurl';
+import FileTypes from './blobanddataurl/filetypes.js';
+import MagicNumbers from './blobanddataurl/magicNumbers.js';
 import Communicator from './editorCommunicator';
 import Emitter from './emitter';
 import FlagEmitter from './emitter/FlagEmitter.js';
@@ -38,6 +40,8 @@ export default (extraExports, includeDefaults) => {
         MathPlus,
         State,
 
+        FileTypes,
+        MagicNumbers,
         javascriptGenerator,
 
         Compiler,

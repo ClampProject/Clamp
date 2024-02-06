@@ -1,5 +1,6 @@
 import proxyFetch from "../proxyFetch";
 import MagicNumbers from './magicNumbers';
+import FileTypes from './filetypes';
 
 class BlobAndDataUrl {
     static fileTypeFromDataArray = MagicNumbers.detectFileType;
@@ -16,7 +17,9 @@ class BlobAndDataUrl {
     static async urlToBlob(url) {
         const res = await proxyFetch(url);
         const arrayBuffer = await res.arrayBuffer();
-        const blob = BlobAndDataUrl.arrayBufferToBlob(arrayBuffer);
+        const fileType = BlobAndDataUrl.fileTypeFromDataArray(arrayBuffer);
+        const mimeType = FileTypes.mimeTypePairs[fileType];
+        const blob = BlobAndDataUrl.arrayBufferToBlob(arrayBuffer, mimeType);
         return blob;
     }
     /**
@@ -37,11 +40,11 @@ class BlobAndDataUrl {
      * @returns {Blob} The Blob that the data URL was converted to.
      */
     static base64DataURLtoBlob(url) {
-        var arr = url.split(','), mime = arr[0].match(/:(.*?);/)[1],
-            bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+        var arr = url.split(','), bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
         while (n--) {
             u8arr[n] = bstr.charCodeAt(n);
         }
+        const mime = BlobAndDataUrl.fileTypeFromDataArray(u8arr);
         return new Blob([u8arr], { type: mime });
     }
     /**
@@ -70,6 +73,11 @@ class BlobAndDataUrl {
     }
 
     static arrayBufferToBlob(arrayBuffer, optMimeType) {
+        let fileType;
+        if (!optMimeType) {
+            fileType = BlobAndDataUrl.fileTypeFromDataArray(arrayBuffer);
+            optMimeType = FileTypes.mimeTypePairs[fileType];
+        }
         if (!optMimeType) {
             return new Blob([arrayBuffer]);
         }
