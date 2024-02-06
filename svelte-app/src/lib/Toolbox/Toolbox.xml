@@ -73,6 +73,7 @@
     </category>
     <category name="Controls" colour="#bc55ff">
         <block type="controls_mousepressed" />
+        <block type="controls_mouseoob" />
         <block type="controls_mousex" />
         <block type="controls_mousey" />
     </category>

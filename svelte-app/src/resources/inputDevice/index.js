@@ -23,6 +23,8 @@ function _mouseHandler(event) {
     InputDevice._data.leftdown = event.buttons % 2 >= 1
     InputDevice._data.rightdown = event.buttons % 4 >= 2
     InputDevice._data.middledown = event.buttons % 8 >= 4
+
+    InputDevice._data.oob = !(((event.pageX - rect.left) / rect.width) == clamp((event.pageX - rect.left) / rect.width, 0, 1) && ((event.pageY - rect.top) / rect.height) == clamp((event.pageY - rect.top) / rect.height, 0, 1))
 }
 
 class InputDevice {
@@ -33,7 +35,8 @@ class InputDevice {
             down: InputDevice._data.mousedown,
             leftdown: InputDevice._data.leftdown,
             rightdown: InputDevice._data.rightdown,
-            middledown: InputDevice._data.middledown
+            middledown: InputDevice._data.middledown,
+            oob: InputDevice._data.oob
         };
     };
 
@@ -47,7 +50,8 @@ class InputDevice {
         mousedown: false,
         leftdown: false,
         rightdown: false,
-        middledown: false
+        middledown: false,
+        oob: false
     };
     /**
      * @private Used internally.

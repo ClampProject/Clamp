@@ -27,6 +27,17 @@ function register() {
         return [`(${code})`, javascriptGenerator.ORDER_NONE];
     })
 
+    //mouse out of bounds
+    registerBlock(`${categoryPrefix}mouseoob`, {
+        message0: 'mouse outside game player?',
+        args0: [],
+        output: ["Boolean"],
+        colour: categoryColor
+    }, (block) => {
+        const code = `InputDevice.mouse.oob`;
+        return [`(${code})`, javascriptGenerator.ORDER_NONE];
+    })
+
     // mouse x
     registerBlock(`${categoryPrefix}mousex`, {
         message0: 'mouse x',
