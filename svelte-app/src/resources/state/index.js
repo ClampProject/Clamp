@@ -3,53 +3,12 @@ import Emitter from '../emitter';
 import BlobAndDataUrl from '../blobanddataurl';
 import proxyFetch from '../proxyFetch';
 
+import generateDefaultState from './default_state';
 import downloadState from './download';
 import loadState from './load';
 
 // this js file contains project details like what characters exist and their workspaces
-const defaultState = {
-    characters: [
-        {
-            name: "Apple",
-            id: "_default_apple",
-            startCostume: "_hardcoded_apple",
-            position: {
-                x: 320,
-                y: 180
-            },
-            size: 100,
-            angle: 0,
-            visible: true,
-            costumes: [
-                "_hardcoded_apple",
-            ],
-            sounds: [
-                "_hardcoded_explode",
-            ],
-            xml: "<xml></xml>"
-        }
-    ],
-    images: [
-        {
-            name: "Apple",
-            id: "_hardcoded_apple",
-            image: "https://clamp-coding.vercel.app/images/apple.png"
-        }
-    ],
-    sounds: [
-        {
-            name: "Explode",
-            id: "_hardcoded_explode",
-            data: "https://clamp-coding.vercel.app/sounds/explode.mp3"
-        }
-    ],
-    // should match the default state provided in compiler/precompile.js
-    settings: {
-        forceLoopPauses: true,
-        forceConditionalPauses: true,
-    },
-    customData: {} // custom scripts can add data here
-};
+const defaultState = generateDefaultState();
 
 class ProjectState {
     /**
@@ -57,12 +16,13 @@ class ProjectState {
      * Use this if you need to reset the project to default.
      */
     static default = defaultState;
+    static generateDefaultState = generateDefaultState;
 
     /**
      * The current project state.
      * Object contains all images, sounds and characters in the project.
      */
-    static currentProject = JSON.parse(JSON.stringify(defaultState));
+    static currentProject = generateDefaultState();
     /**
      * The ID of the character being edited in the editor.
      */
