@@ -712,15 +712,18 @@
                     />
                 </button>
             </div>
-            {#if currentTab === "images"}
-                <div class="imagesWrapper">
-                    <ImageEditor target={editTarget} />
-                </div>
-            {:else if currentTab === "sounds"}
-                <div class="soundsWrapper">
-                    <SoundEditor target={editTarget} />
-                </div>
-            {/if}
+            <div
+                class="imagesWrapper"
+                style={currentTab === "images" ? null : "display:none"}
+            >
+                <ImageEditor target={editTarget} />
+            </div>
+            <div
+                class="soundsWrapper"
+                style={currentTab === "sounds" ? null : "display:none"}
+            >
+                <SoundEditor target={editTarget} />
+            </div>
         </div>
         <div class="right">
             <div class="playerComponents" bind:this={playerArea}>
