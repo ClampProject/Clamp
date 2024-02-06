@@ -40,6 +40,7 @@
     <category name="Conditions" colour="#ffb900">
         <block type="conditions_ifthen" />
         <block type="conditions_ifthenelse" />
+        <block type="conditions_ifthenreturn" />
         <block type="conditions_waituntil" />
     </category>
     <category name="Repeats" colour="#0ad">

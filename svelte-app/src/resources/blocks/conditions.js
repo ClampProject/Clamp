@@ -75,6 +75,32 @@ function register() {
         const code = `if (${CONDITION ? CONDITION : 'false'}) { ${BLOCKS} } else { ${BLOCKS2} };`;
         return `${code}\n`;
     })
+    registerBlock(`${categoryPrefix}ifthenreturn`, {
+        message0: 'if %1 then %2 else %3',
+        args0: [
+            {
+                "type": "input_value",
+                "name": "CONDITION",
+                "check": "Boolean"
+            },
+            {
+                "type": "input_value",
+                "name": "X",
+            },
+            {
+                "type": "input_value",
+                "name": "Y",
+            },
+        ],
+        output: null,
+        inputsInline: false,
+        colour: categoryColor
+    }, (block) => {
+        const CONDITION = javascriptGenerator.valueToCode(block, 'CONDITION', javascriptGenerator.ORDER_ATOMIC);
+        const X = javascriptGenerator.valueToCode(block, 'X', javascriptGenerator.ORDER_ATOMIC);
+        const Y = javascriptGenerator.valueToCode(block, 'Y', javascriptGenerator.ORDER_ATOMIC);
+        return [`(${CONDITION || false} ? ${X} : ${Y})`, javascriptGenerator.ORDER_NONE];
+    })
     // wait until <>
     registerBlock(`${categoryPrefix}waituntil`, {
         message0: 'wait until %1',
