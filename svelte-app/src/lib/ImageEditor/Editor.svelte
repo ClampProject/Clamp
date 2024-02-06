@@ -1,4 +1,6 @@
 <script>
+    import { onMount } from "svelte";
+
     import State from "../../resources/state";
     import BlobAndDataUrl from "../../resources/blobanddataurl";
     import Emitter from "../../resources/emitter";
@@ -9,13 +11,25 @@
     import fileDialog from "../../resources/fileDialog";
 
     import ImageLibrary from "./library.json";
-    import { onMount } from "svelte";
 
     let selectedCostume = "";
     let selectedCostumeType = "bitmap"; // can be bitmap, vector, or animated
     // target is an ID, not the character object
     export let target;
     let targetObj;
+
+    /**
+     * @type {HTMLCanvasElement}
+    */
+    let canvas;
+    /**
+     * @type {CanvasRenderingContext2D}
+    */
+    let ctx;
+    const canvasSettings = {
+        gridX: 4,
+        gridY: 4
+    };
 
     // svelte doesnt have a reload component thing yet
     // so just do this lol
@@ -29,8 +43,27 @@
     function reloadEditorComponents() {
         Emitter.emit("RELOAD_IMAGE_COMPONENTS");
     }
+    function reloadCanvasComponent() {
+        if (!ctx) return;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const costumeObject = State.getImageById(selectedCostume);
+        if (!costumeObject) return;
+        const image = new Image();
+        image.src = costumeObject.image;
+        image.onload = () => {
+            canvas.width = image.width;
+            canvas.height = image.height;
+            // draw transparency BG
+            // TODO: do that
+            
+            // draw image
+            ctx.drawImage(image, 0, 0);
+        };
+    }
 
     onMount(() => {
+        ctx = canvas.getContext('2d');
+        reloadCanvasComponent();
         targetObj = State.getTargetById(target);
         // activates when we switch to any tab, but should be fine :idk_man:
         Emitter.on('EDITOR_TAB_SWITCHING', () => {
@@ -38,11 +71,16 @@
         });
         Emitter.on('EDITOR_TAB_SWITCHED', (tab) => {
             targetObj = State.getTargetById(target);
+            let selectedChanged = false;
             if (!selectedCostume && targetObj && tab === 'images') {
                 selectedCostume = targetObj.startCostume;
+                selectedChanged = true;
                 updateCostumeType();
             }
             reloadComponent(); // we are ready now
+            if (selectedChanged) {
+                reloadCanvasComponent();
+            }
         });
         Emitter.on('EDITING_TARGET_UPDATED', () => {
             _reloadComponent = 0;
@@ -50,8 +88,10 @@
             targetObj = State.getTargetById(target);
             if (targetObj) {
                 selectedCostume = targetObj.startCostume;
+                updateCostumeType();
             }
             reloadComponent();
+            reloadCanvasComponent();
         });
     });
 
@@ -94,6 +134,7 @@
         selectedCostume = id;
         updateCostumeType();
         reloadComponent();
+        reloadCanvasComponent();
     }
 
     async function newCostume() {
@@ -107,6 +148,7 @@
         updateCostumeType();
         reloadComponent();
         reloadEditorComponents();
+        reloadCanvasComponent();
     }
     function importCostume() {
         playSound("tabswitch");
@@ -135,6 +177,7 @@
                 updateCostumeType();
                 reloadComponent();
                 reloadEditorComponents();
+                reloadCanvasComponent();
 
                 playSound("confirm");
             };
@@ -156,8 +199,10 @@
         if (idx === -1) return;
         character.costumes.splice(idx, 1);
         State.deleteImage(costumeId);
+        let wasSelected = false;
         if (selectedCostume === costumeId) {
             selectedCostume = character.costumes[0];
+            wasSelected = true;
         }
         updateCostumeType();
 
@@ -169,6 +214,9 @@
 
         reloadComponent();
         reloadEditorComponents();
+        if (wasSelected) {
+            reloadCanvasComponent();
+        }
 
         // if (costumeId.startsWith("_hardcoded")) return;
     }
@@ -221,6 +269,7 @@
         updateCostumeType();
         reloadComponent();
         reloadEditorComponents();
+        reloadCanvasComponent();
     }
 </script>
 
@@ -259,8 +308,8 @@
     </div>
     <div class="backing" />
 {/if}
-{#if _reloadComponent}
-    <div class="main">
+<div class="main">
+    {#if _reloadComponent}
         <p style="margin-left:8px">• {targetObj.name}</p>
         <div class="image-list">
             <!-- New Image Button -->
@@ -352,11 +401,24 @@
         {:else}
             <p style="opacity: 0; user-select: none;"><i>googaga</i></p>
         {/if}
-        <button class="export-button" on:click={exportCostume}>
-            Download Image
-        </button>
+    {/if}
+
+    <!-- we cant refresh this canvas each time -->
+    <div class="canvas-wrapper">
+        <canvas
+            bind:this={canvas}
+            style={_reloadComponent ? '' : 'display:none'}
+        />
     </div>
-{/if}
+
+    {#if _reloadComponent}
+        <div>
+            <button class="export-button" on:click={exportCostume}>
+                Download Image
+            </button>
+        </div>
+    {/if}
+</div>
 
 <style>
     .main {
@@ -366,6 +428,15 @@
         width: 100%;
         height: 100%;
     }
+    canvas {
+        background: white;
+    }
+    .canvas-wrapper {
+        width: 100%;
+        height: calc(100% - (40px + 216px + 32px));
+        overflow: auto;
+    }
+
     .library {
         position: absolute;
         left: 10%;
@@ -477,6 +548,7 @@
 
     .image-list {
         width: 100%;
+        height: 128px;
         overflow-x: auto;
         display: flex;
         flex-direction: row;
@@ -486,7 +558,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        width: calc(5.5em + 32px);
+        width: 128px;
     }
 
     .box {
@@ -518,9 +590,11 @@
     }
     .costume-name {
         width: 60%;
+        height: 18px;
         color: white;
         text-align: center;
         margin-block: 0;
+        text-wrap: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
     }
