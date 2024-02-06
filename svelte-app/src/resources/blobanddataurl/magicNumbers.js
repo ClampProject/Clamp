@@ -1,5 +1,9 @@
 // https://en.wikipedia.org/wiki/Magic_number_(programming)#Magic_numbers_in_files
 function detectFileType(uint8Array) {
+    // support ArrayBuffer
+    if (uint8Array instanceof ArrayBuffer) {
+        uint8Array = new Uint8Array(uint8Array);
+    }
     if (uint8Array.length < 4) {
         return null; // Not enough bytes to determine the file type
     }
@@ -12,8 +16,10 @@ function detectFileType(uint8Array) {
         return 'jpeg';
     } else if (compareMagicNumber(magicNumber, [0x47, 0x49, 0x46, 0x38, 0x37, 0x61]) || compareMagicNumber(magicNumber, [0x47, 0x49, 0x46, 0x38, 0x39, 0x61])) {
         return 'gif';
-    } else if (compareMagicNumber(magicNumber.slice(0, 4), [0x52, 0x49, 0x46, 0x46]) && compareMagicNumber(magicNumber.slice(8, 12), [0x41, 0x4E, 0x49, 0x4D])) {
+    } else if (compareMagicNumber(magicNumber.slice(0, 4), [0x52, 0x49, 0x46, 0x46]) && compareMagicNumber(magicNumber.slice(8, 12), [0x57, 0x45, 0x42, 0x50])) {
         return 'webp';
+    } else if (compareMagicNumber(magicNumber.slice(0, 4), [0x52, 0x49, 0x46, 0x46]) && compareMagicNumber(magicNumber.slice(8, 12), [0x41, 0x4E, 0x49, 0x4D])) {
+        return 'webp'; // animated
     } else if (compareMagicNumber(magicNumber, [0x42, 0x4D])) {
         return 'bmp';
     } else if (compareMagicNumber(magicNumber.slice(0, 8), [0x00, 0x00, 0x00, 0x0D, 0x49, 0x48, 0x44, 0x52]) && compareMagicNumber(magicNumber.slice(8, 12), [0x00, 0x00, 0x00, 0x0D])) {

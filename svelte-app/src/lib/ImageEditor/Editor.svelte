@@ -149,11 +149,12 @@
     function downloadBlob(blob, fileName) {
         FileSaver.saveAs(blob, fileName);
     }
-    function exportCostume() {
+    async function exportCostume() {
         playSound("tabswitch");
 
         if (!selectedCostume) return;
         const costumeObject = State.getImageById(selectedCostume);
+        const costumeNameFiltered = `${costumeObject.name.replace(/[^0-9a-zA-Z-]+/gim, "_")}`;
         // .image is either a url or data url btw
         const url = costumeObject.image;
         if (!url) return;
@@ -161,32 +162,22 @@
         if (url.startsWith("data:")) {
             // data url, no need to fetch when we have the data
             const blob = BlobAndDataUrl.base64DataURLtoBlob(url);
-            downloadBlob(
-                blob,
-                `${costumeObject.name.replace(/[^0-9a-zA-Z-]+/gim, "_")}.png`
-            );
-        } else {
-            // url, we need to fetch the image data
-            proxyFetch(url)
-                .then((response) => {
-                    if (!response.ok) {
-                        alert("Failed to download the image.");
-                        return;
-                    }
-                    response
-                        .blob()
-                        .then((blob) => {
-                            downloadBlob(
-                                blob,
-                                `${costumeObject.name.replace(
-                                    /[^0-9a-zA-Z-]+/gim,
-                                    "_"
-                                )}.png`
-                            );
-                        })
-                        .catch(() => alert("Failed to download the image."));
-                })
-                .catch(() => alert("Failed to download the image."));
+            const fileType = await BlobAndDataUrl.fileTypeFromBlob(blob);
+            const fileName = `${costumeNameFiltered}.${fileType}`;
+            downloadBlob(blob, fileName);
+            return;
+        }
+        // url, we need to fetch the image data
+        try {
+            const response = await proxyFetch(url);
+            if (!response.ok) throw new Error(`Response status code ${response.status};`);
+            const blob = await response.blob();
+            const fileType = await BlobAndDataUrl.fileTypeFromBlob(blob);
+            const fileName = `${costumeNameFiltered}.${fileType}`;
+            downloadBlob(blob, fileName);
+        } catch (err) {
+            alert("Failed to download the image.");
+            throw err;
         }
     }
     // image libraru

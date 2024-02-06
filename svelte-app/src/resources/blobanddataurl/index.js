@@ -3,6 +3,10 @@ import MagicNumbers from './magicNumbers';
 
 class BlobAndDataUrl {
     static fileTypeFromDataArray = MagicNumbers.detectFileType;
+    static fileTypeFromBlob = async (blob) => {
+        const arrayBuffer = await BlobAndDataUrl.blobToArrayBuffer(blob);
+        return BlobAndDataUrl.fileTypeFromDataArray(arrayBuffer);
+    };
 
     /**
      * Convert a URL to a Blob.
@@ -70,6 +74,17 @@ class BlobAndDataUrl {
             return new Blob([arrayBuffer]);
         }
         return new Blob([arrayBuffer], { type: optMimeType });
+    }
+    static blobToArrayBuffer(blob) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onerror = reject;
+            reader.onabort = reject;
+            reader.onload = function (event) {
+                resolve(event.target.result);
+            };
+            reader.readAsArrayBuffer(blob);
+        });
     }
 }
 
