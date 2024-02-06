@@ -24,8 +24,8 @@ function detectFileType(uint8Array) {
         return 'bmp';
     } else if (compareMagicNumber(magicNumber.slice(0, 8), [0x00, 0x00, 0x00, 0x0D, 0x49, 0x48, 0x44, 0x52]) && compareMagicNumber(magicNumber.slice(8, 12), [0x00, 0x00, 0x00, 0x0D])) {
         return 'png'; // image/apng
-    } else if (compareMagicNumber(magicNumber.slice(0, 5), [0x3C, 0x3F, 0x78, 0x6D, 0x31])) {
-        return 'svg'; // looks for "<?xml"
+    } else if (compareMagicNumber(magicNumber.slice(0, 5), [0x3C, 0x3F, 0x78, 0x6D])) {
+        return 'svg'; // looks for "<?xm", byte 31 can be added to look for "<?xml" but some SVG files have the "l" character magically set to byte 6C instead
     } else if (compareMagicNumber(magicNumber.slice(0, 5), [0x3C, 0x73, 0x76, 0x67, 0x20])) {
         return 'svg'; // looks for "<svg "
     } else if (compareMagicNumber(magicNumber.slice(0, 3), [0xFF, 0xFB, 0xE0]) || compareMagicNumber(magicNumber.slice(0, 3), [0x49, 0x44, 0x33])) {
