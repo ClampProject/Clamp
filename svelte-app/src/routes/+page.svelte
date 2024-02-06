@@ -18,7 +18,6 @@
     import ImageLibrary from "$lib/ImageEditor/library.json";
     import { saveFormatVersion } from "../resources/state/download";
 
-    // import Blockly from "blockly/core";
     import Blockly from "blockly/core";
     import DarkTheme from "@blockly/theme-dark";
     import * as ContinuousToolboxPlugin from "@blockly/continuous-toolbox";
@@ -36,16 +35,25 @@
     import En from "blockly/msg/en";
     import "blockly/blocks";
 
+    // used by blocks sometimes, but mostly custom scripts
+    import { FieldDependentDropdown } from '@blockly/field-dependent-dropdown';
+    import { FieldColourHsvSliders } from '@blockly/field-colour-hsv-sliders';
+    import { FieldGridDropdown } from '@blockly/field-grid-dropdown';
+    import { FieldSlider } from '@blockly/field-slider';
+    Blockly.FieldDependentDropdown = FieldDependentDropdown;
+    Blockly.FieldColourHsvSliders = FieldColourHsvSliders;
+    Blockly.FieldGridDropdown = FieldGridDropdown;
+    Blockly.FieldSlider = FieldSlider;
+
     import BlocklyComponent from "svelte-blockly";
     let blocklyToolboxIsVisible = true;
 
     import State from "../resources/state";
     import Emitter from "../resources/emitter";
     import Compiler from "../resources/compiler";
-    import ClampEditorCommunicator from "../resources/editorCommunicator";
-
     import preload from "../resources/preload";
     import exposeWindow from "../resources/exposeWindow";
+    import ClampEditorCommunicator from "../resources/editorCommunicator";
 
     // Blocks
     import registerGeneric from "../resources/blocks/generic.js";

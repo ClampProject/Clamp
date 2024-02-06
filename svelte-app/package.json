@@ -16,6 +16,10 @@
 	"type": "module",
 	"dependencies": {
 		"@blockly/continuous-toolbox": "^3.0.16",
+		"@blockly/field-colour-hsv-sliders": "^4.2.0",
+		"@blockly/field-dependent-dropdown": "^3.0.11",
+		"@blockly/field-grid-dropdown": "^4.0.10",
+		"@blockly/field-slider": "^6.1.4",
 		"@blockly/theme-dark": "^4.0.10",
 		"@sveltejs/adapter-vercel": "^3.0.0",
 		"blockly": "^9.0.0",
