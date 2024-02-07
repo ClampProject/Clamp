@@ -34,11 +34,9 @@ function register() {
                 "acceptsBlocks": true
             },
             {
-                "type": "field_number",
+                "type": "input_value",
                 "name": "Y",
-                "check": "Function",
-                "value": 180,
-                "acceptsBlocks": true
+                "check": "Function"
             }
         ],
         previousStatement: null,
