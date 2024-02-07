@@ -11,6 +11,8 @@ import JSZip from "jszip";
  * 
  * 1: images & sounds are stored in images & sounds folders respectively,
  * named by a random ID that can be matched by opening the "files.json" file inside the folders, everything else is the same as v0
+ * 
+ * 2: character variables are no longer stored as an array of objects
  */
 
 export default async (arrayBuffer, formatVersionFoundCallback) => {
@@ -80,6 +82,20 @@ export default async (arrayBuffer, formatVersionFoundCallback) => {
                     break;
                 }
             }
+        }
+    }
+    if (formatVersion === 1) {
+        for (const charObj of projectJson.characters) {
+            const newObj = {};
+            if (Array.isArray(charObj.variables)) {
+                for (const variableObj of charObj.variables) {
+                    newObj[variableObj.id] = variableObj;
+                }
+                charObj.variables = newObj;
+            }
+        }
+        if (!projectJson.variables) {
+            projectJson.variables = {};
         }
     }
 

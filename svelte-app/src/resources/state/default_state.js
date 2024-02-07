@@ -2,7 +2,6 @@
 // we can import as regular URL, but thats literally what we are trying to avoid here
 import _hardcoded_apple from './_hardcoded_apple.txt?raw';
 import _hardcoded_explode from './_hardcoded_explode.txt?raw';
-import Random from '../random';
 
 // export as a function since it means we dont need to use JSON.stringify and JSON.parse to deep clone the default state
 export default () => {
@@ -16,13 +15,7 @@ export default () => {
                     x: 320,
                     y: 180
                 },
-                variables: [
-                    {
-                        id: "g8yiZmS8sMWpXwG4yFD8XrR0120oQ5",
-                        name: "My Variable",
-                        value: 0
-                    }
-                ],
+                variables: {},
                 size: 100,
                 angle: 0,
                 visible: true,
@@ -49,6 +42,7 @@ export default () => {
                 data: _hardcoded_explode
             }
         ],
+        variables: {},
         // should match the default state provided in compiler/precompile.js
         settings: {
             forceLoopPauses: true,

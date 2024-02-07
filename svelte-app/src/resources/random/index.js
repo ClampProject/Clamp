@@ -29,11 +29,11 @@ class Random {
     }
 
     /**
-     * Shortcut for Random.randomLetters(30, true);
-     * @returns 30 random letters with numbers included.
+     * Shortcut for Random.randomLetters(50, true);
+     * @returns 50 random letters with numbers included.
      */
     static randomID() {
-        return Random.randomLetters(30, true);
+        return Random.randomLetters(50, true);
     }
 }
 

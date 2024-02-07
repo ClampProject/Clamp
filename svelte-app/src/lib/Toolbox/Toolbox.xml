@@ -79,10 +79,7 @@
         <block type="controls_mousey" />
     </category>
     <sep class="bt"/>
-    <category name="Variables" colour="#4CBEFF">
-        <button text="Create variable" callbackKey="registerVariable" web-class="butcategory-variables" />
-        <block type="variables_set" />
-    </category>
+    <category name="Variables" custom="variables" colour="#4CBEFF"></category>
     <category name="Lists" colour="#4C9BFF">
     </category>
     <category name="Tables" colour="#4C65FF">

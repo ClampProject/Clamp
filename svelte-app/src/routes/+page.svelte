@@ -45,7 +45,7 @@
     Blockly.FieldGridDropdown = FieldGridDropdown;
     Blockly.FieldSlider = FieldSlider;
 
-    import BlocklyComponent from "svelte-blockly";
+    import BlocklyComponent from "$lib/svelte-blockly";
     let blocklyToolboxIsVisible = true;
 
     import State from "../resources/state";
@@ -80,6 +80,7 @@
     onMount(() => {
         const originalRegister = workspace.registerButtonCallback;
         workspace.registerButtonCallback = (id, callback) => {
+            console.log(id);
             originalRegister.call(workspace, id, (...args) => {
                 playSound("tabswitch");
                 callback(...args);
@@ -176,6 +177,8 @@
             registerRepeats,
             registerOperations,
             registerControls,
+            registerVariables,
+
             registerButtons,
         }, true);
     });

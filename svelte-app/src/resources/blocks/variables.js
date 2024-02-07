@@ -2,26 +2,46 @@ import javascriptGenerator from '../javascriptGenerator';
 import registerBlock from '../register';
 import State from '../state'; // local variables
 import Random from '../random';
+import '@blockly/field-grid-dropdown';
 
 const categoryPrefix = 'variables_';
-const categoryColor = '#f3a';
+const categoryColor = '#4CBEFF';
 
 function getVariables() {
     const character = State.getTargetById(State.editingTarget);
     const menu = [];
-    character.variables.forEach((variable) => {
-        menu.push([variable.name, variable.id]);
-    });
-    return menu;
+    for (const variableId in character.variables) {
+        const variable = character.variables[variableId];
+        menu.push([variable.name, variableId]);
+    }
+    return menu.length > 0 ? menu : [[ '', '' ]];
 }
 
 function register() {
-    // change image to [images v]
+    // [var v]
+    registerBlock(`${categoryPrefix}get`, {
+        message0: '%1',
+        args0: [
+            {
+                "type": "field_grid_dropdown",
+                "name": "VAR",
+                "options": getVariables
+            }
+        ],
+        output: [null],
+        inputsInline: true,
+        colour: categoryColor
+    }, (block) => {
+        const VAR = block.getFieldValue('VAR');
+        const code = `character.variables[${JSON.stringify(VAR)}]`;
+        return [`(${code})`, javascriptGenerator.ORDER_NONE];
+    });
+    // set [var v] to (value)
     registerBlock(`${categoryPrefix}set`, {
         message0: 'set %1 to %2',
         args0: [
             {
-                "type": "field_dropdown",
+                "type": "field_grid_dropdown",
                 "name": "VAR",
                 "options": getVariables
             },
@@ -41,8 +61,7 @@ function register() {
         const VAR = block.getFieldValue('VAR');
         const VALUE = javascriptGenerator.valueToCode(block, 'VALUE', javascriptGenerator.ORDER_ATOMIC);
         return `character.setVariable(${JSON.stringify(VAR)}, ${VALUE});\n`;
-        
-    })
+    });
 }
 
 export default register;

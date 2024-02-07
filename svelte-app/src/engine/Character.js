@@ -1,7 +1,7 @@
 import generateTransformCSS from "../resources/generateTransformCSS";
 
 class Character {
-    constructor(id, { parent, image, position, size, rotation, origin, hidden, displayHitbox }) {
+    constructor(id, { parent, image, position, size, stretch, skew, rotation, origin, hidden, displayHitbox, variables }) {
         this.id = id;
         this._engine = parent;
         this.disposed = false;
@@ -13,10 +13,12 @@ class Character {
         this.origin = origin;
         // these work but i dont want to clutter the block list
         // make these into addon blocks
-        this.stretch = { x: 1, y: 1 };
-        this.skew = { x: 0, y: 0 };
+        this.stretch = stretch || { x: 1, y: 1 };
+        this.skew = skew || { x: 0, y: 0 };
         this.hidden = hidden;
         this.displayHitbox = displayHitbox;
+
+        this.variables = variables || {};
 
         // assign to parent character list
         this._engine.characters[this.id] = this;
@@ -283,8 +285,8 @@ class Character {
      * @param {string} value
      */
     setVariable(id, value) {
-        const variable = this.variables.find((v) => v.id === id);
-        if (!variable) return;
+        if (!(id in this.variables)) return;
+        const variable = this.variables[id];
         variable.value = value;
     }
 

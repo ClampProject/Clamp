@@ -25,7 +25,7 @@ const getFileExt = async (uint8Array) => {
 }
 
 // NOTE: Any changes in this save format should be accounted for when loading older formats in the load.js file.
-export const saveFormatVersion = 1; // normal integer
+export const saveFormatVersion = 2; // normal integer
 export default async (project, optOutputType, optExtraInfo) => {
     if (!optExtraInfo) optExtraInfo = {};
 

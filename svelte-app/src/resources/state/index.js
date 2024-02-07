@@ -41,6 +41,7 @@ class ProjectState {
             characters: []
         };
         // these we can use from state directly
+        origin.variables = state.variables;
         origin.settings = state.settings;
         origin.customData = state.customData;
         // characters have a workspace property that we cannot save
@@ -186,13 +187,7 @@ class ProjectState {
                 x: 320,
                 y: 180
             },
-            variables: [
-                {
-                    id: "g8yiZmS8sMWpXwG4yFD8XrR0120oQ5",
-                    name: "My Variable",
-                    value: 0
-                }
-            ],
+            variables: {},
             size: 100,
             angle: 0,
             visible: true,
@@ -312,6 +307,29 @@ class ProjectState {
         const characterIdx = ProjectState._getIndexById("sound", id);
         if (characterIdx == -1) return;
         project.sounds.splice(characterIdx, 1);
+    }
+
+    /**
+     * Creates a project variable.
+     */
+    static createVariable(name, optValue) {
+        const project = ProjectState.currentProject;
+        const varObject = {
+            id: Random.randomID(),
+            name: name,
+            value: optValue
+        };
+        project.variables[varObject.id] = varObject;
+        return varObject;
+    }
+    /**
+     * Deletes a project variable.
+     */
+    static deleteVariable(id) {
+        const project = ProjectState.currentProject;
+        if (!(id in project.variables)) return false;
+        delete project.variables[id];
+        return true;
     }
 
     /**
