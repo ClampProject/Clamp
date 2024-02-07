@@ -70,6 +70,7 @@
     import registerOperations from "../resources/blocks/operations.js";
     import registerControls from "../resources/blocks/controls.js";
     import registerVariables from "../resources/blocks/variables.js";
+    import registerFunctions from "../resources/blocks/functions.js";
     registerMovement();
     registerAppearance();
     registerActions();
@@ -78,6 +79,7 @@
     registerOperations();
     registerControls();
     registerVariables();
+    registerFunctions();
 
     import registerButtons from "../resources/buttons";
     onMount(() => {
