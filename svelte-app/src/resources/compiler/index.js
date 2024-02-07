@@ -11,6 +11,7 @@ class Compiler {
         this.characters = ProjectState.default.characters;
         this.images = ProjectState.default.images;
         this.sounds = ProjectState.default.sounds;
+        this.variables = ProjectState.default.variables;
     }
 
     /**
@@ -34,6 +35,13 @@ class Compiler {
     setSounds(array) {
         this.sounds = array;
     }
+    /**
+     * Used internally.
+     * @param {object} object 
+     */
+    setVariables(object) {
+        this.variables = object;
+    }
 
     /**
      * Generates JavaScript code from each character's workspace, images and sounds.
@@ -51,6 +59,7 @@ class Compiler {
         this.setCharacters(ProjectState.currentProject.characters);
         this.setImages(ProjectState.currentProject.images);
         this.setSounds(ProjectState.currentProject.sounds);
+        this.setVariables(ProjectState.currentProject.variables);
 
         // get JS code from each character's workspace, then add in some general setup stuff
         // to make sure character specific blocks work like {go to x: () y: ()}
@@ -89,12 +98,22 @@ class Compiler {
             `const characterFunctions = {}; // funny functionz :P this comment is so helpful`
         ];
         const descriptorCode = [
-            `const nameTable = {characters:{},images:{},sounds:{}}; // contains the ID: Name for each type`
+            `const nameTable = {characters:{},images:{},sounds:{},variables:{}}; // contains the ID: Name for each type`
         ];
         const footerCode = [
             `})(Engine);`
         ];
 
+        // initialize variables
+        for (const variableId in this.variables) {
+            const variableIdSafe = JSON.stringify(variableId);
+            const variableObj = this.variables[variableId];
+            const variableValue = JSON.stringify(variableObj.value);
+            const variableUserName = JSON.stringify(variableObj.name);
+
+            setupCode.push(`variables[${variableIdSafe}] = ${variableValue};`);
+            descriptorCode.push(`nameTable.variables[${variableIdSafe}] = String(${variableUserName});`);
+        };
         // initialize images
         for (const image of this.images) {
             const variableName = JSON.stringify(image.id);

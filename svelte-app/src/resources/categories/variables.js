@@ -45,10 +45,21 @@ export default (workspace) => {
         if (!target) return blockList;
         const projectVarIds = Object.keys(State.currentProject.variables);
         const varIds = Object.keys(target.variables);
-        const totalVariables = projectVarIds.length + varIds.length;
-        if (totalVariables > 0) {
+        // get vars
+        if (projectVarIds.length > 0) {
+            blockList.push(createExtendableElement('block')
+                .setAttribute('type', 'variables_getproj'));
+        }
+        if (varIds.length > 0) {
             blockList.push(createExtendableElement('block')
                 .setAttribute('type', 'variables_get'));
+        }
+        // set vars
+        if (projectVarIds.length > 0) {
+            blockList.push(createExtendableElement('block')
+                .setAttribute('type', 'variables_setproj'));
+        }
+        if (varIds.length > 0) {
             blockList.push(createExtendableElement('block')
                 .setAttribute('type', 'variables_set'));
         }
