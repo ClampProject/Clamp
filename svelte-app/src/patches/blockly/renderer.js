@@ -134,7 +134,7 @@ class CustomConstantProvider extends Blockly.zelos.ConstantProvider {
             const width = halfHeight > maxWidth ? maxWidth : halfHeight;
             const forward = up ? -1 : 1;
             const direction = right ? -1 : 1;
-            const remainingHeight = height > maxHeight ? blockHeight - maxHeight : 0;
+            const remainingHeight = height > maxHeight ? height - maxHeight : 0;
             const dy = (forward * height) / 2;
             if (right) return ""
             return (
