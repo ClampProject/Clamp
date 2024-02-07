@@ -6,8 +6,11 @@ const categoryColor = '#0bf';
 
 function register() {
     registerBlock(`${categoryPrefix}test`, {
-        message0: 'test %1',
+        message0: 'test %1 %2',
         args0: [
+            {
+                "type": "input_dummy"
+            },
             {
                 "type": "input_statement",
                 "name": "BLOCKS"
