@@ -74,21 +74,25 @@
             <h1>Create {currentDisplay.name}</h1>
         </div>
         <div class="modal-contents">
-            <label>
-                Name:
-                <input type="text" bind:value={varName}>
-            </label>
+            <p>
+                <label>
+                    Name:
+                    <input type="text" size="50" bind:value={varName}>
+                </label>
+            </p>
             {#if currentDisplay.hasOptions}
-                {#each currentDisplay.options as option}
-                    <label>
-                        <input
-                            type="radio"
-                            value={option.value}
-                            bind:group={varType}
-                        >
-                        {option.name}
-                    </label>
-                {/each}
+                <div>
+                    {#each currentDisplay.options as option}
+                        <label>
+                            <input
+                                type="radio"
+                                value={option.value}
+                                bind:group={varType}
+                            >
+                            {option.name}
+                        </label>
+                    {/each}
+                </div>
             {/if}
         </div>
         <div class="modal-footer">
@@ -131,6 +135,9 @@
 
         z-index: 70000;
     }
+    input[type="text"] {
+        padding: 4px;
+    }
 
     .modal-title {
         width: 90%;
@@ -147,6 +154,11 @@
         height: calc(90% - 104px);
         padding: 8px;
         overflow: auto;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
     .modal-footer {
         width: 90%;
