@@ -36,7 +36,7 @@ function register() {
             {
                 "type": "field_number",
                 "name": "Y",
-                "check": "Number",
+                "check": "Function",
                 "value": 180,
                 "acceptsBlocks": true
             }
