@@ -134,7 +134,6 @@ class CustomConstantProvider extends Blockly.zelos.ConstantProvider {
             const forward = up ? -1 : 1;
             const direction = right ? -1 : 1;
             const dy = (forward * height) / 2;
-            if (right) return ""
             return (
                 /*Blockly.utils.svgPaths.lineTo(-direction * width, dy) +
                 Blockly.utils.svgPaths.lineTo(direction * width, dy)*/
@@ -142,7 +141,8 @@ class CustomConstantProvider extends Blockly.zelos.ConstantProvider {
                 Blockly.utils.svgPaths.lineTo(-direction * width * (1 - 0.5 / 0.7), dy * -0.28) +
                 Blockly.utils.svgPaths.lineTo(-direction * width * (0.5 / 0.7), dy * 0.7) +
                 Blockly.utils.svgPaths.lineTo(-direction * width * -(0.5 / 0.7), dy * 0.7) +
-                Blockly.utils.svgPaths.lineTo(-direction * width * -(1 - 0.5 / 0.7), dy * -0.28)
+                Blockly.utils.svgPaths.lineTo(-direction * width * -(1 - 0.5 / 0.7), dy * -0.28) + 
+                Blockly.utils.svgPaths.lineTo(0, dy * 0.58)
             );
         }
 
