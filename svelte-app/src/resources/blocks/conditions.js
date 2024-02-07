@@ -84,12 +84,18 @@ function register() {
                 "check": "Boolean"
             },
             {
-                "type": "input_value",
+                "type": "field_input",
                 "name": "X",
+                "check": null,
+                "text": "Hello",
+                "acceptsBlocks": true
             },
             {
-                "type": "input_value",
+                "type": "field_input",
                 "name": "Y",
+                "check": null,
+                "text": "World",
+                "acceptsBlocks": true
             },
         ],
         output: null,
