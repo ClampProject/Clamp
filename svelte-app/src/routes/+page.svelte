@@ -8,6 +8,9 @@
     import GamePlayer from "$lib/GamePlayer/Player.svelte";
     import SoundEditor from "$lib/SoundEditor/Editor.svelte";
     import ImageEditor from "$lib/ImageEditor/Editor.svelte";
+    
+    // Modals
+    import ModalNewVariable from "$lib/Modals/NewVariable.svelte";
 
     // Toolbox
     import Toolbox from "$lib/Toolbox/Toolbox.xml?raw";
@@ -641,6 +644,9 @@
         </div>
         <div class="backing" />
     {/if}
+
+    <ModalNewVariable {workspace}></ModalNewVariable>
+
     <div class="sides">
         <div class="left">
             <div class="aboveBlockly">
