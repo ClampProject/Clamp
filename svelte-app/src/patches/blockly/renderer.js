@@ -133,7 +133,7 @@ class CustomConstantProvider extends Blockly.zelos.ConstantProvider {
             const width = halfHeight > maxWidth ? maxWidth : halfHeight;
             const forward = up ? -1 : 1;
             const direction = right ? -1 : 1;
-            const dy = (forward * height);
+            const dy = (forward * height) / 2;
             return (
                 /*Blockly.utils.svgPaths.lineTo(-direction * width, dy) +
                 Blockly.utils.svgPaths.lineTo(direction * width, dy)*/
