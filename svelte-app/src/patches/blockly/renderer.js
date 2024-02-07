@@ -127,21 +127,24 @@ class CustomConstantProvider extends Blockly.zelos.ConstantProvider {
 
     makeRhombus() {
         const maxWidth = this.MAX_DYNAMIC_CONNECTION_SHAPE_WIDTH;
+        const maxHeight = maxWidth * 2;
 
         function makeMainPath(height, up, right) {
             const halfHeight = height / 2;
             const width = halfHeight > maxWidth ? maxWidth : halfHeight;
             const forward = up ? -1 : 1;
             const direction = right ? -1 : 1;
+            const remainingHeight = height > maxHeight ? blockHeight - maxHeight : 0;
             const dy = (forward * height) / 2;
+            if (right) return ""
             return (
                 /*Blockly.utils.svgPaths.lineTo(-direction * width, dy) +
                 Blockly.utils.svgPaths.lineTo(direction * width, dy)*/
                 Blockly.utils.svgPaths.lineTo(0, dy * 0.58) +
-                Blockly.utils.svgPaths.lineTo(-direction * width * (1 - 0.5 / 0.7), dy * -0.28) +
+                Blockly.utils.svgPaths.lineTo(-direction * width * (1 - 0.5 / 0.7), dy * -0.28 + remainingHeight / 2) +
                 Blockly.utils.svgPaths.lineTo(-direction * width * (0.5 / 0.7), dy * 0.7) +
                 Blockly.utils.svgPaths.lineTo(-direction * width * -(0.5 / 0.7), dy * 0.7) +
-                Blockly.utils.svgPaths.lineTo(-direction * width * -(1 - 0.5 / 0.7), dy * -0.28)
+                Blockly.utils.svgPaths.lineTo(-direction * width * -(1 - 0.5 / 0.7), dy * -0.28 + remainingHeight / 2)
             );
         }
 
