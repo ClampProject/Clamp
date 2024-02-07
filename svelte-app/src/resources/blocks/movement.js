@@ -5,6 +5,20 @@ const categoryPrefix = 'movement_';
 const categoryColor = '#0bf';
 
 function register() {
+    registerBlock(`${categoryPrefix}test`, {
+        message0: 'test %1',
+        args0: [
+            {
+                "type": "input_statement",
+                "name": "BLOCKS"
+            }
+        ],
+        output: "Function",
+        inputsInline: true,
+        colour: categoryColor
+    }, (block) => {
+        return `()=>{}`;
+    })
     // go to x: () y: ()
     registerBlock(`${categoryPrefix}gotoxy`, {
         message0: 'go to x: %1 y: %2',

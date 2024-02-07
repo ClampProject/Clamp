@@ -5,6 +5,7 @@ class CustomConstantProvider extends Blockly.zelos.ConstantProvider {
         super.init()
         this.ROUNDEL = this.makeRoundel()
         this.ROUNDEDINVERTED = this.makeRoundedInverted()
+        this.RHOMBUS = this.makeRhombus()
     }
 
     makeRoundedInverted() {
@@ -124,6 +125,52 @@ class CustomConstantProvider extends Blockly.zelos.ConstantProvider {
         };
     }
 
+    makeRhombus() {
+        const maxWidth = this.MAX_DYNAMIC_CONNECTION_SHAPE_WIDTH;
+
+        function makeMainPath(height, up, right) {
+            const halfHeight = height / 2;
+            const width = halfHeight > maxWidth ? maxWidth : halfHeight;
+            const forward = up ? -1 : 1;
+            const direction = right ? -1 : 1;
+            const dy = (forward * height) / 2;
+            return (
+                svgPaths.lineTo(-direction * width, dy) +
+                svgPaths.lineTo(direction * width, dy)
+            );
+        }
+
+        return {
+            type: this.SHAPES.HEXAGONAL,
+            isDynamic: true,
+            width(height) {
+                const halfHeight = height / 2;
+                return halfHeight > maxWidth ? maxWidth : halfHeight;
+            },
+            height(height) {
+                return height;
+            },
+            connectionOffsetY(connectionHeight) {
+                return connectionHeight / 2;
+            },
+            connectionOffsetX(connectionWidth) {
+                return -connectionWidth;
+            },
+            pathDown(height) {
+                return makeMainPath(height, false, false);
+            },
+            pathUp(height) {
+                return makeMainPath(height, true, false);
+            },
+            pathRightDown(height) {
+                return makeMainPath(height, false, true);
+            },
+            pathRightUp(height) {
+                return makeMainPath(height, false, true);
+            },
+        };
+    }
+
     /**
      * @param {Blockly.RenderedConnection} connection
      */
@@ -133,7 +180,9 @@ class CustomConstantProvider extends Blockly.zelos.ConstantProvider {
             checks = connection.targetConnection.getCheck();
         }
         if (connection.type == Blockly.ConnectionType.INPUT_VALUE || connection.type == Blockly.ConnectionType.OUTPUT_VALUE) {
-            if (checks && checks.indexOf('JSONArray') !== -1) {
+            if (checks && checks.indexOf('Function') !== -1) {
+                return this.RHOMBUS;
+            } else if (checks && checks.indexOf('JSONArray') !== -1) {
                 return this.ROUNDEDINVERTED;
             } else if (checks && checks.indexOf('JSONObject') !== -1) {
                 return this.ROUNDEL;
