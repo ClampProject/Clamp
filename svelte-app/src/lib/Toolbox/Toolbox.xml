@@ -1,6 +1,5 @@
 <xml>
     <category name="Movement" colour="#0bf">
-        <block type="movement_test" />
         <block type="movement_gotoxy" />
         <block type="movement_gotorandom" />
         <block type="movement_setxy" />
