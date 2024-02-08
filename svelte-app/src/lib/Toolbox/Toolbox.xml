@@ -86,5 +86,7 @@
     </category>
     <category name="Functions" colour="#833bff">
         <block type="functions_define" />
+        <block type="functions_execute_a" />
+        <block type="functions_execute_b" />
     </category>
 </xml>
