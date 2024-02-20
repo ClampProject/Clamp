@@ -146,6 +146,8 @@ class CustomConstantProvider extends Blockly.zelos.ConstantProvider {
             );
         }
 
+        var this2 = this
+
         return {
             type: this.SHAPES.HEXAGONAL,
             isDynamic: true,
@@ -169,10 +171,10 @@ class CustomConstantProvider extends Blockly.zelos.ConstantProvider {
                 return makeMainPath(height, true, false);
             },
             pathRightDown(height) {
-                return super.makeSquared().pathRightDown(height)
+                return this2.SQUARED.pathRightDown(height)
             },
             pathRightUp(height) {
-                return super.makeSquared().pathRightUp(height)
+                return this2.SQUARED.pathRightUp(height)
             },
         };
     }
