@@ -116,10 +116,10 @@ class CustomConstantProvider extends Blockly.zelos.ConstantProvider {
                 return makeMainPath(height, true, false);
             },
             pathRightDown(height) {
-                return this.SQUARED.pathRightDown(height)
+                return makeMainPath(height, false, true);
             },
             pathRightUp(height) {
-                return this.SQUARED.pathRightUp(height)
+                return makeMainPath(height, false, true);
             },
         };
     }
