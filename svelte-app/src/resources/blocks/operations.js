@@ -39,18 +39,11 @@ function register() {
         inputsInline: true,
         colour: categoryColor
     }, (block) => {
-        let code = '';
         const OPERATION = block.getFieldValue('OPERATION');
         const X = javascriptGenerator.valueToCode(block, 'X', javascriptGenerator.ORDER_ATOMIC);
         const Y = javascriptGenerator.valueToCode(block, 'Y', javascriptGenerator.ORDER_ATOMIC);
-        switch (OPERATION) {
-            case '^':
-                code = `Math.pow(${X}, ${Y})`;
-                break;
-            default:
-                code = `${X} ${OPERATION} ${Y}`;
-                break;
-        }
+        ;et code = `${X} ${OPERATION} ${Y}`;
+        if (OPERATION === '^') code = `Math.pow(${X}, ${Y})`;
         return [`(${code})`, javascriptGenerator.ORDER_NONE];
     })
     // random [number/decimal number] between () and ()
