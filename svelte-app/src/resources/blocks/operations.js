@@ -5,7 +5,7 @@ const categoryPrefix = 'operations_';
 const categoryColor = '#1d4';
 
 function register() {
-    // () [+/-/×/÷] ()
+    // () [+/-/×/÷/^] ()
     registerBlock(`${categoryPrefix}mathoperations`, {
         message0: '%1 %2 %3',
         args0: [
@@ -23,7 +23,8 @@ function register() {
                     ["+", "+"],
                     ["-", "-"],
                     ["×", "*"],
-                    ["÷", "/"]
+                    ["÷", "/"],
+                    ["^", "^"]
                 ]
             },
             {
@@ -41,7 +42,8 @@ function register() {
         const OPERATION = block.getFieldValue('OPERATION');
         const X = javascriptGenerator.valueToCode(block, 'X', javascriptGenerator.ORDER_ATOMIC);
         const Y = javascriptGenerator.valueToCode(block, 'Y', javascriptGenerator.ORDER_ATOMIC);
-        const code = `${X} ${OPERATION} ${Y}`;
+        let code = `${X} ${OPERATION} ${Y}`;
+        if (OPERATION === '^') code = `Math.pow(${X}, ${Y})`;
         return [`(${code})`, javascriptGenerator.ORDER_NONE];
     })
     // random [number/decimal number] between () and ()
